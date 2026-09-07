@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Projeto } from '../../models/projeto/projeto.interface';
 import { ProjetoJson } from '../../models/projeto/projeto-json.interface';
 import { Tarefa } from '../../models/tarefa/tarefa.interface';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
