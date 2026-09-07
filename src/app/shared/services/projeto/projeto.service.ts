@@ -36,7 +36,6 @@ export class ProjetoService {
           dataTermino: tarefa.dataTermino,
         })),
     };
-    
 
     this.http.post<ProjetoJson>(`${this.apiUrl}/projetos/`, dados).subscribe({
       next: (projetoCriado) => {
@@ -113,49 +112,43 @@ export class ProjetoService {
 
   private mapearProjetos(projetos: ProjetoJson[]): Projeto[] {
     return projetos.map((projeto) => {
-      const dataInicio = projeto.dataInicio?.split('-').map(Number);
-      const dataTermino = projeto.dataTermino?.split('-').map(Number);
-
-      const projetos: Projeto = {
+      const dataTermino = this.converterData(projeto.dataTermino);
+      const dataInicio = this.converterData(projeto.dataInicio);
+      return {
         id: projeto.id,
         nome: projeto.nome,
         categoria: projeto.categoria,
         status: projeto.status,
-        dataInicio:
-          dataInicio !== undefined
-            ? new Date(dataInicio[0], dataInicio[1] - 1, dataInicio[2])
-            : null,
-        dataTermino:
-          dataTermino !== undefined
-            ? new Date(dataTermino[0], dataTermino[1] - 1, dataTermino[2])
-            : null,
+        dataInicio,
+        dataTermino,
         orcamento: projeto.orcamento,
         prioridade: projeto.prioridade,
         criadoPor: projeto.criadoPor,
-        tarefas: projeto.tarefas.map((tarefa) => {
-          const dataInicio = tarefa.dataInicio.split('-').map(Number);
-          const dataTermino = tarefa.dataTermino.split('-').map(Number);
-          const tarefas: Tarefa = {
-            nome: tarefa.nome,
-            ordem: tarefa.ordem,
-            concluido: tarefa.concluido,
-            dataInicio: new Date(dataInicio[0], dataInicio[1] - 1, dataInicio[2]),
-            dataTermino: new Date(dataTermino[0], dataTermino[1] - 1, dataTermino[2]),
-            id: tarefa.id,
-          };
-          return tarefas;
-        }),
+        tarefas: projeto.tarefas.map((tarefa) => ({
+          nome: tarefa.nome,
+          ordem: tarefa.ordem,
+          concluido: tarefa.concluido,
+          dataInicio: this.converterData(tarefa.dataInicio)!,
+          dataTermino: this.converterData(tarefa.dataTermino)!,
+          id: tarefa.id,
+        })),
         tarefasConcluidas: projeto.tarefas.filter((tarefa) => tarefa.concluido).length,
         totalTarefas: projeto.tarefas.length,
         criadoEm: new Date(projeto.createdAt),
         atualizadoEm: new Date(projeto.updatedAt),
         atrasado:
-          projeto.dataTermino && projeto.status !== 'Concluída'
-            ? new Date(projeto.dataTermino) < new Date()
-            : false,
+          dataTermino !== null &&
+          projeto.status !== 'Concluída' &&
+          dataTermino < new Date(new Date().setHours(0, 0, 0, 0)),
       };
-
-      return projetos;
     });
+  }
+
+  private converterData(data: string | null): Date | null {
+    if (!data) {
+      return null;
+    }
+    const [ano, mes, dia] = data.split('-').map(Number);
+    return new Date(ano, mes - 1, dia);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, NgModule } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CardStatusTasks } from '../../components/card-status/card-status';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -14,8 +14,6 @@ import { MatCardModule } from '@angular/material/card';
 import { groupBy } from '../../../../shared/utils/group-by';
 import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 
 type CardValues = {
   icon: string;
