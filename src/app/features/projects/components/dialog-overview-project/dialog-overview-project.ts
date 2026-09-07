@@ -67,8 +67,6 @@ export class DialogOverviewProject {
   }
 
   salvarProjeto(): void {
-    console.log(this.projetoRecebido);
-
     this.dialogRef.close(this.projetoRecebido);
   }
 

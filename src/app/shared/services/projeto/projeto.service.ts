@@ -36,8 +36,6 @@ export class ProjetoService {
           dataTermino: tarefa.dataTermino,
         })),
     };
-
-    console.log(dados);
     
 
     this.http.post<ProjetoJson>(`${this.apiUrl}/projetos/`, dados).subscribe({
