@@ -84,12 +84,14 @@
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Ganhos da Melhoria</mat-label>
           <input
-            name="oracamento"
+            name="orcamento"
             matInput
-            type="number"
+            type="text"
+            inputmode="numeric"
             class="right-align"
             placeholder="0,00"
-            [(ngModel)]="projetoRecebido.orcamento"
+            [value]="orcamentoFormatado"
+            (input)="formatarOrcamento($event)"
           />
           <span matTextPrefix>R$&nbsp;</span>
         </mat-form-field>

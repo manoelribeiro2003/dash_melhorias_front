@@ -100,4 +100,31 @@ export class DialogNewProject {
     console.log(this.novoProjeto);
     this.dialogRef.close();
   }
+
+  orcamentoFormatado = '';
+  formatarOrcamento(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    // Remove tudo que não for número
+    const valor = input.value.replace(/\D/g, '');
+
+    // Campo vazio ou valor zero
+    if (!valor || Number(valor) === 0) {
+      this.orcamentoFormatado = '';
+      this.novoProjeto.orcamento = '0.00';
+      return;
+    }
+
+    // Os dois últimos dígitos são os centavos
+    const valorNumerico = Number(valor) / 100;
+
+    // Valor exibido no input
+    this.orcamentoFormatado = valorNumerico.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    // Valor enviado para o banco
+    this.novoProjeto.orcamento = valorNumerico.toFixed(2);
+  }
 }

@@ -67,6 +67,8 @@ export class DialogOverviewProject {
   }
 
   salvarProjeto(): void {
+    console.log(this.projetoRecebido);
+
     this.dialogRef.close(this.projetoRecebido);
   }
 
@@ -76,5 +78,43 @@ export class DialogOverviewProject {
 
   compararUsuarios(usuario1: Usuario | null, usuario2: Usuario | null): boolean {
     return usuario1?.id === usuario2?.id;
+  }
+
+  orcamentoFormatado = '';
+  formatarOrcamento(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    // Remove tudo que não for número
+    const valor = input.value.replace(/\D/g, '');
+
+    // Campo vazio ou valor zero
+    if (!valor || Number(valor) === 0) {
+      this.orcamentoFormatado = '';
+      this.projetoRecebido.orcamento = '0.00';
+      return;
+    }
+
+    // Os dois últimos dígitos são os centavos
+    const valorNumerico = Number(valor) / 100;
+
+    // Valor exibido no input
+    this.orcamentoFormatado = valorNumerico.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    // Valor enviado para o banco
+    this.projetoRecebido.orcamento = valorNumerico.toFixed(2);
+  }
+
+  ngOnInit(): void {
+    if (this.projetoRecebido.orcamento) {
+      const valor = Number(this.projetoRecebido.orcamento);
+
+      this.orcamentoFormatado = valor.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
   }
 }
