@@ -1,16 +1,14 @@
 <mat-sidenav-container class="app-container">
+
   <mat-sidenav #sidenav class="app-sidenav" mode="side" opened>
+
     <div class="brand">
-      <div class="brand-logo">
-        <mat-icon>donut_large</mat-icon>
-      </div>
-      <div class="brand-info">
-        <div class="brand-name">ProGestão</div>
-        <div class="brand-description">Gestão de Projetos</div>
-      </div>
+      <img src="/images/LogoEnhenhariaeQualidade.png" alt="Engenharia e Qualidade" />
+      <div class="brand-title">Gestão de Projetos</div>
     </div>
+
     <nav class="main-menu">
-      @for (item of menuItems.filter(item => item.active); track item.route) {
+      @for (item of menuItems.filter((item) => item.active); track item.route) {
         <a
           class="menu-item"
           [routerLink]="item.route"
@@ -24,32 +22,6 @@
         </a>
       }
     </nav>
-    <!-- <div class="shortcuts">
-            <div class="section-title">
-                ATALHOS
-            </div>
-            @for (item of shortcuts; track item.route) {
-            <a class="shortcut-item" [routerLink]="item.route">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.label }}</span>
-            </a>
-            }
-
-        </div>
-        <div class="user-area">
-            <div class="user-avatar">
-                MS
-            </div>
-            <div class="user-info">
-                <div class="user-name">
-                    Manoel Ribeiro
-                </div>
-                <div class="user-role">
-                    Analista de Processos
-                </div>
-            </div>
-            <mat-icon class="user-arrow">keyboard_arrow_down</mat-icon>
-        </div> -->
   </mat-sidenav>
   <mat-sidenav-content class="app-content">
     <app-toobar [title]="title" [description]="description" />
