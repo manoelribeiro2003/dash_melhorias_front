@@ -2,34 +2,40 @@
   <mat-card-header>
     <div class="filtros">
 
-      <div class="div-categoria">
+      <div class="div-categoria categoria">
         <mat-form-field appearance="outline">
           <mat-label>Filtrar por categoria</mat-label>
-
           <mat-select [(value)]="catSelecionada">
-            <mat-option [value]="null">
-              Todos
-            </mat-option>
+            <mat-option [value]="null"> Todos </mat-option>
             @for (categoria of categorias; track categoria) {
               <mat-option [value]="categoria">
                 {{ categoria ?? 'Sem Categoria' }}
               </mat-option>
             }
-            <mat-option value="Outros">
-              Outros
-            </mat-option>
+            <mat-option value="Outros"> Outros </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
-      <div class="div-categoria">
+      <div class="div-categoria gestor">
         <mat-form-field appearance="outline">
           <mat-label>Filtrar por responsável</mat-label>
-
           <mat-select [(value)]="usuarioSelecionado">
             <mat-option [value]="null">Todos</mat-option>
             @for (usuario of usuarios(); track usuario.id) {
-            <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
+              <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="div-categoria responsavel">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrar por responsável</mat-label>
+          <mat-select [(value)]="usuarioSelecionado">
+            <mat-option [value]="null">Todos</mat-option>
+            @for (usuario of usuarios(); track usuario.id) {
+              <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -37,19 +43,21 @@
 
       <div class="botoes-filtro">
         <mat-button-toggle-group name="botoes-filtro" [(value)]="statusSelecionado">
-
           @for (status of status(); track status) {
-          <mat-button-toggle [value]="status.value" [checked]="status.value === 'Em andamento'">
-            {{ status.label }}
-          </mat-button-toggle>
+            <mat-button-toggle [value]="status.value" [checked]="status.value === 'Em andamento'">
+              {{ status.label }}
+            </mat-button-toggle>
           }
-
         </mat-button-toggle-group>
       </div>
 
     </div>
   </mat-card-header>
   <mat-card-actions>
-    <app-table-projects [filtroCategoria]="catSelecionada()" [filtroStatus]="statusSelecionado()" [filtroUsuario]="usuarioSelecionado()"/>
+    <app-table-projects
+      [filtroCategoria]="catSelecionada()"
+      [filtroStatus]="statusSelecionado()"
+      [filtroUsuario]="usuarioSelecionado()"
+    />
   </mat-card-actions>
 </mat-card>
