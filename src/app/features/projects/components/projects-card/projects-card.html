@@ -28,7 +28,7 @@
 
           <mat-select [(value)]="usuarioSelecionado">
             <mat-option [value]="null">Todos</mat-option>
-            @for (usuario of usuarios; track usuario.id) {
+            @for (usuario of usuarios(); track usuario.id) {
             <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
             }
           </mat-select>

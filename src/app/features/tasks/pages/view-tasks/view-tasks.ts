@@ -118,6 +118,8 @@ export class ViewTasks {
     },
   );
 
+  // ===============================================================================
+
   protected cardValues: CardValues[] = [
     { icon: 'totalProjetos', title: 'Tarefas da Semana', status: 'TotalItens' },
     { icon: 'emAndamento', title: 'Em Andamento', status: 'Em andamento' },

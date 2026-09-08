@@ -5,7 +5,6 @@ import { TableProjects } from '../table-projects/table-projects';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { UsuarioService } from '../../../../shared/services/usuario/usuario.service';
 import { categorias } from '../../../../shared/utils/categories';
 
@@ -28,9 +27,8 @@ interface Status {
   styleUrl: './projects-card.scss',
 })
 export class ProjectsCard {
-  readonly tasks = inject(ProjetoService);
-  readonly usuariosService = inject(UsuarioService);
-  readonly status = signal<Status[]>([
+  private readonly usuariosService = inject(UsuarioService);
+  protected readonly status = signal<Status[]>([
     {
       value: '',
       label: 'Todos',
@@ -52,10 +50,8 @@ export class ProjectsCard {
       label: 'Atrasados',
     },
   ]);
-
-  categorias = categorias;
-
-  readonly usuarios = this.usuariosService.usuarios();
+  protected readonly categorias = categorias;
+  protected readonly usuarios = this.usuariosService.usuarios;
 
   catSelecionada = model('');
   statusSelecionado = model(null);
