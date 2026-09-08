@@ -48,19 +48,19 @@ export class Pages {
   }
 
   menuItems = [
-    {active: true, label: 'Dashboard', icon: 'home', route: '/', exact: true },
-    {active: true, label: 'Projetos', icon: 'business_center', route: '/projetos', exact: false },
-    {active: true, label: 'Tarefas', icon: 'assignment', route: '/tarefas', exact: true },
-    {active: false, label: 'Cronograma', icon: 'calendar_month', route: '/cronograma', exact: true },
-    {active: false, label: 'Kanban', icon: 'view_kanban', route: '/kanban', exact: true },
-    {active: false, label: 'Recursos', icon: 'inventory_2', route: '/recursos', exact: true },
-    {active: false, label: 'Equipe', icon: 'groups', route: '/equipe', exact: true },
-    {active: false, label: 'Clientes', icon: 'people', route: '/clientes', exact: true },
-    {active: false, label: 'Relatórios', icon: 'analytics', route: '/relatorios', exact: true },
-    {active: false, label: 'Documentos', icon: 'description', route: '/documentos', exact: true },
-    {active: false, label: 'Riscos', icon: 'warning', route: '/riscos', exact: true },
-    {active: false, label: 'Financeiro', icon: 'account_balance_wallet', route: '/financeiro', exact: true },
-    {active: false, label: 'Configurações', icon: 'settings', route: '/configuracoes', exact: true }
+    { active: true, exact: true, route: '/', label: 'Dashboard', icon: 'home' },
+    { active: true, exact: false, route: '/projetos', label: 'Projetos', icon: 'business_center' },
+    { active: true, exact: true, route: '/entregaveis', label: 'Entregáveis', icon: 'assignment' },
+    { active: false, exact: true, route: '/cronograma', label: 'Cronograma', icon: 'calendar_month' },
+    { active: false, exact: true, route: '/kanban', label: 'Kanban', icon: 'view_kanban' },
+    { active: false, exact: true, route: '/recursos', label: 'Recursos', icon: 'inventory_2' },
+    { active: false, exact: true, route: '/equipe', label: 'Equipe', icon: 'groups' },
+    { active: false, exact: true, route: '/clientes', label: 'Clientes', icon: 'people' },
+    { active: false, exact: true, route: '/relatorios', label: 'Relatórios', icon: 'analytics' },
+    { active: false, exact: true, route: '/documentos', label: 'Documentos', icon: 'description' },
+    { active: false, exact: true, route: '/riscos', label: 'Riscos', icon: 'warning' },
+    { active: false, exact: true, route: '/financeiro', label: 'Financeiro', icon: 'account_balance_wallet' },
+    { active: false, exact: true, route: '/configuracoes', label: 'Configurações', icon: 'settings' }
   ];
 
   shortcuts = [

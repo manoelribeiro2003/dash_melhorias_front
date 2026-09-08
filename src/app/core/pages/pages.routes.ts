@@ -27,11 +27,11 @@ export const routes: Routes = [
                 }
             },
             {
-                path: 'tarefas',
+                path: 'entregaveis',
                 component: ViewTasks,
                 data:{
-                    title: 'Tarefas',
-                    description: 'Acompanhe todas as tarefas da semana'
+                    title: 'Entregáveis da Semana',
+                    description: 'Acompanhe todas os entregáveis da semana'
                 }
             },
         ]
