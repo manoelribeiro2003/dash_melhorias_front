@@ -52,8 +52,9 @@ export class ProjectsCard {
   ]);
   protected readonly categorias = categorias;
   protected readonly usuarios = this.usuariosService.usuarios;
-
+  protected readonly gestores = this.usuariosService.gestores;
   catSelecionada = model('');
   statusSelecionado = model(null);
   readonly usuarioSelecionado = model<number | null>(null);
+  readonly gestorSelecionado = model<number | null>(null);
 }

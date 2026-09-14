@@ -28,7 +28,7 @@
 
       <div class="responsavel">
         <mat-form-field appearance="outline">
-          <mat-label>Responsável</mat-label>
+          <mat-label>Responsável do Projeto</mat-label>
           <mat-select
             required
             name="nome-reposanvel"
@@ -113,6 +113,21 @@
               <mat-icon class="mat-icon-concluido">check_circle</mat-icon>
               <span>Concluída</span>
             </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="div-andamento">
+        <mat-form-field appearance="outline">
+          <mat-label>Gestor do Projeto</mat-label>
+          <mat-select
+            required
+            name="nome-reposanvel"
+            [(ngModel)]="projetoRecebido.gestor"
+            [compareWith]="compararUsuarios"
+          >
+            @for (gestor of gestores; track gestor.id) {
+              <mat-option [value]="gestor">{{ gestor.nome }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>

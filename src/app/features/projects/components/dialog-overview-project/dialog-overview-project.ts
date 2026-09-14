@@ -50,6 +50,7 @@ export class DialogOverviewProject {
   private readonly usuariosService = inject(UsuarioService);
 
   readonly usuarios = this.usuariosService.usuarios();
+  readonly gestores = this.usuariosService.gestores();
   protected readonly projetos = this.projetosService.projetos();
 
   // protected readonly categorias = Array.from(

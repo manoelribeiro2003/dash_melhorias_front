@@ -29,17 +29,17 @@
         </mat-form-field>
       </div>
 
-      <!-- <div class="div-categoria responsavel">
+      <div class="div-categoria responsavel">
         <mat-form-field appearance="outline">
-          <mat-label>Filtrar por responsável</mat-label>
-          <mat-select [(value)]="usuarioSelecionado">
+          <mat-label>Filtrar por gestor</mat-label>
+          <mat-select [(value)]="gestorSelecionado">
             <mat-option [value]="null">Todos</mat-option>
-            @for (usuario of usuarios(); track usuario.id) {
-              <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
+            @for (gestor of gestores(); track gestor.id) {
+              <mat-option [value]="gestor.id">{{ gestor.nome }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
-      </div> -->
+      </div>
 
       <div class="botoes-filtro">
         <mat-button-toggle-group name="botoes-filtro" [(value)]="statusSelecionado">
@@ -58,6 +58,7 @@
       [filtroCategoria]="catSelecionada()"
       [filtroStatus]="statusSelecionado()"
       [filtroUsuario]="usuarioSelecionado()"
+      [filtroGestor]="gestorSelecionado()"
     />
   </mat-card-actions>
 </mat-card>

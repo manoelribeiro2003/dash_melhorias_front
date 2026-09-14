@@ -12,6 +12,11 @@ export interface ProjetoJson {
     "nome": string,
     "email": string
   },
+  "gestor": {
+    "id": number,
+    "nome": string,
+    "email": string
+  },
   "tarefas": [
     {
       "id": number,

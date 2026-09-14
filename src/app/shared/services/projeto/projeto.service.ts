@@ -4,6 +4,7 @@ import { Projeto } from '../../models/projeto/projeto.interface';
 import { ProjetoJson } from '../../models/projeto/projeto-json.interface';
 import { Tarefa } from '../../models/tarefa/tarefa.interface';
 import { environment } from '../../../../environments/environment';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class ProjetoService {
   private apiUrl = environment.apiUrl;
 
   private http = inject(HttpClient);
+  readonly usuariosService = inject(UsuarioService);
 
   private _projetos = signal<Projeto[]>([]);
   readonly projetos = this._projetos.asReadonly();
@@ -26,6 +28,7 @@ export class ProjetoService {
       orcamento: projeto.orcamento,
       prioridade: projeto.prioridade,
       criadoPorId: projeto.criadoPor?.id,
+      gestorId: projeto.gestor?.id,
       tarefas: projeto.tarefas
         ?.filter((tarefa) => tarefa.nome?.trim())
         .map((tarefa, index) => ({
@@ -70,6 +73,7 @@ export class ProjetoService {
       orcamento: projeto.orcamento,
       prioridade: projeto.prioridade,
       criadoPorId: projeto.criadoPor.id,
+      gestorId: projeto.gestor.id,
       tarefas: projeto.tarefas
         .filter((tarefa) => tarefa.id !== undefined || tarefa.nome?.trim())
         .map((tarefa, index) => {
@@ -114,7 +118,7 @@ export class ProjetoService {
     return projetos.map((projeto) => {
       const dataTermino = this.converterData(projeto.dataTermino);
       const dataInicio = this.converterData(projeto.dataInicio);
-      return {
+      const projetos: Projeto = {
         id: projeto.id,
         nome: projeto.nome,
         categoria: projeto.categoria,
@@ -123,7 +127,18 @@ export class ProjetoService {
         dataTermino,
         orcamento: projeto.orcamento,
         prioridade: projeto.prioridade,
-        criadoPor: projeto.criadoPor,
+        criadoPor: {
+          id: projeto.criadoPor.id,
+          email: projeto.criadoPor.email,
+          nome: projeto.criadoPor.nome,
+          gestor_id: projeto.gestor.id,
+        },
+        gestor: {
+          id: projeto.gestor.id,
+          email: projeto.gestor.email,
+          nome: projeto.gestor.nome,
+          gestor_id: projeto.gestor.id,
+        },
         tarefas: projeto.tarefas.map((tarefa) => ({
           nome: tarefa.nome,
           ordem: tarefa.ordem,
@@ -141,6 +156,7 @@ export class ProjetoService {
           projeto.status !== 'Concluída' &&
           dataTermino < new Date(new Date().setHours(0, 0, 0, 0)),
       };
+      return projetos;
     });
   }
 

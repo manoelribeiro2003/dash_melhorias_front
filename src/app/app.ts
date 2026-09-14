@@ -6,19 +6,16 @@ import { UsuarioService } from './shared/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    MatSidenavModule,
-  ],
+  imports: [RouterOutlet, MatSidenavModule],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
-  constructor(){
-    this.projetos.carregarProjetos()
-    this.usuarios.carregarUsuarios()
+  constructor() {
+    this.projetos.carregarProjetos();
+    this.usuarios.carregarUsuarios();
+    this.usuarios.carregarGestores();
   }
   private projetos = inject(ProjetoService);
   private usuarios = inject(UsuarioService);
-  
 }

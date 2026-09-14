@@ -41,6 +41,7 @@ export class TableProjects implements AfterViewInit {
   readonly filtroCategoria = input.required<string>();
   readonly filtroStatus = input<string | null>('');
   readonly filtroUsuario = input<number | null>(null);
+  readonly filtroGestor = input<number | null>(null);
 
   constructor() {
     effect(() => {
@@ -67,7 +68,10 @@ export class TableProjects implements AfterViewInit {
       const usuarioOk =
         this.filtroUsuario() === null || projeto.criadoPor?.id === this.filtroUsuario();
 
-      return categoriaOk && statusOk && usuarioOk;
+      const gestorOk =
+        this.filtroGestor() === null || projeto.gestor.id === this.filtroGestor();
+
+      return categoriaOk && statusOk && usuarioOk && gestorOk;
     });
   }
 

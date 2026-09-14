@@ -1,6 +1,5 @@
-export interface Usuario {
+export interface Gestor {
   id: number;
   nome: string;
   email: string;
-  gestor_id: number;
 }
