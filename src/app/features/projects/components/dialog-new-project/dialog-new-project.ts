@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -19,6 +19,7 @@ import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { categorias } from '../../../../shared/utils/categories';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 function obterSemanaAtual(): { inicio: Date; termino: Date } {
   const inicio = new Date();
@@ -50,13 +51,15 @@ function obterSemanaAtual(): { inicio: Date; termino: Date } {
     FormsModule,
     DragDropComponent,
     MatSlideToggleModule,
+    NgxMatSelectSearchModule,
   ],
   templateUrl: './dialog-new-project.html',
   styleUrl: './dialog-new-project.scss',
 })
 export class DialogNewProject {
   private readonly usuariosService = inject(UsuarioService);
-  protected usuarios = this.usuariosService.usuarios();
+  protected usuarios = this.usuariosService.usuarios;
+  protected gestores = this.usuariosService.gestores;
   private readonly dialogRef = inject(MatDialogRef<DialogNewProject>);
   private readonly projetosService = inject(ProjetoService);
 
@@ -82,6 +85,22 @@ export class DialogNewProject {
   };
 
   categorias = categorias;
+
+  // -------------------------Pesquisa de usuario------------------------------
+  protected readonly pesquisaUsuario = signal('');
+  protected readonly usuariosFiltrados = computed(() => {
+    const termo = this.pesquisaUsuario().toLowerCase().trim();
+
+    const resultado = this.usuarios().filter((usuario) =>
+      usuario.nome.toLowerCase().includes(termo),
+    );
+
+    return resultado;
+  });
+  protected alterarPesquisaUsuario(valor: string): void {
+    this.pesquisaUsuario.set(valor);
+  }
+  // ----------------------------------------------------------------------------------
 
   compararUsuarios(usuario1: Usuario | null, usuario2: Usuario | null): boolean {
     return usuario1?.id === usuario2?.id;

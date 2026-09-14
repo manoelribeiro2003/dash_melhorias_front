@@ -28,15 +28,28 @@
 
       <div class="responsavel">
         <mat-form-field appearance="outline">
-          <mat-label>Responsável</mat-label>
+          <mat-label>Responsável do Projeto</mat-label>
+
           <mat-select
             required
-            name="nome-reposanvel"
+            name="nome-responsavel"
             [(ngModel)]="novoProjeto.criadoPor"
             [compareWith]="compararUsuarios"
           >
-            @for (usuario of usuarios; track usuario.id) {
-              <mat-option [value]="usuario">{{ usuario.nome }}</mat-option>
+            <mat-option>
+              <ngx-mat-select-search
+                [ngModel]="pesquisaUsuario()"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="alterarPesquisaUsuario($event)"
+                placeholderLabel="Pesquisar usuário..."
+                noEntriesFoundLabel="Nenhum usuário encontrado"
+              />
+            </mat-option>
+
+            @for (usuario of usuariosFiltrados(); track usuario.id) {
+              <mat-option [value]="usuario">
+                {{ usuario.nome }}
+              </mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -81,7 +94,6 @@
       </div>
 
       <div class="div-orcamento">
-
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Ganhos da Melhoria</mat-label>
           <input
@@ -96,7 +108,6 @@
           />
           <span matTextPrefix>R$&nbsp;</span>
         </mat-form-field>
-
       </div>
 
       <div class="div-andamento">
@@ -115,6 +126,21 @@
               <mat-icon class="mat-icon-concluido">check_circle</mat-icon>
               <span>Concluída</span>
             </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="div-andamento">
+        <mat-form-field appearance="outline">
+          <mat-label>Gestor do Projeto</mat-label>
+          <mat-select
+            required
+            name="nome-reposanvel"
+            [(ngModel)]="novoProjeto.gestor"
+            [compareWith]="compararUsuarios"
+          >
+            @for (gestor of gestores(); track gestor.id) {
+              <mat-option [value]="gestor">{{ gestor.nome }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>

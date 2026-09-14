@@ -1,4 +1,4 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, computed, inject, model, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -19,6 +19,7 @@ import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { groupBy } from '../../../../shared/utils/group-by';
 import { categorias } from '../../../../shared/utils/categories';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @Component({
   selector: 'app-dialog-project',
@@ -39,6 +40,7 @@ import { categorias } from '../../../../shared/utils/categories';
     FormsModule,
 
     DragDropComponent,
+    NgxMatSelectSearchModule,
   ],
   templateUrl: './dialog-overview-project.html',
   styleUrl: './dialog-overview-project.scss',
@@ -49,13 +51,27 @@ export class DialogOverviewProject {
   private readonly projetosService = inject(ProjetoService);
   private readonly usuariosService = inject(UsuarioService);
 
-  readonly usuarios = this.usuariosService.usuarios();
-  readonly gestores = this.usuariosService.gestores();
+  readonly usuarios = this.usuariosService.usuarios;
+  readonly gestores = this.usuariosService.gestores;
   protected readonly projetos = this.projetosService.projetos();
 
-  // protected readonly categorias = Array.from(
-  //   groupBy(this.projetos, (projeto) => projeto.categoria).keys(),
-  // );
+  // -------------------------Pesquisa de usuario------------------------------
+  protected readonly pesquisaUsuario = signal('');
+  protected readonly usuariosFiltrados = computed(() => {
+    const termo = this.pesquisaUsuario().toLowerCase().trim();
+
+
+    const resultado = this.usuarios().filter((usuario) =>
+      usuario.nome.toLowerCase().includes(termo),
+    );
+
+
+    return resultado;
+  });
+  protected alterarPesquisaUsuario(valor: string): void {
+    this.pesquisaUsuario.set(valor);
+  }
+  // ----------------------------------------------------------------------------------
 
   categorias = categorias;
 
