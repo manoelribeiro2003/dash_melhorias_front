@@ -8,9 +8,9 @@
           <mat-select [(value)]="catSelecionada">
             <mat-option [value]="null"> Todos </mat-option>
             @for (categoria of categorias; track categoria) {
-              <mat-option [value]="categoria">
-                {{ categoria ?? 'Sem Categoria' }}
-              </mat-option>
+            <mat-option [value]="categoria">
+              {{ categoria ?? 'Sem Categoria' }}
+            </mat-option>
             }
             <mat-option value="Outros"> Outros </mat-option>
           </mat-select>
@@ -18,15 +18,35 @@
       </div>
 
       <div class="div-categoria gestor">
-        <mat-form-field appearance="outline">
+        <!-- <mat-form-field appearance="outline">
           <mat-label>Filtrar por responsável</mat-label>
           <mat-select [(value)]="usuarioSelecionado">
             <mat-option [value]="null">Todos</mat-option>
             @for (usuario of usuarios(); track usuario.id) {
-              <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
+            <mat-option [value]="usuario.id">{{ usuario.nome }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field> -->
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Responsável do Projeto</mat-label>
+
+          <mat-select required name="nome-responsavel" [(value)]="usuarioSelecionado" [compareWith]="compararUsuarios">
+            <mat-option>
+              <ngx-mat-select-search [ngModel]="pesquisaUsuario()" [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="alterarPesquisaUsuario($event)" placeholderLabel="Pesquisar usuário..."
+                noEntriesFoundLabel="Nenhum usuário encontrado" />
+            </mat-option>
+            <mat-option [value]="null">Todos</mat-option>
+            @for (usuario of usuariosFiltrados(); track usuario.id) {
+            <mat-option [value]="usuario.id">
+              {{ usuario.nome }}
+            </mat-option>
             }
           </mat-select>
         </mat-form-field>
+
       </div>
 
       <div class="div-categoria responsavel">
@@ -35,7 +55,7 @@
           <mat-select [(value)]="gestorSelecionado">
             <mat-option [value]="null">Todos</mat-option>
             @for (gestor of gestores(); track gestor.id) {
-              <mat-option [value]="gestor.id">{{ gestor.nome }}</mat-option>
+            <mat-option [value]="gestor.id">{{ gestor.nome }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -44,9 +64,9 @@
       <div class="botoes-filtro">
         <mat-button-toggle-group name="botoes-filtro" [(value)]="statusSelecionado">
           @for (status of status(); track status) {
-            <mat-button-toggle [value]="status.value" [checked]="status.value === 'Em andamento'">
-              {{ status.label }}
-            </mat-button-toggle>
+          <mat-button-toggle [value]="status.value" [checked]="status.value === 'Em andamento'">
+            {{ status.label }}
+          </mat-button-toggle>
           }
         </mat-button-toggle-group>
       </div>
@@ -54,11 +74,7 @@
     </div>
   </mat-card-header>
   <mat-card-actions>
-    <app-table-projects
-      [filtroCategoria]="catSelecionada()"
-      [filtroStatus]="statusSelecionado()"
-      [filtroUsuario]="usuarioSelecionado()"
-      [filtroGestor]="gestorSelecionado()"
-    />
+    <app-table-projects [filtroCategoria]="catSelecionada()" [filtroStatus]="statusSelecionado()"
+      [filtroUsuario]="usuarioSelecionado()" [filtroGestor]="gestorSelecionado()" />
   </mat-card-actions>
 </mat-card>
