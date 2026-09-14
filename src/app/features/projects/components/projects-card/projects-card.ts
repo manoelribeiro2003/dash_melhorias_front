@@ -10,6 +10,7 @@ import { categorias } from '../../../../shared/utils/categories';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Status {
   value: string;
@@ -26,7 +27,8 @@ interface Status {
     MatFormFieldModule,
     MatSelectModule,
     NgxMatSelectSearchModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   templateUrl: './projects-card.html',
   styleUrl: './projects-card.scss',
@@ -79,7 +81,8 @@ export class ProjectsCard {
   }
   // ----------------------------------------------------------------------------------
 
-  compararUsuarios(usuario1: Usuario | null, usuario2: Usuario | null): boolean {
-    return usuario1?.id === usuario2?.id;
+  protected limparUsuario(event: MouseEvent): void {
+    event.stopPropagation();
+    this.usuarioSelecionado.set(null);
   }
 }
