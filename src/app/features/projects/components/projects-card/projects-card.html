@@ -1,6 +1,7 @@
 <mat-card appearance="filled">
   <mat-card-header>
     <div class="filtros">
+
       <div class="filtro">
         <mat-form-field appearance="outline">
           <mat-label>Filtrar por categoria</mat-label>
@@ -73,8 +74,10 @@
           }
         </mat-button-toggle-group>
       </div>
+
     </div>
   </mat-card-header>
+
   <mat-card-actions>
     <app-table-projects
       [filtroCategoria]="catSelecionada()"

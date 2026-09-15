@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, model, signal } from '@angular/core';
+import { Component, computed, inject, model, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { TableProjects } from '../table-projects/table-projects';
@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { UsuarioService } from '../../../../shared/services/usuario/usuario.service';
 import { categorias } from '../../../../shared/utils/categories';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -62,10 +61,11 @@ export class ProjectsCard {
   protected readonly gestores = this.usuariosService.gestores;
   catSelecionada = model('');
   statusSelecionado = model(null);
+  
+  // -------------------------Pesquisa de usuario------------------------------
   readonly usuarioSelecionado = model<number | null>(null);
   readonly gestorSelecionado = model<number | null>(null);
 
-  // -------------------------Pesquisa de usuario------------------------------
   protected readonly pesquisaUsuario = signal('');
   protected readonly usuariosFiltrados = computed(() => {
     const termo = this.pesquisaUsuario().toLowerCase().trim();
@@ -76,13 +76,15 @@ export class ProjectsCard {
 
     return resultado;
   });
+  
   protected alterarPesquisaUsuario(valor: string): void {
     this.pesquisaUsuario.set(valor);
   }
-  // ----------------------------------------------------------------------------------
 
   protected limparUsuario(event: MouseEvent): void {
     event.stopPropagation();
     this.usuarioSelecionado.set(null);
   }
+  // ----------------------------------------------------------------------------------
+
 }

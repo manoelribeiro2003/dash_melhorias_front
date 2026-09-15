@@ -23,6 +23,15 @@
       />
     }
   </div>
+  <p>Gestor selecionado: {{ gestorSelecionado() }}</p>
+  <div class="filtros">
+    <div class="filtro gestor">
+      <app-user-filter label="Gestor" [itens]="gestores()" [(valor)]="gestorSelecionado" />
+    </div>
+    <div class="filtro responsavel">
+      <app-user-filter label="Responsável" [itens]="usuarios()" [(valor)]="usuarioSelecionado" />
+    </div>
+  </div>
 
   <!-- TABELA -->
 
