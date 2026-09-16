@@ -5,6 +5,7 @@ import { ProjetoJson } from '../../models/projeto/projeto-json.interface';
 import { Tarefa } from '../../models/tarefa/tarefa.interface';
 import { environment } from '../../../../environments/environment';
 import { UsuarioService } from '../usuario/usuario.service';
+import { StatusProject } from '../../enums/status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -153,7 +154,7 @@ export class ProjetoService {
         atualizadoEm: new Date(projeto.updatedAt),
         atrasado:
           dataTermino !== null &&
-          projeto.status !== 'Concluída' &&
+          projeto.status !== StatusProject.CONCLUIDA &&
           dataTermino < new Date(new Date().setHours(0, 0, 0, 0)),
       };
       return projetos;

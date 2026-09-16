@@ -18,8 +18,9 @@ import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { categorias } from '../../../../shared/utils/categories';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
+import { StatusProject } from '../../../../shared/enums/status.enum';
 
 function obterSemanaAtual(): { inicio: Date; termino: Date } {
   const inicio = new Date();
@@ -63,6 +64,8 @@ export class DialogNewProject {
   private readonly dialogRef = inject(MatDialogRef<DialogNewProject>);
   private readonly projetosService = inject(ProjetoService);
 
+  protected readonly statusProjeto = StatusProject;
+
   readonly novoProjeto: Partial<Projeto> = {
     status: 'Não iniciado',
     dataInicio: obterSemanaAtual().inicio,
@@ -84,7 +87,7 @@ export class DialogNewProject {
     ],
   };
 
-  categorias = categorias;
+  categorias = Object.values(ProjectCategories).sort();
 
   // -------------------------Pesquisa de usuario------------------------------
   protected readonly pesquisaUsuario = signal('');

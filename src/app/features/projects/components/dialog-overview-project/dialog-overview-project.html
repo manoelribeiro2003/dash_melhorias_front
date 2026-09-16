@@ -114,15 +114,15 @@
         <mat-form-field appearance="outline">
           <mat-label>Status do projeto</mat-label>
           <mat-select name="status" [(ngModel)]="projetoRecebido.status">
-            <mat-option value="Não iniciado">
+            <mat-option [value]="statusProjeto.NAO_INCIADO">
               <mat-icon class="mat-icon-nao-iniciado">mode_standby</mat-icon>
               <span>Não iniciado</span>
             </mat-option>
-            <mat-option value="Em andamento">
+            <mat-option [value]="statusProjeto.EM_ANDAMENTO">
               <mat-icon class="mat-icon-em-andamento">play_circle</mat-icon>
               <span>Em andamento</span>
             </mat-option>
-            <mat-option value="Concluída">
+            <mat-option [value]="statusProjeto.CONCLUIDA">
               <mat-icon class="mat-icon-concluido">check_circle</mat-icon>
               <span>Concluída</span>
             </mat-option>

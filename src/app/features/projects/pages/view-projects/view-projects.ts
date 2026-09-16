@@ -5,6 +5,7 @@ import { CardStatusProjects } from "../../components/card-status/card-status-pro
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
+import { StatusProject } from '../../../../shared/enums/status.enum';
 
 type CardValues = {
   icon: string,
@@ -30,9 +31,9 @@ export class ViewProjects {
 
   cardValues: CardValues[] = [
     {icon: "totalProjetos", title: "Total de Projetos", status: 'TotalItens'},
-    {icon: "emAndamento", title: "Em Andamento", status: 'Em andamento'},
-    {icon: "concluidos", title: "Concluídos", status: 'Concluída' },
-    {icon: "naoIniciados", title: "Não Iniciados", status: 'Não iniciado' },
+    {icon: "emAndamento", title: "Em Andamento", status: StatusProject.EM_ANDAMENTO},
+    {icon: "concluidos", title: "Concluídos", status: StatusProject.CONCLUIDA },
+    {icon: "naoIniciados", title: "Não Iniciados", status: StatusProject.NAO_INCIADO },
     {icon: "atrasado", title: "Atrasados", status: '', atrasado: true },
   ]
 

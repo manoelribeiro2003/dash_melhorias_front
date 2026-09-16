@@ -13,6 +13,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../dialog-delete-project/confirm-dialog';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
+import { StatusProject } from '../../../../shared/enums/status.enum';
 
 @Component({
   selector: 'app-table-projects',
@@ -43,6 +44,8 @@ export class TableProjects implements AfterViewInit {
   readonly filtroUsuario = input<number | null>(null);
   readonly filtroGestor = input<number | null>(null);
 
+  protected readonly statusProjeto = StatusProject;
+
   constructor() {
     effect(() => {
       this.aplicarFiltros();
@@ -68,8 +71,7 @@ export class TableProjects implements AfterViewInit {
       const usuarioOk =
         this.filtroUsuario() === null || projeto.criadoPor?.id === this.filtroUsuario();
 
-      const gestorOk =
-        this.filtroGestor() === null || projeto.gestor.id === this.filtroGestor();
+      const gestorOk = this.filtroGestor() === null || projeto.gestor.id === this.filtroGestor();
 
       return categoriaOk && statusOk && usuarioOk && gestorOk;
     });

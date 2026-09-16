@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { UserFilterComponent } from '../../../../shared/components/user-filter/user-filter';
-import { StatusProject as status } from '../../../../shared/enums/status.enum';
+import { StatusProject as status, StatusProject } from '../../../../shared/enums/status.enum';
 
 type CardValues = {
   icon: string;
@@ -72,6 +72,8 @@ export class ViewTasks {
   protected readonly gestores = this.usuariosService.gestores;
   protected readonly gestorSelecionado = model<number | null>(null);
   protected readonly usuarioSelecionado = model<number | null>(null);
+
+  protected readonly statusProjeto = StatusProject;
 
   // ====================== Filtros e inicialização dos projetos da semana ============================
   protected hoje = new Date();

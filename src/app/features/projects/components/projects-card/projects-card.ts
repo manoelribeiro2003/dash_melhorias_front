@@ -6,10 +6,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { UsuarioService } from '../../../../shared/services/usuario/usuario.service';
-import { categorias } from '../../../../shared/utils/categories';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
+import { StatusProject } from '../../../../shared/enums/status.enum';
 
 interface Status {
   value: string;
@@ -27,7 +28,7 @@ interface Status {
     MatSelectModule,
     NgxMatSelectSearchModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './projects-card.html',
   styleUrl: './projects-card.scss',
@@ -40,28 +41,28 @@ export class ProjectsCard {
       label: 'Todos',
     },
     {
-      value: 'Em andamento',
+      value: StatusProject.EM_ANDAMENTO,
       label: 'Em Andamento',
     },
     {
-      value: 'Concluída',
+      value: StatusProject.CONCLUIDA,
       label: 'Concluidos',
     },
     {
-      value: 'Não iniciado',
+      value: StatusProject.NAO_INCIADO,
       label: 'Não Iniciados',
     },
     {
-      value: 'Atrasado',
+      value: StatusProject.ATRASADO,
       label: 'Atrasados',
     },
   ]);
-  protected readonly categorias = categorias;
+  protected readonly categorias = Object.values(ProjectCategories).sort();
   protected readonly usuarios = this.usuariosService.usuarios;
   protected readonly gestores = this.usuariosService.gestores;
-  catSelecionada = model('');
-  statusSelecionado = model(null);
-  
+  protected readonly catSelecionada = model('');
+  protected readonly statusSelecionado = model(null);
+
   // -------------------------Pesquisa de usuario------------------------------
   readonly usuarioSelecionado = model<number | null>(null);
   readonly gestorSelecionado = model<number | null>(null);
@@ -76,7 +77,7 @@ export class ProjectsCard {
 
     return resultado;
   });
-  
+
   protected alterarPesquisaUsuario(valor: string): void {
     this.pesquisaUsuario.set(valor);
   }
@@ -86,5 +87,4 @@ export class ProjectsCard {
     this.usuarioSelecionado.set(null);
   }
   // ----------------------------------------------------------------------------------
-
 }

@@ -38,9 +38,9 @@
           <span
             class="status"
             [ngClass]="{
-              'status-andamento': projeto.status === 'Em andamento',
-              'status-concluido': projeto.status === 'Concluída',
-              'status-nao-iniciado': projeto.status === 'Não iniciado',
+              'status-andamento': projeto.status === statusProjeto.EM_ANDAMENTO,
+              'status-concluido': projeto.status === statusProjeto.CONCLUIDA,
+              'status-nao-iniciado': projeto.status === statusProjeto.NAO_INCIADO
             }"
           >
             {{ projeto.atrasado ? '⚠ ' : '' }}

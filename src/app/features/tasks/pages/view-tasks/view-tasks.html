@@ -10,7 +10,7 @@
         [value]="
           cardValue.status === 'TotalItens'
             ? indicadores().total
-            : cardValue.status === 'Concluída'
+            : cardValue.status === statusProjeto.CONCLUIDA
               ? indicadores().concluidas
               : cardValue.atrasado
                 ? indicadores().atrasadas
@@ -23,7 +23,7 @@
       />
     }
   </div>
-  
+
   <div class="filtros">
     <div class="filtro gestor">
       <app-user-filter

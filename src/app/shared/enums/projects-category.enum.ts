@@ -1,11 +1,13 @@
-export enum Categorias {
+export enum ProjectCategories {
   LOGISTICA = 'Logística',
   MOI_MOA_MODS = 'MOI, MOA, MODS',
   RPA = 'RPA',
   SMED = 'SMED',
   HOMOLOGACOES = 'Homologações',
-  PROG_MELH = 'Programa de Melhorias',
+  PROGRAMA_MELHORIAS = 'Programa de Melhorias',
   MTM = 'MTM',
-  IMPRES_3D = 'Impressão 3D',
-  CERT_EQUIP = 'Certificação de Equipamento',
+  IMPRESSAO_3D = 'Impressão 3D',
+  CERTIFICAO_EQUIPAMENTO = 'Certificação de Equipamento',
+  MP = 'MP',
+  MOD = 'MOD',
 }

@@ -17,9 +17,9 @@ import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
-import { groupBy } from '../../../../shared/utils/group-by';
-import { categorias } from '../../../../shared/utils/categories';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
+import { StatusProject } from '../../../../shared/enums/status.enum';
 
 @Component({
   selector: 'app-dialog-project',
@@ -55,16 +55,16 @@ export class DialogOverviewProject {
   readonly gestores = this.usuariosService.gestores;
   protected readonly projetos = this.projetosService.projetos();
 
+  protected readonly statusProjeto = StatusProject;
+
   // -------------------------Pesquisa de usuario------------------------------
   protected readonly pesquisaUsuario = signal('');
   protected readonly usuariosFiltrados = computed(() => {
     const termo = this.pesquisaUsuario().toLowerCase().trim();
 
-
     const resultado = this.usuarios().filter((usuario) =>
       usuario.nome.toLowerCase().includes(termo),
     );
-
 
     return resultado;
   });
@@ -73,7 +73,7 @@ export class DialogOverviewProject {
   }
   // ----------------------------------------------------------------------------------
 
-  categorias = categorias;
+  categorias = Object.values(ProjectCategories).sort();
 
   readonly projetoRecebido: Projeto = {
     ...this.data,
