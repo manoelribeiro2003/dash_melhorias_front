@@ -82,6 +82,7 @@
 
   <mat-select
     [value]="valor()"
+    [disabled]="disabled()"
     (valueChange)="alterarValor($event)"
     (openedChange)="!$event && limparPesquisa()"
   >

@@ -28,6 +28,7 @@ export class UserFilterComponent {
   readonly label = input('Usuário');
   readonly itens = input<readonly ItemFiltroUsuario[]>([]);
   readonly mostrarTodos = input(true);
+  readonly disabled = input(false);
 
   readonly valor = model<number | null>(null);
 

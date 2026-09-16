@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { UserFilterComponent } from '../../../../shared/components/user-filter/user-filter';
+import { StatusProject as status } from '../../../../shared/enums/status.enum';
 
 type CardValues = {
   icon: string;
@@ -62,16 +63,15 @@ const angularModules = [DatePipe, CommonModule, FormsModule];
   styleUrl: './view-tasks.scss',
 })
 export class ViewTasks {
-  private projetosService = inject(ProjetoService);
-  private iconRegistry = inject(MatIconRegistry);
-  private sanitizer = inject(DomSanitizer);
-
+  private readonly projetosService = inject(ProjetoService);
+  private readonly iconRegistry = inject(MatIconRegistry);
+  private readonly sanitizer = inject(DomSanitizer);
   private readonly usuariosService = inject(UsuarioService);
+
   protected readonly usuarios = this.usuariosService.usuarios;
   protected readonly gestores = this.usuariosService.gestores;
-
-  readonly gestorSelecionado = model<number | null>(null);
-  readonly usuarioSelecionado = model<number | null>(null);
+  protected readonly gestorSelecionado = model<number | null>(null);
+  protected readonly usuarioSelecionado = model<number | null>(null);
 
   // ====================== Filtros e inicialização dos projetos da semana ============================
   protected hoje = new Date();
@@ -88,37 +88,12 @@ export class ViewTasks {
     sabado.setHours(23, 59, 59, 999);
     return sabado;
   })();
-  // ---------------------------------------Nova Atribuição do array de projetos----------------------------
-  // readonly projetos: Projeto[] = this.projetosService
-  //   .projetos()
-  //   .map((projeto) => ({
-  //     ...projeto,
-  //     tarefas: projeto.tarefas.filter((tarefa) => {
-  //       const dataTermino = new Date(tarefa.dataTermino);
-  //       if (tarefa.concluido) {
-  //         return dataTermino > this.segunda && dataTermino <= this.sabado;
-  //       }
-  //       return dataTermino <= this.sabado;
-  //     }),
-  //   }))
-  //   .filter((projeto) => projeto.status !== 'Concluída' && projeto.status !== 'Não iniciado');
+  // --------------------------------------- Atribuição do array de projetos----------------------------
   readonly projetos = computed<Projeto[]>(() => {
     const gestorId = this.gestorSelecionado();
     const projetos = this.projetosService.projetos();
 
-    console.log('Gestor selecionado:', gestorId);
-    console.log(
-      'Responsáveis dos projetos:',
-      projetos.map((projeto) => ({
-        projeto: projeto.nome,
-        criadoPor: projeto.criadoPor,
-        gestorId: projeto.criadoPor?.gestor_id,
-        tipoGestorId: typeof projeto.criadoPor?.gestor_id,
-      })),
-    );
-
-    return this.projetosService
-      .projetos()
+    return projetos
       .map((projeto) => ({
         ...projeto,
         tarefas: projeto.tarefas.filter((tarefa) => {
@@ -131,52 +106,63 @@ export class ViewTasks {
           return dataTermino <= this.sabado;
         }),
       }))
-      .filter((projeto) => projeto.status !== 'Concluída' && projeto.status !== 'Não iniciado')
+      .filter(
+        (projeto) => projeto.status !== status.CONCLUIDA && projeto.status !== status.NAO_INCIADO,
+      )
       .filter((projeto) => gestorId === null || projeto.criadoPor?.gestor_id === gestorId);
   });
 
   // ====================== Data Source da Tabela ============================
-  private projetos_p_nome = signal(groupBy(this.projetos(), (projeto) => projeto.criadoPor.nome));
-  protected dataSource: PessoaProjetos[] = Array.from(this.projetos_p_nome().entries()).map(
-    ([nome, projetos]) => ({ nome, projetos }),
+  private readonly projetosPorNome = computed(() =>
+    groupBy(this.projetos(), (projeto) => projeto.criadoPor.nome),
+  );
+  protected readonly dataSource = computed<PessoaProjetos[]>(() =>
+    Array.from(this.projetosPorNome().entries()).map(([nome, projetos]) => ({
+      nome,
+      projetos,
+    })),
   );
 
   // ====================== Dados dos valores dos Cards ============================
-  protected tarefas = this.dataSource.flatMap((pessoaProjeto) =>
-    pessoaProjeto.projetos.flatMap((projeto) =>
-      projeto.tarefas.map((tarefa) => ({
-        ...tarefa,
-        projetoNome: projeto.nome,
-      })),
+  protected readonly tarefas = computed(() =>
+    this.dataSource().flatMap((pessoaProjeto) =>
+      pessoaProjeto.projetos.flatMap((projeto) =>
+        projeto.tarefas.map((tarefa) => ({
+          ...tarefa,
+          projetoNome: projeto.nome,
+        })),
+      ),
     ),
   );
 
-  protected indicadores = this.tarefas.reduce(
-    (acc, tarefa) => {
-      acc.total++;
-      if (tarefa.concluido) {
-        acc.concluidas++;
-      } else {
-        acc.emAndamento++;
-        if (tarefa.dataTermino < this.segunda) {
-          acc.atrasadas++;
+  protected readonly indicadores = computed(() =>
+    this.tarefas().reduce(
+      (acc, tarefa) => {
+        acc.total++;
+        if (tarefa.concluido) {
+          acc.concluidas++;
+        } else {
+          acc.emAndamento++;
+          if (tarefa.dataTermino < this.segunda) {
+            acc.atrasadas++;
+          }
         }
-      }
-      return acc;
-    },
-    {
-      total: 0,
-      concluidas: 0,
-      atrasadas: 0,
-      emAndamento: 0,
-    },
+        return acc;
+      },
+      {
+        total: 0,
+        concluidas: 0,
+        atrasadas: 0,
+        emAndamento: 0,
+      },
+    ),
   );
 
   // ===============================================================================
-  protected cardValues: CardValues[] = [
-    { icon: 'totalProjetos', title: 'Tarefas da Semana', status: 'TotalItens' },
-    { icon: 'emAndamento', title: 'Em Andamento', status: 'Em andamento' },
-    { icon: 'concluidos', title: 'Concluídas', status: 'Concluída' },
+  protected readonly cardValues: CardValues[] = [
+    { icon: 'totalProjetos', title: 'Total de Entregáveis', status: 'TotalItens' },
+    { icon: 'emAndamento', title: 'Em Andamento', status: status.EM_ANDAMENTO },
+    { icon: 'concluidos', title: 'Concluídas', status: status.CONCLUIDA },
     // { icon: 'naoIniciados', title: 'Não Iniciadas', status: 'Não iniciado' },
     { icon: 'atrasado', title: 'Atrasadas', status: '', atrasado: true },
   ];

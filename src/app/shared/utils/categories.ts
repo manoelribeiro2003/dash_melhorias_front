@@ -8,4 +8,6 @@ export const categorias = [
   'MTM',
   'Impressão 3D',
   'Certificação de Equipamento',
+  'MP',
+  'MOD',
 ].sort();
