@@ -24,6 +24,7 @@ export interface ProjetoJson {
       "nome": string,
       "ordem": number,
       "concluido": boolean,
+      "status": string,
       "dataInicio": string,
       "dataTermino":string,
       "createdAt": string,

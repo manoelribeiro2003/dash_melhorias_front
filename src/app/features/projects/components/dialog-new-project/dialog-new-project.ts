@@ -83,6 +83,7 @@ export class DialogNewProject {
           return data;
         })(),
         concluido: false,
+        status: StatusProject.NAO_INICIADO,
       },
     ],
   };

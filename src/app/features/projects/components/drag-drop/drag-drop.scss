@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 $font-size: 14px;
-$grid-tabela: 40px 70px minmax(250px, 1fr) 240px 100px 80px;
+$grid-tabela: 40px 70px minmax(250px, 1fr) 240px 200px /*100px*/ 80px;
 
 .table-header {
   display: grid;
@@ -95,20 +95,41 @@ $grid-tabela: 40px 70px minmax(250px, 1fr) 240px 100px 80px;
   width: 100%;
 }
 
+// Status
+.status-col {
+  display: flex;
+  flex: 1;
+
+  mat-form-field {
+    width: 100%;
+    height: 40px;
+  }
+
+  mat-icon.mat-icon-nao-iniciado {
+    color: #e09004;
+  }
+  mat-icon.mat-icon-em-andamento {
+    color: #2dbe60;
+  }
+  mat-icon.mat-icon-concluido {
+    color: #2f80ed;
+  }
+}
+
 .compact-field {
   width: 100%;
 }
 
-.status-col {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+// .concluido-col {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
 
-.status-col span {
-  font-size: $font-size;
-  color: #374151;
-}
+// .concluido-col span {
+//   font-size: $font-size;
+//   color: #374151;
+// }
 
 .actions-col {
   display: flex;

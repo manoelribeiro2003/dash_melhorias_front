@@ -37,6 +37,7 @@ export class ProjetoService {
           nome: tarefa.nome?.trim() ?? '',
           ordem: index + 1,
           concluido: tarefa.concluido,
+          status: tarefa.status,
           dataInicio: tarefa.dataInicio,
           dataTermino: tarefa.dataTermino,
         })),
@@ -85,6 +86,7 @@ export class ProjetoService {
             nome: tarefa.nome?.trim() ?? '',
             ordem: index + 1,
             concluido: tarefa.concluido,
+            status: tarefa.status,
             dataInicio: tarefa.dataInicio,
             dataTermino: tarefa.dataTermino,
           };
@@ -147,6 +149,7 @@ export class ProjetoService {
           nome: tarefa.nome,
           ordem: tarefa.ordem,
           concluido: tarefa.concluido,
+          status: tarefa.status,
           dataInicio: this.converterData(tarefa.dataInicio)!,
           dataTermino: this.converterData(tarefa.dataTermino)!,
           id: tarefa.id,

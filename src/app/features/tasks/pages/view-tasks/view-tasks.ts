@@ -109,7 +109,7 @@ export class ViewTasks {
         }),
       }))
       .filter(
-        (projeto) => projeto.status !== status.CONCLUIDA && projeto.status !== status.NAO_INCIADO,
+        (projeto) => projeto.status !== status.CONCLUIDA && projeto.status !== status.NAO_INICIADO,
       )
       .filter((projeto) => gestorId === null || projeto.criadoPor?.gestor_id === gestorId);
   });

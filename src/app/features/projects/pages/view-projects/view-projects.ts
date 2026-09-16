@@ -33,7 +33,7 @@ export class ViewProjects {
     {icon: "totalProjetos", title: "Total de Projetos", status: 'TotalItens'},
     {icon: "emAndamento", title: "Em Andamento", status: StatusProject.EM_ANDAMENTO},
     {icon: "concluidos", title: "Concluídos", status: StatusProject.CONCLUIDA },
-    {icon: "naoIniciados", title: "Não Iniciados", status: StatusProject.NAO_INCIADO },
+    {icon: "naoIniciados", title: "Não Iniciados", status: StatusProject.NAO_INICIADO },
     {icon: "atrasado", title: "Atrasados", status: '', atrasado: true },
   ]
 

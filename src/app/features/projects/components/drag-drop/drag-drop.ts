@@ -5,7 +5,7 @@ import {
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { Component, effect, input, output, signal } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { v4 as uuidv4 } from 'uuid';
+import { StatusTasks } from '../../../../shared/enums/status.enum';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 type RangeForm = FormGroup<{
   start: FormControl<Date | null>;
@@ -42,6 +45,8 @@ type RangeForm = FormGroup<{
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
 })
 export class DragDropComponent {
@@ -49,6 +54,8 @@ export class DragDropComponent {
 
   readonly tarefasEnviadas = output<Tarefa[]>();
   readonly ranges = new Map<string, RangeForm>();
+
+  protected readonly statusTarefas = StatusTasks;
 
   constructor() {
     effect(() => {
@@ -189,6 +196,7 @@ export class DragDropComponent {
       ordem: tarefas.length + 1,
       nome: '',
       concluido: false,
+      status: StatusTasks.NAO_INICIADA,
       dataInicio,
       dataTermino,
     };

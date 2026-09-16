@@ -49,7 +49,7 @@ export class ProjectsCard {
       label: 'Concluidos',
     },
     {
-      value: StatusProject.NAO_INCIADO,
+      value: StatusProject.NAO_INICIADO,
       label: 'Não Iniciados',
     },
     {

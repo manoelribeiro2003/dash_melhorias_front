@@ -1,12 +1,12 @@
 export enum StatusProject {
   EM_ANDAMENTO = 'Em andamento',
   CONCLUIDA = 'Concluída',
-  NAO_INCIADO = 'Não iniciado',
+  NAO_INICIADO = 'Não iniciado',
   ATRASADO = 'Atrasado',
 }
 
 export enum StatusTasks {
   EM_ANDAMENTO = 'Em andamento',
-  CONCLUIDO = 'Concluída',
-  NAO_INCIADO = 'Não iniciado',
+  CONCLUIDA = 'Concluída',
+  NAO_INICIADA = 'Não iniciada',
 }

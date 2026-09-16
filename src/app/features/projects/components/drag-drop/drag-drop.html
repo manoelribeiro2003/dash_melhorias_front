@@ -4,7 +4,8 @@
     <div class="header-ordem">Ordem</div>
     <div class="header-nome">Nome da Tarefa</div>
     <div class="header-prazo">Prazo</div>
-    <div class="header-concluida">Concluída?</div>
+    <div class="header-status">Status</div>
+    <!-- <div class="header-concluida">Concluída?</div> -->
     <div class="header-acoes">Ações</div>
   </div>
 
@@ -50,12 +51,32 @@
         </div>
 
         <div class="status-col">
+          <mat-form-field appearance="outline">
+            <mat-label>Status do projeto</mat-label>
+            <mat-select name="status" [(ngModel)]="tarefa.status">
+              <mat-option [value]="statusTarefas.NAO_INICIADA">
+                <mat-icon class="mat-icon-nao-iniciado">mode_standby</mat-icon>
+                <span>Não iniciada</span>
+              </mat-option>
+              <mat-option [value]="statusTarefas.EM_ANDAMENTO">
+                <mat-icon class="mat-icon-em-andamento">play_circle</mat-icon>
+                <span>Em andamento</span>
+              </mat-option>
+              <mat-option [value]="statusTarefas.CONCLUIDA">
+                <mat-icon class="mat-icon-concluido">check_circle</mat-icon>
+                <span>Concluída</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- <div class="concluido-col">
           <mat-slide-toggle
             [ngModel]="tarefa.concluido"
             (ngModelChange)="atualizarTarefa(tarefa, { concluido: $event })"
           />
           <span>{{ tarefa.concluido ? 'Sim' : 'Não' }}</span>
-        </div>
+        </div> -->
 
         <div class="actions-col">
           <button
