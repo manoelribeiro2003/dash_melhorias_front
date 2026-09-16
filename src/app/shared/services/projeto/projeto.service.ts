@@ -27,6 +27,7 @@ export class ProjetoService {
       dataInicio: projeto.dataInicio,
       dataTermino: projeto.dataTermino,
       orcamento: projeto.orcamento,
+      ganhoPar: projeto.ganhoPar,
       prioridade: projeto.prioridade,
       criadoPorId: projeto.criadoPor?.id,
       gestorId: projeto.gestor?.id,
@@ -72,6 +73,7 @@ export class ProjetoService {
       dataInicio: projeto.dataInicio,
       dataTermino: projeto.dataTermino,
       orcamento: projeto.orcamento,
+      ganhoPar: projeto.ganhoPar,
       prioridade: projeto.prioridade,
       criadoPorId: projeto.criadoPor.id,
       gestorId: projeto.gestor.id,
@@ -127,6 +129,7 @@ export class ProjetoService {
         dataInicio,
         dataTermino,
         orcamento: projeto.orcamento,
+        ganhoPar: projeto.ganhoPar,
         prioridade: projeto.prioridade,
         criadoPor: {
           id: projeto.criadoPor.id,

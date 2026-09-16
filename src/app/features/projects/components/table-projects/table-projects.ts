@@ -110,23 +110,6 @@ export class TableProjects implements AfterViewInit {
     });
   }
 
-  tableColumns: string[] = [
-    'id',
-    'nome',
-    'categoria',
-    'status',
-    'dataInicio',
-    'dataTermino',
-    'orcamento',
-    'prioridade',
-    'criadoPor',
-    'tarefas',
-    'tarefasConcluidas',
-    'totalTarefas',
-    'atrasado',
-    'criadoEm',
-    'atualizadoEm',
-  ];
   displayedColumns: string[] = [
     'nome',
     'criadoPor',
@@ -135,6 +118,7 @@ export class TableProjects implements AfterViewInit {
     'tarefasConcluidas',
     'dataTermino',
     'orcamento',
+    'ganhoPar',
     'acoes',
   ];
 }

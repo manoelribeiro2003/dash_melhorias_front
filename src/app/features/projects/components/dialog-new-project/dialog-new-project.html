@@ -95,9 +95,9 @@
 
       <div class="div-orcamento">
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Ganhos da Melhoria</mat-label>
+          <mat-label>Ganho Total</mat-label>
           <input
-            name="orcamento"
+            name="ganho-total"
             matInput
             type="text"
             inputmode="numeric"
@@ -105,6 +105,23 @@
             placeholder="0,00"
             [value]="orcamentoFormatado"
             (input)="formatarOrcamento($event)"
+          />
+          <span matTextPrefix>R$&nbsp;</span>
+        </mat-form-field>
+      </div>
+
+      <div class="div-orcamento">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Ganho/Par</mat-label>
+          <input
+            name="ganho-par"
+            matInput
+            type="text"
+            inputmode="numeric"
+            class="right-align"
+            placeholder="0,00"
+            [value]="ganhoParFormatado"
+            (input)="formatarGanhoPar($event)"
           />
           <span matTextPrefix>R$&nbsp;</span>
         </mat-form-field>

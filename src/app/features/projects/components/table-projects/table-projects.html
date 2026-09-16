@@ -106,11 +106,23 @@
       <!-- =========================ORÇAMENTO========================= -->
       <ng-container matColumnDef="orcamento">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
-          Ganho da Melhoria
+          Ganho Total
         </th>
         <td mat-cell *matCellDef="let projeto" class="project-data-cell">
           <span class="orcamento">
             {{ +projeto.orcamento || 0 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+          </span>
+        </td>
+      </ng-container>
+      
+      <!-- =========================Ganho Par========================= -->
+      <ng-container matColumnDef="ganhoPar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+          Ganho/Par
+        </th>
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+          <span class="orcamento">
+            {{ +projeto.ganhoPar || 0 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
           </span>
         </td>
       </ng-container>

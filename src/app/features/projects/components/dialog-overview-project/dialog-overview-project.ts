@@ -98,28 +98,43 @@ export class DialogOverviewProject {
   orcamentoFormatado = '';
   formatarOrcamento(event: Event): void {
     const input = event.target as HTMLInputElement;
-
-    // Remove tudo que não for número
     const valor = input.value.replace(/\D/g, '');
 
-    // Campo vazio ou valor zero
     if (!valor || Number(valor) === 0) {
       this.orcamentoFormatado = '';
       this.projetoRecebido.orcamento = '0.00';
       return;
     }
 
-    // Os dois últimos dígitos são os centavos
     const valorNumerico = Number(valor) / 100;
 
-    // Valor exibido no input
     this.orcamentoFormatado = valorNumerico.toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
-    // Valor enviado para o banco
     this.projetoRecebido.orcamento = valorNumerico.toFixed(2);
+  }
+
+  ganhoParFormatado = '';
+  formatarGanhoPar(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const valor = input.value.replace(/\D/g, '');
+
+    if (!valor || Number(valor) === 0) {
+      this.ganhoParFormatado = '';
+      this.projetoRecebido.ganhoPar = '0.00';
+      return;
+    }
+
+    const valorNumerico = Number(valor) / 100;
+
+    this.ganhoParFormatado = valorNumerico.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    this.projetoRecebido.ganhoPar = valorNumerico.toFixed(2);
   }
 
   ngOnInit(): void {
@@ -127,6 +142,14 @@ export class DialogOverviewProject {
       const valor = Number(this.projetoRecebido.orcamento);
 
       this.orcamentoFormatado = valor.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+    if (this.projetoRecebido.ganhoPar) {
+      const valor = Number(this.projetoRecebido.ganhoPar);
+
+      this.ganhoParFormatado = valor.toLocaleString('pt-BR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });

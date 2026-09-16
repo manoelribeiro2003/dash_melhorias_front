@@ -6,6 +6,7 @@ export interface ProjetoJson {
   "dataInicio": string | null,
   "dataTermino": string | null,
   "orcamento": string | null,
+  "ganhoPar": string | null,
   "prioridade": boolean,
   "criadoPor": {
     "id": number,

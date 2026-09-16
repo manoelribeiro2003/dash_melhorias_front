@@ -9,6 +9,7 @@ export interface Projeto {
   dataInicio: Date | null;
   dataTermino: Date | null;
   orcamento: string | null;
+  ganhoPar: string | null;
   prioridade: boolean;
   criadoPor: Usuario;
   gestor: Usuario;

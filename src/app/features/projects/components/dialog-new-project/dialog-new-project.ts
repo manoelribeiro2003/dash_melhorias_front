@@ -125,27 +125,41 @@ export class DialogNewProject {
   orcamentoFormatado = '';
   formatarOrcamento(event: Event): void {
     const input = event.target as HTMLInputElement;
-
-    // Remove tudo que não for número
     const valor = input.value.replace(/\D/g, '');
-
-    // Campo vazio ou valor zero
+    
     if (!valor || Number(valor) === 0) {
       this.orcamentoFormatado = '';
       this.novoProjeto.orcamento = '0.00';
       return;
     }
-
-    // Os dois últimos dígitos são os centavos
+    
     const valorNumerico = Number(valor) / 100;
-
-    // Valor exibido no input
+    
     this.orcamentoFormatado = valorNumerico.toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-
-    // Valor enviado para o banco
+    
     this.novoProjeto.orcamento = valorNumerico.toFixed(2);
+  }
+  ganhoParFormatado = '';
+  formatarGanhoPar(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const valor = input.value.replace(/\D/g, '');
+
+    if (!valor || Number(valor) === 0) {
+      this.ganhoParFormatado = '';
+      this.novoProjeto.ganhoPar = '0.00';
+      return;
+    }
+
+    const valorNumerico = Number(valor) / 100;
+
+    this.ganhoParFormatado = valorNumerico.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    this.novoProjeto.ganhoPar = valorNumerico.toFixed(2);
   }
 }
