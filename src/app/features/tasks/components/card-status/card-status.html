@@ -12,17 +12,17 @@
     @if (status() !== 'TotalItens') {
       <div class="progress-container">
         <span class="progress-percentage"
-          >{{ totalItens() > 0 ? ((itensConcluidos() / totalItens()) * 100).toFixed(0) : 0 }}% do
+          >{{ denominador() > 0 ? ((numerador() / denominador()) * 100).toFixed(0) : 0 }}% do
           Total</span
         >
         <div class="progress-info">
           <div class="progress-bar">
             <div
               class="progress-fill"
-              [style.width.%]="totalItens() > 0 ? (itensConcluidos() / totalItens()) * 100 : 0"
+              [style.width.%]="denominador() > 0 ? (numerador() / denominador()) * 100 : 0"
             ></div>
           </div>
-          <span class="progress-text">{{ itensConcluidos() }} / {{ totalItens() }}</span>
+          <span class="progress-text">{{ numerador() }} / {{ denominador() }}</span>
         </div>
       </div>
     }

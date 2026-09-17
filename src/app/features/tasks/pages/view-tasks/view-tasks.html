@@ -10,16 +10,32 @@
         [value]="
           cardValue.status === 'TotalItens'
             ? indicadores().total
-            : cardValue.status === statusProjeto.CONCLUIDA
-              ? indicadores().concluidas
-              : cardValue.atrasado
-                ? indicadores().atrasadas
-                : indicadores().emAndamento
+            : cardValue.atrasado
+              ? indicadores().atrasadas
+              : cardValue.status === statusTasks.CONCLUIDA
+                ? indicadores().concluidas
+                : cardValue.status === statusTasks.EM_ANDAMENTO
+                  ? indicadores().emAndamento
+                  : cardValue.status === statusTasks.NAO_INICIADA
+                    ? indicadores().naoIniciadas
+                    : 0
         "
         [icon]="cardValue.icon"
         [title]="cardValue.title"
-        [itensConcluidos]="indicadores().concluidas"
-        [totalItens]="indicadores().total"
+        [numerador]="
+          cardValue.status === 'TotalItens'
+            ? indicadores().total
+            : cardValue.atrasado
+              ? indicadores().atrasadas
+              : cardValue.status === statusTasks.CONCLUIDA
+                ? indicadores().concluidas
+                : cardValue.status === statusTasks.EM_ANDAMENTO
+                  ? indicadores().emAndamento
+                  : cardValue.status === statusTasks.NAO_INICIADA
+                    ? indicadores().naoIniciadas
+                    : 0
+        "
+        [denominador]="indicadores().total"
       />
     }
   </div>
@@ -81,27 +97,34 @@
                         {{ tarefa.dataTermino | date: 'dd/MM' }}
                       </span>
 
-                      <!-- ÍCONE -->
+                      <!-- STATUS -->
                       <mat-icon
                         class="atividade-icon"
                         [ngClass]="
-                          tarefa.concluido
+                          tarefa.status == statusTasks.CONCLUIDA
                             ? 'concluida'
-                            : tarefa.dataTermino < segunda
-                              ? 'atrasada'
-                              : 'nao-concluida'
+                            : tarefa.status == statusTasks.NAO_INICIADA
+                              ? 'nao-iniciada'
+                              : 'em-andamento'
                         "
                       >
-                        @if (tarefa.concluido) {
+                        @if (tarefa.status == statusTasks.CONCLUIDA) {
                           {{ 'check_circle' }}
-                        } @else if (tarefa.dataTermino < segunda) {
-                          {{ 'error' }}
-                        } @else {
+                        } @else if (tarefa.status == statusTasks.EM_ANDAMENTO) {
                           {{ 'play_circle' }}
+                        } @else if (tarefa.status == statusTasks.NAO_INICIADA) {
+                          circle
                         }
                       </mat-icon>
 
-                      <!-- ATIVIDADE -->
+                      <!-- ATRASADA -->
+                      <span class="atividade-atrasada">
+                        @if (tarefa.dataTermino < segunda) {
+                          <mat-icon class="atividade-icon atrasada">error</mat-icon>
+                        }
+                      </span>
+
+                      <!-- NOME -->
                       <span class="atividade-nome">
                         {{ tarefa.nome }}
                       </span>

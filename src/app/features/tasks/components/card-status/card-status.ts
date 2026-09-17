@@ -14,8 +14,8 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: './card-status.scss',
 })
 export class CardStatusTasks {
-  totalItens = input.required<number>();
-  itensConcluidos = input.required<number>();
+  numerador = input.required<number>();
+  denominador = input.required<number>();
 
   status = input<string>()
 

@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { UserFilterComponent } from '../../../../shared/components/user-filter/user-filter';
-import { StatusProject as status, StatusProject } from '../../../../shared/enums/status.enum';
+import { StatusProject, StatusTasks } from '../../../../shared/enums/status.enum';
 
 type CardValues = {
   icon: string;
@@ -73,7 +73,7 @@ export class ViewTasks {
   protected readonly gestorSelecionado = model<number | null>(null);
   protected readonly usuarioSelecionado = model<number | null>(null);
 
-  protected readonly statusProjeto = StatusProject;
+  protected readonly statusTasks = StatusTasks;
 
   // ====================== Filtros e inicialização dos projetos da semana ============================
   protected hoje = new Date();
@@ -101,7 +101,7 @@ export class ViewTasks {
         tarefas: projeto.tarefas.filter((tarefa) => {
           const dataTermino = new Date(tarefa.dataTermino);
 
-          if (tarefa.concluido) {
+          if (tarefa.status === StatusTasks.CONCLUIDA) {
             return dataTermino > this.segunda && dataTermino <= this.sabado;
           }
 
@@ -109,7 +109,9 @@ export class ViewTasks {
         }),
       }))
       .filter(
-        (projeto) => projeto.status !== status.CONCLUIDA && projeto.status !== status.NAO_INICIADO,
+        (projeto) =>
+          projeto.status !== StatusProject.CONCLUIDA &&
+          projeto.status !== StatusProject.NAO_INICIADO,
       )
       .filter((projeto) => gestorId === null || projeto.criadoPor?.gestor_id === gestorId);
   });
@@ -137,35 +139,109 @@ export class ViewTasks {
     ),
   );
 
-  protected readonly indicadores = computed(() =>
-    this.tarefas().reduce(
+  // protected readonly indicadores = computed(() =>
+  //   this.tarefas().reduce(
+  //     (acc, tarefa) => {
+  //       acc.total++;
+
+  //       const dataTermino = new Date(tarefa.dataTermino);
+
+  //       switch (tarefa.status) {
+  //         case StatusTasks.CONCLUIDA:
+  //           acc.concluidas++;
+  //           break;
+
+  //         case StatusTasks.EM_ANDAMENTO:
+  //           acc.emAndamento++;
+
+  //           if (dataTermino < this.segunda) {
+  //             acc.atrasadas++;
+  //           }
+
+  //           break;
+
+  //         case StatusTasks.NAO_INICIADA:
+  //           acc.naoIniciadas++;
+
+  //           if (dataTermino < this.segunda) {
+  //             acc.atrasadas++;
+  //           }
+
+  //           break;
+  //       }
+
+  //       return acc;
+  //     },
+  //     {
+  //       total: 0,
+  //       concluidas: 0,
+  //       emAndamento: 0,
+  //       naoIniciadas: 0,
+  //       atrasadas: 0,
+  //     },
+  //   ),
+  // );
+  protected readonly indicadores = computed(() => {
+    const tarefas = this.tarefas();
+
+    console.log('========== INDICADORES ==========');
+    console.log('TOTAL DE TAREFAS:', tarefas.length);
+
+    tarefas.forEach((tarefa) => {
+      console.log({
+        id: tarefa.id,
+        nome: tarefa.nome,
+        status: tarefa.status,
+        dataTermino: tarefa.dataTermino,
+      });
+    });
+
+    const resultado = tarefas.reduce(
       (acc, tarefa) => {
         acc.total++;
-        if (tarefa.concluido) {
-          acc.concluidas++;
-        } else {
-          acc.emAndamento++;
-          if (tarefa.dataTermino < this.segunda) {
-            acc.atrasadas++;
-          }
+
+        switch (tarefa.status) {
+          case StatusTasks.CONCLUIDA:
+            acc.concluidas++;
+            break;
+
+          case StatusTasks.EM_ANDAMENTO:
+            acc.emAndamento++;
+            break;
+
+          case StatusTasks.NAO_INICIADA:
+            acc.naoIniciadas++;
+            break;
         }
+
+        if (
+          tarefa.status !== StatusTasks.CONCLUIDA &&
+          new Date(tarefa.dataTermino) < this.segunda
+        ) {
+          acc.atrasadas++;
+        }
+
         return acc;
       },
       {
         total: 0,
         concluidas: 0,
-        atrasadas: 0,
         emAndamento: 0,
+        naoIniciadas: 0,
+        atrasadas: 0,
       },
-    ),
-  );
+    );
 
+    console.log('RESULTADO:', resultado);
+
+    return resultado;
+  });
   // ===============================================================================
   protected readonly cardValues: CardValues[] = [
     { icon: 'totalProjetos', title: 'Total de Entregáveis', status: 'TotalItens' },
-    { icon: 'emAndamento', title: 'Em Andamento', status: status.EM_ANDAMENTO },
-    { icon: 'concluidos', title: 'Concluídas', status: status.CONCLUIDA },
-    // { icon: 'naoIniciados', title: 'Não Iniciadas', status: 'Não iniciado' },
+    { icon: 'emAndamento', title: 'Em Andamento', status: StatusTasks.EM_ANDAMENTO },
+    { icon: 'concluidos', title: 'Concluídas', status: StatusTasks.CONCLUIDA },
+    { icon: 'naoIniciados', title: 'Não Iniciadas', status: StatusTasks.NAO_INICIADA },
     { icon: 'atrasado', title: 'Atrasadas', status: '', atrasado: true },
   ];
 
