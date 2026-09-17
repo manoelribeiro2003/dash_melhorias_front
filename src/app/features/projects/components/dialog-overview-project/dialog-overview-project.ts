@@ -123,18 +123,18 @@ export class DialogOverviewProject {
 
     if (!valor || Number(valor) === 0) {
       this.ganhoParFormatado = '';
-      this.projetoRecebido.ganhoPar = '0.00';
+      this.projetoRecebido.ganhoPar = '0.0000';
       return;
     }
 
-    const valorNumerico = Number(valor) / 100;
+    const valorNumerico = Number(valor) / 10000;
 
     this.ganhoParFormatado = valorNumerico.toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4,
     });
 
-    this.projetoRecebido.ganhoPar = valorNumerico.toFixed(2);
+    this.projetoRecebido.ganhoPar = valorNumerico.toFixed(4);
   }
 
   ngOnInit(): void {
@@ -150,8 +150,8 @@ export class DialogOverviewProject {
       const valor = Number(this.projetoRecebido.ganhoPar);
 
       this.ganhoParFormatado = valor.toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
       });
     }
   }

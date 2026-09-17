@@ -150,17 +150,17 @@ export class DialogNewProject {
 
     if (!valor || Number(valor) === 0) {
       this.ganhoParFormatado = '';
-      this.novoProjeto.ganhoPar = '0.00';
+      this.novoProjeto.ganhoPar = '0.0000';
       return;
     }
 
-    const valorNumerico = Number(valor) / 100;
+    const valorNumerico = Number(valor) / 10000;
 
     this.ganhoParFormatado = valorNumerico.toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4,
     });
 
-    this.novoProjeto.ganhoPar = valorNumerico.toFixed(2);
+    this.novoProjeto.ganhoPar = valorNumerico.toFixed(4);
   }
 }
