@@ -20,7 +20,7 @@ import { Tarefa } from '../../../../shared/models/tarefa/tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
-import { StatusProject } from '../../../../shared/enums/status.enum';
+import { StatusProject, StatusTasks } from '../../../../shared/enums/status.enum';
 
 function obterSemanaAtual(): { inicio: Date; termino: Date } {
   const inicio = new Date();
@@ -83,7 +83,7 @@ export class DialogNewProject {
           return data;
         })(),
         concluido: false,
-        status: StatusProject.NAO_INICIADO,
+        status: StatusTasks.NAO_INICIADA,
       },
     ],
   };
