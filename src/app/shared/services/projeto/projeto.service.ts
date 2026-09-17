@@ -5,7 +5,7 @@ import { ProjetoJson } from '../../models/projeto/projeto-json.interface';
 import { Tarefa } from '../../models/tarefa/tarefa.interface';
 import { environment } from '../../../../environments/environment';
 import { UsuarioService } from '../usuario/usuario.service';
-import { StatusProject } from '../../enums/status.enum';
+import { StatusProject, StatusTasks } from '../../enums/status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -154,7 +154,7 @@ export class ProjetoService {
           dataTermino: this.converterData(tarefa.dataTermino)!,
           id: tarefa.id,
         })),
-        tarefasConcluidas: projeto.tarefas.filter((tarefa) => tarefa.concluido).length,
+        tarefasConcluidas: projeto.tarefas.filter((tarefa) => tarefa.status == StatusTasks.CONCLUIDA).length,
         totalTarefas: projeto.tarefas.length,
         criadoEm: new Date(projeto.createdAt),
         atualizadoEm: new Date(projeto.updatedAt),
