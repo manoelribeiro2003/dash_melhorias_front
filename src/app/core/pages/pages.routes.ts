@@ -13,6 +13,7 @@ export const routes: Routes = [
             {
                 path: '',
                 component: Dashboard,
+                title: 'Gestão de Performance',
                 data:{
                     title: 'Dashborad',
                     description: 'Visão geral dos projetos'
@@ -21,6 +22,7 @@ export const routes: Routes = [
             {
                 path: 'projetos',
                 component: ViewProjects,
+                title: 'Projetos',
                 data:{
                     title: 'Projetos',
                     description: 'Liste e acompanhe todos os projetos'
@@ -29,6 +31,7 @@ export const routes: Routes = [
             {
                 path: 'entregaveis',
                 component: ViewTasks,
+                title: 'Entregáveis',
                 data:{
                     title: 'Entregáveis da Semana',
                     description: 'Acompanhe todas os entregáveis da semana'

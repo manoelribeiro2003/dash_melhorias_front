@@ -19,7 +19,7 @@ export class ProjetoService {
   private _projetos = signal<Projeto[]>([]);
   readonly projetos = this._projetos.asReadonly();
 
-  criarProjeto(projeto: Partial<Projeto>): void {
+  public criarProjeto(projeto: Partial<Projeto>): void {
     const dados = {
       nome: projeto.nome,
       categoria: projeto.categoria,
@@ -55,7 +55,7 @@ export class ProjetoService {
     });
   }
 
-  carregarProjetos(): void {
+  public carregarProjetos(): void {
     this.http.get<ProjetoJson[]>(`${this.apiUrl}/projetos/`).subscribe({
       next: (dados) => {
         this._projetos.set(this.mapearProjetos(dados));
@@ -66,7 +66,7 @@ export class ProjetoService {
     });
   }
 
-  atualizarProjeto(projeto: Projeto): void {
+  public atualizarProjeto(projeto: Projeto): void {
     const dados = {
       nome: projeto.nome,
       categoria: projeto.categoria,
@@ -108,7 +108,7 @@ export class ProjetoService {
     });
   }
 
-  deletarProjeto(projeto: Projeto): void {
+  public deletarProjeto(projeto: Projeto): void {
     this.http.delete<ProjetoJson>(`${this.apiUrl}/projetos/${projeto.id}`).subscribe({
       next: (projeto) => {
         this._projetos.update((projetos) => projetos.filter((p) => p.id !== projeto.id));
