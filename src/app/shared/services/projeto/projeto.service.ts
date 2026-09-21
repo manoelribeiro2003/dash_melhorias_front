@@ -77,6 +77,7 @@ export class ProjetoService {
       ganhoPar: projeto.ganhoPar,
       prioridade: projeto.prioridade,
       criadoPorId: projeto.criadoPor.id,
+      atualizadoPorId: projeto.criadoPor.id,
       gestorId: projeto.gestor.id,
       tarefas: projeto.tarefas
         .filter((tarefa) => tarefa.id !== undefined || tarefa.nome?.trim())
@@ -109,12 +110,12 @@ export class ProjetoService {
   }
 
   public deletarProjeto(projeto: Projeto): void {
-    this.http.delete<ProjetoJson>(`${this.apiUrl}/projetos/${projeto.id}`).subscribe({
-      next: (projeto) => {
+    this.http.delete(`${this.apiUrl}/projetos/${projeto.id}`).subscribe({
+      next: () => {
         this._projetos.update((projetos) => projetos.filter((p) => p.id !== projeto.id));
       },
       error: (erro) => {
-        console.error(erro);
+        console.error('Erro ao deletar projeto:', erro);
       },
     });
   }
@@ -154,7 +155,9 @@ export class ProjetoService {
           dataTermino: this.converterData(tarefa.dataTermino)!,
           id: tarefa.id,
         })),
-        tarefasConcluidas: projeto.tarefas.filter((tarefa) => tarefa.status == StatusTasks.CONCLUIDA).length,
+        tarefasConcluidas: projeto.tarefas.filter(
+          (tarefa) => tarefa.status == StatusTasks.CONCLUIDA,
+        ).length,
         totalTarefas: projeto.tarefas.length,
         criadoEm: new Date(projeto.createdAt),
         atualizadoEm: new Date(projeto.updatedAt),

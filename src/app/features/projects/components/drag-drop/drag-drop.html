@@ -29,6 +29,28 @@
           </mat-form-field>
         </div>
 
+        <!-- <div class="range-prazo">
+          <mat-form-field appearance="outline">
+            <mat-date-range-input [formGroup]="getRange(tarefa)" [rangePicker]="picker">
+              <input
+                matStartDate
+                formControlName="start"
+                placeholder="Início"
+                (dateChange)="atualizarDataInicio(tarefa, $event.value)"
+              />
+              <input
+                matEndDate
+                formControlName="end"
+                placeholder="Término"
+                (dateChange)="atualizarDataTermino(tarefa, $event.value)"
+              />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" />
+            <mat-date-range-picker #picker />
+          </mat-form-field>
+        </div> -->
+
         <div class="range-prazo">
           <mat-form-field appearance="outline">
             <mat-date-range-input [formGroup]="getRange(tarefa)" [rangePicker]="picker">
@@ -45,6 +67,21 @@
                 (dateChange)="atualizarDataTermino(tarefa, $event.value)"
               />
             </mat-date-range-input>
+            @if (alteracoesPrazo().get(tarefa.id!); as alteracoes) {
+              @if (alteracoes.length > 1) {
+                <mat-hint
+                  class="prazo-alterado"
+                  [matTooltip]="formatarAlteracoesPrazo(tarefa.id!)"
+                  matTooltipClass="tooltip-alteracoes"
+                >
+                  <span style="text-decoration: line-through">
+                    {{ formatarData(alteracoes[alteracoes.length - 2].dataInicio) }}
+                    –
+                    {{ formatarData(alteracoes[alteracoes.length - 2].dataTermino) }}
+                  </span>
+                </mat-hint>
+              }
+            }
             <mat-datepicker-toggle matIconSuffix [for]="picker" />
             <mat-date-range-picker #picker />
           </mat-form-field>

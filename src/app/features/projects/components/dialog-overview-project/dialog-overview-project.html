@@ -1,9 +1,11 @@
 <div class="div-header">
   <div class="div-title-header">
-    <span class="title">Detalhes do Projeto</span>
-    <span class="description">Visualize e edite as etapas do projeto.</span>
+    <span class="title"> Detalhes do Projeto </span>
+
+    <span class="description"> Visualize e edite as etapas do projeto. </span>
   </div>
-  <button mat-icon-button (click)="fechar()">
+
+  <button mat-icon-button type="button" (click)="fechar()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -12,10 +14,16 @@
 
 <mat-dialog-content>
   <form #form="ngForm">
+    <!-- =====================================================
+         PRIMEIRA LINHA
+         ===================================================== -->
+
     <div class="inputs-projeto">
+      <!-- Nome -->
       <div class="div-nome-projeto">
         <mat-form-field appearance="outline">
           <mat-label>Nome do Projeto</mat-label>
+
           <input
             matInput
             required
@@ -26,9 +34,10 @@
         </mat-form-field>
       </div>
 
+      <!-- Responsável -->
       <div class="responsavel">
         <mat-form-field appearance="outline">
-          <mat-label>Responsável do Projeto</mat-label>
+          <mat-label> Responsável do Projeto </mat-label>
 
           <mat-select
             required
@@ -39,7 +48,9 @@
             <mat-option>
               <ngx-mat-select-search
                 [ngModel]="pesquisaUsuario()"
-                [ngModelOptions]="{ standalone: true }"
+                [ngModelOptions]="{
+                  standalone: true,
+                }"
                 (ngModelChange)="alterarPesquisaUsuario($event)"
                 placeholderLabel="Pesquisar usuário..."
                 noEntriesFoundLabel="Nenhum usuário encontrado"
@@ -55,50 +66,97 @@
         </mat-form-field>
       </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Data de Início</mat-label>
+      <!-- Data de início -->
+      <mat-form-field appearance="outline" class="campo-data">
+        <mat-label> Data de Início </mat-label>
+
         <input
           matInput
           name="data-inicio"
           [matDatepicker]="pickerInicio"
           [(ngModel)]="projetoRecebido.dataInicio"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
-        <mat-datepicker #pickerInicio></mat-datepicker>
+
+        @if (alteracoesDataInicioProjeto(); as alteracoes) {
+          @if (alteracoes.length > 1) {
+            <mat-hint
+              class="prazo-alterado"
+              [matTooltip]="formatarAlteracoesDataProjeto(alteracoes, 'dataInicio')"
+              matTooltipClass="tooltip-alteracoes"
+            >
+              <span class="data-anterior">
+                {{ obterDataAnterior(alteracoes, 'dataInicio') }}
+              </span>
+            </mat-hint>
+          }
+        }
+
+        <mat-datepicker-toggle matIconSuffix [for]="pickerInicio" />
+
+        <mat-datepicker #pickerInicio />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Data de Conclusão</mat-label>
+      <!-- Data de conclusão -->
+      <mat-form-field appearance="outline" class="campo-data">
+        <mat-label> Data de Conclusão </mat-label>
+
         <input
           matInput
           name="data-termino"
           [matDatepicker]="pickerConclusao"
           [(ngModel)]="projetoRecebido.dataTermino"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="pickerConclusao"></mat-datepicker-toggle>
-        <mat-datepicker #pickerConclusao></mat-datepicker>
+
+        @if (alteracoesDataTerminoProjeto(); as alteracoes) {
+          @if (alteracoes.length > 1) {
+            <mat-hint
+              class="prazo-alterado"
+              [matTooltip]="formatarAlteracoesDataProjeto(alteracoes, 'dataTermino')"
+              matTooltipClass="tooltip-alteracoes"
+            >
+              <span class="data-anterior">
+                {{ obterDataAnterior(alteracoes, 'dataTermino') }}
+              </span>
+            </mat-hint>
+          }
+        }
+
+        <mat-datepicker-toggle matIconSuffix [for]="pickerConclusao" />
+
+        <mat-datepicker #pickerConclusao />
       </mat-form-field>
     </div>
 
+    <!-- =====================================================
+         SEGUNDA LINHA
+         ===================================================== -->
+
     <div class="inputs-projeto div-dois">
+      <!-- Categoria -->
       <div class="div-categoria">
         <mat-form-field appearance="outline">
-          <mat-label>Categoria</mat-label>
+          <mat-label> Categoria </mat-label>
+
           <mat-select required name="categoria" [(ngModel)]="projetoRecebido.categoria">
-            @for (cat of categorias; track cat) {
-              <mat-option [value]="cat">{{ cat }}</mat-option>
+            @for (categoria of categorias; track categoria) {
+              <mat-option [value]="categoria">
+                {{ categoria }}
+              </mat-option>
             }
-            <mat-option value="Outros">Outros</mat-option>
+
+            <mat-option value="Outros"> Outros </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
+      <!-- Ganho Total -->
       <div class="div-orcamento">
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Ganho Total</mat-label>
+          <mat-label> Ganho Total </mat-label>
+
           <input
-            name="orcamento"
             matInput
+            name="orcamento"
             type="text"
             inputmode="numeric"
             class="right-align"
@@ -106,16 +164,19 @@
             [value]="orcamentoFormatado"
             (input)="formatarOrcamento($event)"
           />
-          <span matTextPrefix>R$&nbsp;</span>
+
+          <span matTextPrefix> R$&nbsp; </span>
         </mat-form-field>
       </div>
 
+      <!-- Ganho/Par -->
       <div class="div-orcamento">
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Ganho/Par</mat-label>
+          <mat-label> Ganho/Par </mat-label>
+
           <input
-            name="ganho-par"
             matInput
+            name="ganho-par"
             type="text"
             inputmode="numeric"
             class="right-align"
@@ -123,59 +184,80 @@
             [value]="ganhoParFormatado"
             (input)="formatarGanhoPar($event)"
           />
-          <span matTextPrefix>R$&nbsp;</span>
+
+          <span matTextPrefix> R$&nbsp; </span>
         </mat-form-field>
       </div>
 
+      <!-- Status -->
       <div class="div-andamento">
         <mat-form-field appearance="outline">
-          <mat-label>Status do projeto</mat-label>
+          <mat-label> Status do projeto </mat-label>
+
           <mat-select name="status" [(ngModel)]="projetoRecebido.status">
             <mat-option [value]="statusProjeto.NAO_INICIADO">
-              <mat-icon class="mat-icon-nao-iniciado">mode_standby</mat-icon>
-              <span>Não iniciado</span>
+              <mat-icon class="mat-icon-nao-iniciado"> mode_standby </mat-icon>
+
+              <span> Não iniciado </span>
             </mat-option>
+
             <mat-option [value]="statusProjeto.EM_ANDAMENTO">
-              <mat-icon class="mat-icon-em-andamento">play_circle</mat-icon>
-              <span>Em andamento</span>
+              <mat-icon class="mat-icon-em-andamento"> play_circle </mat-icon>
+
+              <span> Em andamento </span>
             </mat-option>
+
             <mat-option [value]="statusProjeto.CONCLUIDA">
-              <mat-icon class="mat-icon-concluido">check_circle</mat-icon>
-              <span>Concluída</span>
+              <mat-icon class="mat-icon-concluido"> check_circle </mat-icon>
+
+              <span> Concluída </span>
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+
+      <!-- Gestor -->
       <div class="div-andamento">
         <mat-form-field appearance="outline">
-          <mat-label>Gestor do Projeto</mat-label>
+          <mat-label> Gestor do Projeto </mat-label>
+
           <mat-select
             required
-            name="nome-reposanvel"
+            name="gestor"
             [(ngModel)]="projetoRecebido.gestor"
             [compareWith]="compararUsuarios"
           >
             @for (gestor of gestores(); track gestor.id) {
-              <mat-option [value]="gestor">{{ gestor.nome }}</mat-option>
+              <mat-option [value]="gestor">
+                {{ gestor.nome }}
+              </mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
 
+      <!-- Prioridade -->
       <div class="div-prioridade">
         <mat-slide-toggle
           name="prioridade"
           labelPosition="after"
           [(ngModel)]="projetoRecebido.prioridade"
         >
-          <span>Prioridade</span>
+          Prioridade
         </mat-slide-toggle>
       </div>
     </div>
   </form>
+
   <mat-divider />
+
+  <!-- =====================================================
+       ETAPAS
+       ===================================================== -->
+
   <div class="div-etapas-projeto">
-    <span class="label-etapas-projeto">Etapas do Projeto</span>
+    <span class="label-etapas-projeto"> Etapas do Projeto </span>
+
     <app-drag-drop
       [tarefas]="projetoRecebido.tarefas"
       (tarefasEnviadas)="atualizarTarefas($event)"
@@ -184,8 +266,15 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="fechar()">Cancelar</button>
-  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvarProjeto()">
+  <button mat-button type="button" (click)="fechar()">Cancelar</button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    [disabled]="form.invalid"
+    (click)="salvarProjeto()"
+  >
     Confirmar
   </button>
 </mat-dialog-actions>
