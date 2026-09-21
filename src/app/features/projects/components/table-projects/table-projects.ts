@@ -13,7 +13,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../dialog-delete-project/confirm-dialog';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
-import { StatusProject } from '../../../../shared/enums/status.enum';
+import { StatusProject, StatusTasks } from '../../../../shared/enums/status.enum';
 
 @Component({
   selector: 'app-table-projects',
@@ -75,6 +75,24 @@ export class TableProjects implements AfterViewInit {
 
       return categoriaOk && statusOk && usuarioOk && gestorOk;
     });
+  }
+
+  tarefasAtrasadas(projeto: Projeto): number {
+    const hoje = new Date();
+
+    hoje.setHours(0, 0, 0, 0);
+
+    return projeto.tarefas.filter((tarefa) => {
+      if (tarefa.status == StatusTasks.CONCLUIDA || !tarefa.dataTermino) {
+        return false;
+      }
+
+      const dataTermino = new Date(tarefa.dataTermino);
+
+      dataTermino.setHours(0, 0, 0, 0);
+
+      return dataTermino < hoje;
+    }).length;
   }
 
   openDialogEdit(projeto: Projeto): void {

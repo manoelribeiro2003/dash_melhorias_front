@@ -314,6 +314,36 @@
 }
 
 /* =========================================
+   AVISO DE TAREFAS ATRASADAS
+   ========================================= */
+
+.progress-cell {
+  position: relative;
+}
+
+.progress-warning {
+  position: absolute;
+
+  top: calc(50% + 12px);
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+  font-weight: 500;
+
+  color: #dc3545;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+/* =========================================
    AÇÕES
    ========================================= */
 
