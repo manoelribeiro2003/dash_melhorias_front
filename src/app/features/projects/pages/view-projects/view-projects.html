@@ -1,11 +1,6 @@
 <div class="main">
   <div class="app-card-status-container">
-    @for (
-      cardValue of cardValues.filter(
-        (card) => !card.atrasado || projetosFiltrados().some((projeto) => projeto.atrasado)
-      );
-      track cardValue
-    ) {
+    @for (cardValue of cardValues; track cardValue) {
       <app-card-status-project
         [status]="cardValue.status"
         [value]="
@@ -18,9 +13,9 @@
         [icon]="cardValue.icon"
         [title]="cardValue.title"
         [itensConcluidos]="
-          !cardValue.atrasado
-            ? projetosFiltrados().filter((projeto) => projeto.status === cardValue.status).length
-            : projetosFiltrados().filter((projeto) => projeto.atrasado).length
+          cardValue.atrasado
+            ? projetosFiltrados().filter((projeto) => projeto.atrasado).length
+            : projetosFiltrados().filter((projeto) => projeto.status === cardValue.status).length
         "
         [totalItens]="projetosFiltrados().length"
       />

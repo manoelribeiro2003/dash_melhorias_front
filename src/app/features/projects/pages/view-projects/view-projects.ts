@@ -28,7 +28,7 @@ export class ViewProjects {
   protected readonly gestorSelecionado = signal<number | null>(null);
   readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
 
-  protected readonly projetosFiltrados = computed(() => {
+  readonly projetosFiltrados = computed(() => {
     const usuarioId = this.usuarioSelecionado();
     const gestorId = this.gestorSelecionado();
     const status = this.statusSelecionado();
@@ -38,7 +38,13 @@ export class ViewProjects {
 
       const atendeGestor = gestorId === null || projeto.criadoPor?.gestor_id === gestorId;
 
-      const atendeStatus = !status || projeto.status === status;
+      let atendeStatus = true;
+
+      if (status === StatusProject.ATRASADO) {
+        atendeStatus = projeto.atrasado;
+      } else if (status) {
+        atendeStatus = projeto.status === status;
+      }
 
       return atendeUsuario && atendeGestor && atendeStatus;
     });
