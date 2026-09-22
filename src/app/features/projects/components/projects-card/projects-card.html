@@ -68,7 +68,7 @@
       <div>
         <mat-button-toggle-group name="botoes-filtro" [(value)]="statusSelecionado">
           @for (status of status(); track status) {
-            <mat-button-toggle [value]="status.value" [checked]="status.value === 'Em andamento'">
+            <mat-button-toggle [value]="status.value">
               {{ status.label }}
             </mat-button-toggle>
           }

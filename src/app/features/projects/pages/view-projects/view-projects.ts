@@ -26,17 +26,21 @@ export class ViewProjects {
 
   protected readonly usuarioSelecionado = signal<number | null>(null);
   protected readonly gestorSelecionado = signal<number | null>(null);
+  readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
 
   protected readonly projetosFiltrados = computed(() => {
     const usuarioId = this.usuarioSelecionado();
     const gestorId = this.gestorSelecionado();
+    const status = this.statusSelecionado();
 
     return this.projetos().filter((projeto) => {
       const atendeUsuario = usuarioId === null || projeto.criadoPor?.id === usuarioId;
 
       const atendeGestor = gestorId === null || projeto.criadoPor?.gestor_id === gestorId;
 
-      return atendeUsuario && atendeGestor;
+      const atendeStatus = !status || projeto.status === status;
+
+      return atendeUsuario && atendeGestor && atendeStatus;
     });
   });
 

@@ -61,7 +61,7 @@ export class ProjectsCard {
   protected readonly usuarios = this.usuariosService.usuarios;
   protected readonly gestores = this.usuariosService.gestores;
   protected readonly catSelecionada = model('');
-  protected readonly statusSelecionado = model(null);
+  readonly statusSelecionado = model<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
 
   // -------------------------Pesquisa de usuario------------------------------
   readonly usuarioSelecionado = model<number | null>(null);
