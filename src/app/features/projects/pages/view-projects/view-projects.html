@@ -2,7 +2,7 @@
   <div class="app-card-status-container">
     @for (
       cardValue of cardValues.filter(
-        (card) => !card.atrasado || projetos().some((projeto) => projeto.atrasado)
+        (card) => !card.atrasado || projetosFiltrados().some((projeto) => projeto.atrasado)
       );
       track cardValue
     ) {
@@ -10,23 +10,26 @@
         [status]="cardValue.status"
         [value]="
           cardValue.status === 'TotalItens'
-            ? projetos().length
+            ? projetosFiltrados().length
             : cardValue.atrasado
-              ? projetos().filter((projeto) => projeto.atrasado).length
-              : projetos().filter((projeto) => projeto.status === cardValue.status).length
+              ? projetosFiltrados().filter((projeto) => projeto.atrasado).length
+              : projetosFiltrados().filter((projeto) => projeto.status === cardValue.status).length
         "
         [icon]="cardValue.icon"
         [title]="cardValue.title"
         [itensConcluidos]="
           !cardValue.atrasado
-            ? projetos().filter((projeto) => projeto.status === cardValue.status).length
-            : projetos().filter((projeto) => projeto.atrasado).length
+            ? projetosFiltrados().filter((projeto) => projeto.status === cardValue.status).length
+            : projetosFiltrados().filter((projeto) => projeto.atrasado).length
         "
-        [totalItens]="projetos().length"
+        [totalItens]="projetosFiltrados().length"
       />
     }
   </div>
   <div class="app-projects-card-container">
-    <app-projects-card />
+    <app-projects-card
+      [(usuarioSelecionado)]="usuarioSelecionado"
+      [(gestorSelecionado)]="gestorSelecionado"
+    />
   </div>
 </div>
