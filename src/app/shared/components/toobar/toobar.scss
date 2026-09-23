@@ -1,37 +1,109 @@
 $primary: #2d2f78;
 
+mat-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 80px;
+
+  padding-left: 30px;
+  padding-right: 30px;
+
+  box-sizing: border-box;
+}
+
+.left-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 0;
+}
+
 .toolbar-title {
   font-weight: 600;
 }
 
 .toolbar-description {
   font-size: 15px;
+
   color: #5b616b;
+
   line-height: 16px;
 }
 
 .right-controls {
   display: flex;
-  gap: 5px;
-}
 
-.left-controls {
-  display: flex;
-  flex-direction: column;
   gap: 5px;
 }
 
 .button-create {
-  background-color: #49439B !important;
+  background-color: #49439b !important;
+
   color: white !important;
+
   border-radius: 10px;
 }
 
-mat-toolbar{
+.menu-button {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 80px;
-  padding-left: 30px;
-  padding-right: 30px;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: $primary;
+}
+
+/* =========================
+   TELAS COMPACTAS
+========================= */
+
+@media (max-width: 1599px) {
+  mat-toolbar {
+    padding-left: 16px;
+    padding-right: 20px;
+  }
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+  mat-toolbar {
+    height: 70px;
+
+    padding-left: 8px;
+    padding-right: 12px;
+  }
+
+  .left-controls {
+    gap: 4px;
+  }
+
+  .toolbar-title {
+    font-size: 16px;
+  }
+
+  .toolbar-description {
+    font-size: 12px;
+  }
+
+  .button-create span {
+    display: none;
+  }
 }

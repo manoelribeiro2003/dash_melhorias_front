@@ -1,4 +1,9 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +20,7 @@ import { DialogNewProject } from '../../../features/projects/components/dialog-n
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './toobar.html',
   styleUrl: './toobar.scss',
@@ -23,18 +28,33 @@ import { DialogNewProject } from '../../../features/projects/components/dialog-n
 export class Toobar {
   title = input.required<string>();
   description = input.required<string>();
+
+  /**
+   * Controla a exibição do botão de menu.
+   */
+  mostrarMenu = input(false);
+
+  /**
+   * Evento emitido quando o usuário clica
+   * no botão de menu.
+   */
+  menuClick = output<void>();
+
   readonly dialog = inject(MatDialog);
   readonly router = inject(Router);
 
   get isProjetosUrl(): boolean {
-    return this.router.url === '/projetos'
+    return this.router.url === '/projetos';
+  }
+
+  abrirMenu(): void {
+    this.menuClick.emit();
   }
 
   openDialog(): void {
-
-    const dialogRef = this.dialog.open(DialogNewProject, {
+    this.dialog.open(DialogNewProject, {
       width: '80vw',
-      maxWidth: '1500px'
-    })
+      maxWidth: '1500px',
+    });
   }
 }

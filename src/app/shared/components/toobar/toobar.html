@@ -1,20 +1,48 @@
 <mat-toolbar>
 
   <div class="left-controls">
-    <span class="toolbar-title">{{title()}}</span>
-    <span class="toolbar-description">{{description()}}</span>
+
+    @if (mostrarMenu()) {
+      <button
+        mat-icon-button
+        type="button"
+        class="menu-button"
+        aria-label="Abrir menu"
+        (click)="abrirMenu()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <div class="title-container">
+
+      <span class="toolbar-title">
+        {{ title() }}
+      </span>
+
+      <span class="toolbar-description">
+        {{ description() }}
+      </span>
+
+    </div>
+
   </div>
 
   <div class="right-controls">
-    <!-- <div class="container-input-busca">
-      <input class="input-busca" placeholder="Buscar Projetos">
-    </div> -->
 
     @if (isProjetosUrl) {
-    <button matButton="filled" class="button-create" (click)="openDialog()">
-      <mat-icon>add</mat-icon>
-      <span>Novo Projeto</span>
-    </button>
+      <button
+        matButton="filled"
+        class="button-create"
+        type="button"
+        (click)="openDialog()"
+      >
+        <mat-icon>add</mat-icon>
+
+        <span>
+          Novo Projeto
+        </span>
+      </button>
     }
 
   </div>

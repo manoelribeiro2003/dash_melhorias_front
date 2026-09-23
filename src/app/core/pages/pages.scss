@@ -1,13 +1,10 @@
 $primary: #2d2f78;
 $secondary: #49439b;
 $accent: #febc12;
-
 $background: #f7f8fc;
 $surface: #ffffff;
-
 $text-primary: #24263d;
 $text-secondary: #6b6f85;
-
 $border: #e4e5ef;
 
 :host {
@@ -22,51 +19,70 @@ $border: #e4e5ef;
 
 .app-sidenav {
   width: 230px;
+
   border: none;
   border-radius: 0;
+
   color: $surface;
   background: $primary;
+
   box-shadow: none;
+
   overflow: hidden;
 }
 
 /* =========================
-BRAND
+   BRAND
 ========================= */
 
 .brand {
   height: 100px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   gap: 5px;
   margin: 20px;
+
   border-radius: 15px;
+
   box-sizing: border-box;
+
   background: $surface;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba($primary, 0.08);
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3);
+
+  border-bottom:
+    1px solid rgba($primary, 0.08);
 }
 
 .brand img {
   width: auto;
   height: auto;
+
   display: block;
+
   flex-shrink: 0;
 }
 
 .brand-title {
   color: $primary;
+
   font-size: 16px;
   line-height: 20px;
+
   font-weight: 500;
+
   letter-spacing: -0.2px;
+
   text-align: center;
 }
 
 /* =========================
-MENU
+   MENU
 ========================= */
 
 .main-menu {
@@ -129,7 +145,8 @@ MENU
 
   background: $secondary;
 
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.2);
 }
 
 .menu-item.active mat-icon {
@@ -137,7 +154,7 @@ MENU
 }
 
 /* =========================
-ACCENT
+   ACCENT
 ========================= */
 
 .accent {
@@ -145,23 +162,32 @@ ACCENT
 }
 
 /* =========================
-CONTENT
+   CONTENT
 ========================= */
 
 .app-content {
   min-height: 100vh;
+
   background: $background;
 }
 
 /* =========================
-RESPONSIVE
+   TELAS COMPACTAS
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1599px) {
   .app-sidenav {
-    width: 220px;
+    width: 260px;
+  }
+
+  .app-content {
+    width: 100%;
   }
 }
+
+/* =========================
+   CELULAR
+========================= */
 
 @media (max-width: 600px) {
   .app-sidenav {
