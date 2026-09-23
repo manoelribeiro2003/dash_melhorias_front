@@ -1,27 +1,136 @@
 .main {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  flex: 1;
-  padding-inline: 30px;
-  padding-top: 10px;
-  padding-bottom: 30px;
+
+  width: 100%;
+  min-height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 10px 30px 30px;
+
   gap: 20px;
+
   background-color: #f7fafe;
 }
 
+/* =========================================================
+   CARDS DE STATUS
+   ========================================================= */
+
 .app-card-status-container {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: center;
-  gap: 3rem;
+  display: grid;
+
+  /*
+   * Desktop:
+   * 6 cards distribuídos em uma única linha.
+   */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+
+  gap: 20px;
+
+  width: 100%;
+
+  box-sizing: border-box;
 }
+
+.app-card-status-container app-card-status-project {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================================================
+   ÁREA DOS PROJETOS / TABELA
+   ========================================================= */
+
 .app-projects-card-container {
-  flex: 1;
+  width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* =========================================================
+   FUNDO DOS CARDS
+   ========================================================= */
+
 .card {
   background-color: #fff;
+}
+
+/* =========================================================
+   TELAS GRANDES
+   ========================================================= */
+
+@media (min-width: 1600px) {
+  .main {
+    padding-inline: 40px;
+  }
+
+  .app-card-status-container {
+    gap: 24px;
+  }
+}
+
+/* =========================================================
+   NOTEBOOKS / TELAS MÉDIAS
+   ========================================================= */
+
+@media (max-width: 1400px) {
+  .main {
+    padding-inline: 20px;
+  }
+
+  /*
+   * 3 cards por linha.
+   */
+  .app-card-status-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+  }
+}
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .main {
+    padding: 10px 16px 24px;
+
+    gap: 16px;
+  }
+
+  /*
+   * 2 cards por linha.
+   */
+  .app-card-status-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+}
+
+/* =========================================================
+   CELULARES
+   ========================================================= */
+
+@media (max-width: 500px) {
+  .main {
+    padding: 10px 10px 20px;
+
+    gap: 12px;
+  }
+
+  /*
+   * 1 card por linha.
+   */
+  .app-card-status-container {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
 }
