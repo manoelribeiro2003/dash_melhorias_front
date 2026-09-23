@@ -1,16 +1,26 @@
 <div class="table-card">
   <div class="table-scroll">
     <table mat-table [dataSource]="dataSource" matSort class="projects-table">
-      <!-- =========================PROJETO========================= -->
+      <!-- =========================================================
+           PROJETO
+           ========================================================= -->
+
       <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="project-header-cell column-projeto"
+        >
           Projeto
         </th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-projeto">
           <div class="project-info">
             <span class="project-name">
               {{ projeto.nome }}
             </span>
+
             <span class="project-description">
               {{ projeto.categoria }}
             </span>
@@ -18,28 +28,39 @@
         </td>
       </ng-container>
 
-      <!-- =========================RESPONSÁVEL========================= -->
+      <!-- =========================================================
+           RESPONSÁVEL
+           ========================================================= -->
 
       <ng-container matColumnDef="criadoPor">
-        <th mat-header-cell *matHeaderCellDef class="project-header-cell">Responsável</th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+        <th mat-header-cell *matHeaderCellDef class="project-header-cell column-responsavel">
+          Responsável
+        </th>
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-responsavel">
           <div class="manager-cell">
             <span class="manager-name">
-              {{ projeto.criadoPor.nome }}
+              {{ projeto.criadoPor?.nome }}
             </span>
           </div>
         </td>
       </ng-container>
 
-      <!-- =========================STATUS========================= -->
+      <!-- =========================================================
+           STATUS
+           ========================================================= -->
+
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef class="project-header-cell">Status</th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+        <th mat-header-cell *matHeaderCellDef class="project-header-cell column-status">Status</th>
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-status">
           <span
             class="status"
             [ngClass]="{
               'status-andamento': projeto.status === statusProjeto.EM_ANDAMENTO,
+
               'status-concluido': projeto.status === statusProjeto.CONCLUIDA,
+
               'status-nao-iniciado': projeto.status === statusProjeto.NAO_INICIADO,
             }"
           >
@@ -49,31 +70,20 @@
         </td>
       </ng-container>
 
-      <!-- =========================PROGRESSO========================= -->
-      <!-- <ng-container matColumnDef="tarefasConcluidas">
-        <th mat-header-cell *matHeaderCellDef class="project-header-cell">Progresso</th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div
-                class="progress-fill"
-                [style.width.%]="
-                  projeto.totalTarefas > 0
-                    ? (projeto.tarefasConcluidas / projeto.totalTarefas) * 100
-                    : 0
-                "
-              ></div>
-            </div>
-            <span class="progress-text"
-              >{{ projeto.tarefasConcluidas }}/{{ projeto.totalTarefas }}
-            </span>
-          </div>
-        </td>
-      </ng-container> -->
-      <ng-container matColumnDef="tarefasConcluidas">
-        <th mat-header-cell *matHeaderCellDef class="project-header-cell">Progresso</th>
+      <!-- =========================================================
+           PROGRESSO
+           ========================================================= -->
 
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell progress-cell">
+      <ng-container matColumnDef="tarefasConcluidas">
+        <th mat-header-cell *matHeaderCellDef class="project-header-cell column-progresso">
+          Progresso
+        </th>
+
+        <td
+          mat-cell
+          *matCellDef="let projeto"
+          class="project-data-cell progress-cell column-progresso"
+        >
           <div class="progress-container">
             <div class="progress-bar">
               <div
@@ -100,12 +110,21 @@
         </td>
       </ng-container>
 
-      <!-- =========================DATA INÍCIO========================= -->
+      <!-- =========================================================
+           DATA DE INÍCIO
+           ========================================================= -->
+
       <ng-container matColumnDef="dataInicio">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="project-header-cell column-inicio"
+        >
           Início
         </th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-inicio">
           <span class="data-inicio">
             @if (projeto.dataInicio) {
               {{ projeto.dataInicio | date: 'dd/MM/yy' }}
@@ -116,12 +135,21 @@
         </td>
       </ng-container>
 
-      <!-- =========================DATA TÉRMINO========================= -->
+      <!-- =========================================================
+           DATA DE TÉRMINO
+           ========================================================= -->
+
       <ng-container matColumnDef="dataTermino">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="project-header-cell column-termino"
+        >
           Término
         </th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-termino">
           <span class="data-termino" [class.data-atrasada]="projeto.atrasado">
             @if (projeto.dataTermino) {
               {{ projeto.dataTermino | date: 'dd/MM/yy' }}
@@ -132,50 +160,98 @@
         </td>
       </ng-container>
 
-      <!-- =========================ORÇAMENTO========================= -->
+      <!-- =========================================================
+           GANHO TOTAL
+           ========================================================= -->
+
       <ng-container matColumnDef="orcamento">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="project-header-cell column-ganho"
+        >
           Ganho Total
         </th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-ganho">
           <span class="orcamento">
             {{ +projeto.orcamento || 0 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
           </span>
         </td>
       </ng-container>
 
-      <!-- =========================Ganho Par========================= -->
+      <!-- =========================================================
+           GANHO / PAR
+           ========================================================= -->
+
       <ng-container matColumnDef="ganhoPar">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="project-header-cell">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="project-header-cell column-ganho-par"
+        >
           Ganho/Par
         </th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell">
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell column-ganho-par">
           <span class="orcamento">
             {{ +projeto.ganhoPar || 0 | currency: 'BRL' : 'symbol' : '1.4-4' : 'pt-BR' }}
           </span>
         </td>
       </ng-container>
 
-      <!-- =========================AÇÕES========================= -->
+      <!-- =========================================================
+           AÇÕES
+           ========================================================= -->
+
       <ng-container matColumnDef="acoes">
-        <th mat-header-cell *matHeaderCellDef class="project-header-cell actions-header">Ações</th>
-        <td mat-cell *matCellDef="let projeto" class="project-data-cell actions-cell">
-          <button mat-icon-button type="button" (click)="openDialogEdit(projeto)">
-            <mat-icon class="mat-icon-open-dialog">arrow_outward</mat-icon>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="project-header-cell actions-header column-acoes"
+        >
+          Ações
+        </th>
+
+        <td mat-cell *matCellDef="let projeto" class="project-data-cell actions-cell column-acoes">
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Editar projeto"
+            (click)="openDialogEdit(projeto)"
+          >
+            <mat-icon class="mat-icon-open-dialog"> arrow_outward </mat-icon>
           </button>
-          <button mat-icon-button type="button" (click)="openDialogDelete(projeto)">
-            <mat-icon class="mat-icon-delete">delete</mat-icon>
+
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Excluir projeto"
+            (click)="openDialogDelete(projeto)"
+          >
+            <mat-icon class="mat-icon-delete"> delete </mat-icon>
           </button>
         </td>
       </ng-container>
 
+      <!-- =========================================================
+           LINHAS
+           ========================================================= -->
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="project-header-row"></tr>
+
       <tr mat-row *matRowDef="let row; columns: displayedColumns" class="project-row"></tr>
     </table>
   </div>
 
-  <!-- =========================PAGINATOR========================= -->
+  <!-- =========================================================
+       PAGINATOR
+       ========================================================= -->
+
   <mat-divider />
+
   <mat-paginator
     [length]="100"
     [pageSize]="10"

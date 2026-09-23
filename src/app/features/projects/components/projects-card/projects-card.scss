@@ -1,51 +1,173 @@
-@use '@angular/material' as mat;
-
-.filtros {
+@use '@angular/material' as mat; /* ========================================================= CARD ========================================================= */
+.projects-card {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+} /* ========================================================= HEADER ========================================================= */
+.projects-card-header {
+  display: block;
+  width: 100%;
+  padding: 16px 20px 12px;
+  box-sizing: border-box;
+} /* ========================================================= CONTAINER DOS FILTROS ========================================================= */
+.filters-container {
+  display: grid; /* * Quatro colunas: * * Categoria * Responsável * Gestor * Status */
+  grid-template-columns: minmax(150px, 1fr) minmax(190px, 1.2fr) minmax(150px, 1fr) auto;
+  align-items: end;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 12px;
+  box-sizing: border-box;
+} /* ========================================================= FILTROS ========================================================= */
+.filter-item {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+} /* ========================================================= FORM FIELDS ========================================================= */
+.filter-item mat-form-field,
+.status-select mat-form-field {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  @include mat.form-field-overrides(
+    (
+      container-height: 40px,
+      container-vertical-padding: 9px,
+      outlined-focus-outline-width: 1px,
+      outlined-outline-color: #d1d5db,
+      outlined-hover-outline-color: #aeb4bf,
+      container-text-size: 13px,
+    )
+  );
+} /* ========================================================= LIMPAR RESPONSÁVEL ========================================================= */
+.clear-filter-button {
   display: flex;
-  flex-direction: row;
-  flex: 1;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px;
-  // border: 1px solid black;
-
-  mat-form-field {
-    //Sobrescrevendo atributos de estilo dos mat-form-fields dentro da classe filtros
-    width: 100%;
-    height: 37px;
-    flex: 1;
-
-    @include mat.form-field-overrides(
-      (
-        container-height: 37px,
-        container-vertical-padding: 9px,
-        outlined-focus-outline-width: 1px,
-        outlined-outline-color: #d1d5db,
-        container-text-size: 14px,
-      )
-    );
-  }
-
-  .filtro {
-    display: flex;
-    flex: 1;
-    max-width: 400px;
-  }
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 4px;
+  padding: 0;
+  color: #7c8494;
 }
-
-mat-card-actions {
+.clear-filter-button mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+}
+.clear-filter-button:hover {
+  color: #293044;
+} /* ========================================================= STATUS — TOGGLE ========================================================= */
+.status-toggle {
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
-  align-content: stretch;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-width: 0;
+  box-sizing: border-box;
 }
-
-mat-card-header {
+.status-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #7c8494;
+  line-height: 14px;
+}
+.status-toggle mat-button-toggle-group {
   display: flex;
-  justify-content: flex-start;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  border-radius: 6px;
+  overflow: hidden;
 }
-
-mat-card {
-  margin-bottom: 10px;
-  background: #ffffff;
+.status-toggle mat-button-toggle {
+  flex: 0 0 auto;
+  font-size: 12px;
+  white-space: nowrap;
+} /* ========================================================= STATUS — SELECT ========================================================= */
+.status-select {
+  display: none;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+} /* ========================================================= ÁREA DA TABELA ========================================================= */
+.projects-card-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+  align-items: stretch;
+} /* ========================================================= NOTEBOOK / TELAS MENORES ========================================================= */
+@media (max-width: 1450px) {
+  .projects-card-header {
+    padding-inline: 16px;
+  } /* * No notebook usamos SELECT em vez de TOGGLE. * * Os quatro filtros continuam na mesma linha: * * Categoria | Responsável | Gestor | Status */
+  .filters-container {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(130px, 0.8fr);
+    gap: 10px;
+  } /* * Esconde o grupo de botões de status. */
+  .status-toggle {
+    display: none;
+  } /* * Mostra o select de status. */
+  .status-select {
+    display: block;
+  }
+  .projects-card-content {
+    padding-inline: 16px;
+  }
+} /* ========================================================= TELA MÉDIA ========================================================= */
+@media (max-width: 900px) {
+  .filters-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .filter-item mat-form-field,
+  .status-select mat-form-field {
+    font-size: 12px;
+  }
+} /* ========================================================= TELA PEQUENA ========================================================= */
+@media (max-width: 700px) {
+  .filters-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .status-select {
+    width: 100%;
+  }
+} /* ========================================================= CELULAR ========================================================= */
+@media (max-width: 500px) {
+  .projects-card-header {
+    padding: 12px;
+  }
+  .filters-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .filter-item,
+  .status-select {
+    width: 100%;
+  }
+  .filter-item mat-form-field,
+  .status-select mat-form-field {
+    width: 100%;
+  }
+  .projects-card-content {
+    padding-inline: 12px;
+    padding-bottom: 12px;
+  }
 }

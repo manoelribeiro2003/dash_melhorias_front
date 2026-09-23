@@ -1,25 +1,23 @@
-<mat-card appearance="filled">
-  <mat-card-header>
-    <div class="filtros">
-
-      <div class="filtro">
+<mat-card class="projects-card" appearance="filled">
+  <mat-card-header class="projects-card-header">
+    <div class="filters-container">
+      <!-- ===================================================== CATEGORIA ===================================================== -->
+      <div class="filter-item">
         <mat-form-field appearance="outline">
-          <mat-label>Filtrar por categoria</mat-label>
+          <mat-label>Categoria</mat-label>
           <mat-select [(value)]="catSelecionada">
-            <mat-option [value]="null"> Todos </mat-option>
+            <mat-option [value]="null"> Todas </mat-option>
             @for (categoria of categorias; track categoria) {
-              <mat-option [value]="categoria">
-                {{ categoria ?? 'Sem Categoria' }}
-              </mat-option>
+              <mat-option [value]="categoria"> {{ categoria ?? 'Sem Categoria' }} </mat-option>
             }
             <mat-option value="Outros"> Outros </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-
-      <div class="filtro">
+      <!-- ===================================================== RESPONSÁVEL ===================================================== -->
+      <div class="filter-item">
         <mat-form-field appearance="outline">
-          <mat-label>Responsável do Projeto</mat-label>
+          <mat-label>Responsável</mat-label>
           <mat-select name="nome-responsavel" [(value)]="usuarioSelecionado">
             <mat-option>
               <ngx-mat-select-search
@@ -32,9 +30,7 @@
             </mat-option>
             <mat-option [value]="null"> Todos </mat-option>
             @for (usuario of usuariosFiltrados(); track usuario.id) {
-              <mat-option [value]="usuario.id">
-                {{ usuario.nome }}
-              </mat-option>
+              <mat-option [value]="usuario.id"> {{ usuario.nome }} </mat-option>
             }
           </mat-select>
           @if (usuarioSelecionado() !== null) {
@@ -42,43 +38,51 @@
               mat-icon-button
               matSuffix
               type="button"
+              class="clear-filter-button"
               aria-label="Limpar responsável"
               (click)="limparUsuario($event)"
             >
-              <mat-icon style="display: flex; justify-content: center; align-items: center"
-                >close</mat-icon
-              >
+              <mat-icon>close</mat-icon>
             </button>
           }
         </mat-form-field>
       </div>
-
-      <div class="filtro">
+      <!-- ===================================================== GESTOR ===================================================== -->
+      <div class="filter-item">
         <mat-form-field appearance="outline">
-          <mat-label>Filtrar por gestor</mat-label>
+          <mat-label>Gestor</mat-label>
           <mat-select [(value)]="gestorSelecionado">
-            <mat-option [value]="null">Todos</mat-option>
+            <mat-option [value]="null"> Todos </mat-option>
             @for (gestor of gestores(); track gestor.id) {
-              <mat-option [value]="gestor.id">{{ gestor.nome }}</mat-option>
+              <mat-option [value]="gestor.id"> {{ gestor.nome }} </mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
-
-      <div>
+      <!-- ===================================================== STATUS — TOGGLE ===================================================== -->
+      <div class="status-toggle">
+        <span class="status-label"> Status </span>
         <mat-button-toggle-group name="botoes-filtro" [(value)]="statusSelecionado">
           @for (status of status(); track status) {
-            <mat-button-toggle [value]="status.value">
-              {{ status.label }}
-            </mat-button-toggle>
+            <mat-button-toggle [value]="status.value"> {{ status.label }} </mat-button-toggle>
           }
         </mat-button-toggle-group>
       </div>
-
+      <!-- ===================================================== STATUS — SELECT ===================================================== -->
+      <div class="status-select">
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [(value)]="statusSelecionado">
+            @for (status of status(); track status) {
+              <mat-option [value]="status.value"> {{ status.label }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
   </mat-card-header>
-
-  <mat-card-actions>
+  <!-- ========================================================= TABELA ========================================================= -->
+  <mat-card-actions class="projects-card-content">
     <app-table-projects
       [filtroCategoria]="catSelecionada()"
       [filtroStatus]="statusSelecionado()"
