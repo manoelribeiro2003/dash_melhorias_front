@@ -96,12 +96,48 @@ export class ViewProjects {
     () => this.projetosFiltrados().filter((projeto) => projeto.atrasado).length,
   );
 
-  readonly ganhosFiltrados = computed(() =>
-    this.projetosFiltrados().reduce(
-      (total, projeto) => total + this.converterOrcamento(projeto.orcamento),
-      0,
-    ),
-  );
+  readonly ganhosFiltrados = computed(() => {
+    return this.projetosFiltrados().reduce((total, projeto) => {
+      if (projeto.orcamento === null || projeto.orcamento === undefined) {
+        return total;
+      }
+
+      const valorTexto = String(projeto.orcamento).replace('R$', '').trim();
+
+      if (!valorTexto) {
+        return total;
+      }
+
+      let valor: number;
+
+      const temVirgula = valorTexto.includes(',');
+      const temPonto = valorTexto.includes('.');
+
+      if (temVirgula && temPonto) {
+        /*
+         * Formato brasileiro:
+         * 82.000,00
+         */
+        valor = Number(valorTexto.replace(/\./g, '').replace(',', '.'));
+      } else if (temVirgula) {
+        /*
+         * Formato brasileiro sem separador de milhar:
+         * 82000,00
+         */
+        valor = Number(valorTexto.replace(',', '.'));
+      } else {
+        /*
+         * Formato numérico/decimal:
+         * 82000
+         * 82000.00
+         * 82000.50
+         */
+        valor = Number(valorTexto);
+      }
+
+      return total + (Number.isFinite(valor) ? valor : 0);
+    }, 0);
+  });
 
   // ---------------------------------------------------------------------------
   // Configuração dos cards
