@@ -1,39 +1,25 @@
 <mat-card class="project-card">
   <mat-card-content>
     <div class="card-header">
-      <!-- Ícone -->
-      <div class="card-icon">
-        <mat-icon [svgIcon]="icon()" aria-hidden="true" />
-      </div>
-
-      <!-- Informações -->
-      <div #cardInfo class="card-info">
-        <!-- Título -->
-        <span class="card-title">
-          {{ title() }}
-        </span>
-
-        <!-- Valor -->
-        <span #cardValue class="card-value">
-          @if (tipoValor() === 'moeda') {
-            {{ value() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-          } @else {
-            {{ value() }}
-          }
-        </span>
-      </div>
+      <div class="card-icon"><mat-icon [svgIcon]="icon()" aria-hidden="true" /></div>
+      <span class="card-title"> {{ title() }} </span>
     </div>
-
-    <!-- Progresso -->
+    <div #cardInfo class="card-info">
+      <span #cardValue class="card-value">
+        @if (tipoValor() === 'moeda') {
+          {{ value() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+        } @else {
+          {{ value() }}
+        }
+      </span>
+    </div>
     @if (mostrarProgresso()) {
       <div class="progress-container">
         <span class="progress-percentage"> {{ percentual() | number: '1.0-0' }}% do Total </span>
-
         <div class="progress-info">
           <div class="progress-bar">
             <div class="progress-fill" [style.width.%]="percentual()"></div>
           </div>
-
           <span class="progress-text"> {{ itensConcluidos() }} / {{ totalItens() }} </span>
         </div>
       </div>

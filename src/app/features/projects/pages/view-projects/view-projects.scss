@@ -1,136 +1,70 @@
 .main {
   display: flex;
   flex-direction: column;
-
   width: 100%;
   min-height: 100%;
-
   box-sizing: border-box;
-
   padding: 10px 30px 30px;
-
   gap: 20px;
-
   background-color: #f7fafe;
-}
-
-/* =========================================================
-   CARDS DE STATUS
-   ========================================================= */
-
+} /* ========================================================= CARDS DE STATUS ========================================================= */
 .app-card-status-container {
-  display: grid;
-
-  /*
-   * Desktop:
-   * 6 cards distribuídos em uma única linha.
-   */
+  display: grid; /* * Os 6 cards permanecem SEMPRE na mesma linha. * * Cada card ocupa uma fração igual do espaço disponível. */
   grid-template-columns: repeat(6, minmax(0, 1fr));
-
-  gap: 20px;
-
   width: 100%;
-
   box-sizing: border-box;
-}
-
+  gap: 20px;
+} /* * Garante que o componente Angular também * possa encolher dentro da coluna. */
 .app-card-status-container app-card-status-project {
+  display: block;
   width: 100%;
   min-width: 0;
-}
-
-/* =========================================================
-   ÁREA DOS PROJETOS / TABELA
-   ========================================================= */
-
+} /* ========================================================= TABELA / PROJETOS ========================================================= */
 .app-projects-card-container {
   width: 100%;
   min-width: 0;
-
   box-sizing: border-box;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
-/* =========================================================
-   FUNDO DOS CARDS
-   ========================================================= */
-
 .card {
   background-color: #fff;
-}
-
-/* =========================================================
-   TELAS GRANDES
-   ========================================================= */
-
+} /* ========================================================= TELAS GRANDES ========================================================= */
 @media (min-width: 1600px) {
   .main {
     padding-inline: 40px;
   }
-
   .app-card-status-container {
     gap: 24px;
   }
-}
-
-/* =========================================================
-   NOTEBOOKS / TELAS MÉDIAS
-   ========================================================= */
-
+} /* ========================================================= NOTEBOOK / TELAS MÉDIAS ========================================================= */
 @media (max-width: 1400px) {
   .main {
     padding-inline: 20px;
   }
-
-  /*
-   * 3 cards por linha.
-   */
   .app-card-status-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    gap: 16px;
+    /* * Continua com os 6 cards na mesma linha. */
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
   }
-}
-
-/* =========================================================
-   TABLETS
-   ========================================================= */
-
+} /* ========================================================= TELAS MENORES ========================================================= */
 @media (max-width: 900px) {
   .main {
-    padding: 10px 16px 24px;
-
-    gap: 16px;
+    padding: 8px 12px 20px;
+    gap: 14px;
   }
-
-  /*
-   * 2 cards por linha.
-   */
   .app-card-status-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
+    /* * Continua com 6 cards na mesma linha, * porém cada um fica mais estreito. */
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
   }
-}
-
-/* =========================================================
-   CELULARES
-   ========================================================= */
-
-@media (max-width: 500px) {
+} /* ========================================================= TELAS MUITO PEQUENAS ========================================================= */
+@media (max-width: 600px) {
   .main {
-    padding: 10px 10px 20px;
-
-    gap: 12px;
+    padding: 6px 8px 16px;
+    gap: 10px;
   }
-
-  /*
-   * 1 card por linha.
-   */
   .app-card-status-container {
-    grid-template-columns: 1fr;
-
-    gap: 12px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
   }
 }

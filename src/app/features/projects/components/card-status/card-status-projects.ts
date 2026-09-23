@@ -19,10 +19,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './card-status-projects.scss',
 })
 export class CardStatusProjects implements AfterViewInit, OnDestroy {
-  // --------------------------------------------------
-  // Inputs
-  // --------------------------------------------------
-
   readonly icon = input.required<string>();
   readonly title = input.required<string>();
   readonly value = input.required<string | number>();
@@ -33,22 +29,11 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
 
   readonly tipoValor = input<'numero' | 'moeda'>('numero');
 
-  // --------------------------------------------------
-  // Elementos do template
-  // --------------------------------------------------
-
   readonly cardInfo = viewChild<ElementRef<HTMLElement>>('cardInfo');
+
   readonly cardValue = viewChild<ElementRef<HTMLElement>>('cardValue');
 
-  // --------------------------------------------------
-  // Controle de redimensionamento
-  // --------------------------------------------------
-
   private resizeObserver?: ResizeObserver;
-
-  // --------------------------------------------------
-  // Valores calculados
-  // --------------------------------------------------
 
   readonly percentual = computed(() => {
     const total = this.totalItens();
@@ -60,32 +45,16 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
     return Math.min((this.itensConcluidos() / total) * 100, 100);
   });
 
-  // --------------------------------------------------
-  // Construtor
-  // --------------------------------------------------
-
   constructor() {
-    /*
-     * Executa novamente sempre que o valor ou o tipo
-     * de valor forem alterados.
-     */
     effect(() => {
       this.value();
       this.tipoValor();
 
-      /*
-       * Aguarda o Angular atualizar o DOM antes de
-       * medir a largura do texto.
-       */
       setTimeout(() => {
         this.ajustarTamanhoValor();
       });
     });
   }
-
-  // --------------------------------------------------
-  // Ajuste automático da fonte
-  // --------------------------------------------------
 
   private ajustarTamanhoValor(): void {
     const elemento = this.cardValue()?.nativeElement;
@@ -96,16 +65,12 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
     }
 
     const tamanhoMaximo = 30;
-    const tamanhoMinimo = 14;
+    const tamanhoMinimo = 8;
+    const margemSeguranca = 4;
 
-    /*
-     * Sempre começa pelo tamanho máximo.
-     * Dessa forma, se o valor diminuir novamente,
-     * a fonte também volta a aumentar.
-     */
     elemento.style.fontSize = `${tamanhoMaximo}px`;
 
-    const larguraDisponivel = container.clientWidth;
+    const larguraDisponivel = container.clientWidth - margemSeguranca;
 
     if (larguraDisponivel <= 0) {
       return;
@@ -113,10 +78,6 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
 
     let tamanhoAtual = tamanhoMaximo;
 
-    /*
-     * Diminui a fonte até o conteúdo caber
-     * dentro da largura disponível.
-     */
     while (elemento.scrollWidth > larguraDisponivel && tamanhoAtual > tamanhoMinimo) {
       tamanhoAtual--;
 
@@ -124,15 +85,7 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
     }
   }
 
-  // --------------------------------------------------
-  // Inicialização
-  // --------------------------------------------------
-
   ngAfterViewInit(): void {
-    /*
-     * Primeiro ajuste depois que o componente
-     * estiver renderizado.
-     */
     setTimeout(() => {
       this.ajustarTamanhoValor();
 
@@ -142,15 +95,6 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
         return;
       }
 
-      /*
-       * Observa mudanças no tamanho disponível.
-       *
-       * Isso cobre:
-       * - redimensionamento da janela;
-       * - zoom do navegador;
-       * - mudanças no layout;
-       * - alterações no tamanho do card.
-       */
       this.resizeObserver = new ResizeObserver(() => {
         this.ajustarTamanhoValor();
       });
@@ -158,10 +102,6 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
       this.resizeObserver.observe(container);
     });
   }
-
-  // --------------------------------------------------
-  // Limpeza
-  // --------------------------------------------------
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
