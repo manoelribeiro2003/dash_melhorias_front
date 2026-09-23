@@ -1,32 +1,56 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { ProjectsCard } from '../../components/projects-card/projects-card';
-import { CardStatusProjects } from '../../components/card-status/card-status-projects';
-import { MatIconRegistry } from '@angular/material/icon';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconRegistry } from '@angular/material/icon';
+import { CardStatusProjects } from '../../components/card-status/card-status-projects';
+import { ProjectsCard } from '../../components/projects-card/projects-card';
 import { StatusProject } from '../../../../shared/enums/status.enum';
+import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
+import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 
 type CardValues = {
   icon: string;
   title: string;
-  status?: string;
-  atrasado?: boolean;
+  value: Signal<string | number>;
+  tipoValor?: 'numero' | 'moeda';
+  mostrarProgresso?: boolean;
+  itensConcluidos?: Signal<number>;
+  totalItens?: Signal<number>;
 };
 
 @Component({
   selector: 'app-view-projects',
-  imports: [ProjectsCard, MatButtonModule, CardStatusProjects],
+  imports: [MatButtonModule, ProjectsCard, CardStatusProjects],
   templateUrl: './view-projects.html',
   styleUrl: './view-projects.scss',
 })
 export class ViewProjects {
-  private projetosService = inject(ProjetoService);
-  projetos = this.projetosService.projetos;
+  // ---------------------------------------------------------------------------
+  // Dependências
+  // ---------------------------------------------------------------------------
+
+  private readonly projetosService = inject(ProjetoService);
+  private readonly iconRegistry = inject(MatIconRegistry);
+  private readonly sanitizer = inject(DomSanitizer);
+
+  // ---------------------------------------------------------------------------
+  // Dados principais
+  // ---------------------------------------------------------------------------
+
+  readonly projetos = this.projetosService.projetos;
+
+  // ---------------------------------------------------------------------------
+  // Filtros
+  // ---------------------------------------------------------------------------
 
   protected readonly usuarioSelecionado = signal<number | null>(null);
   protected readonly gestorSelecionado = signal<number | null>(null);
+
   readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+
+  // ---------------------------------------------------------------------------
+  // Projetos filtrados
+  // ---------------------------------------------------------------------------
 
   readonly projetosFiltrados = computed(() => {
     const usuarioId = this.usuarioSelecionado();
@@ -38,51 +62,155 @@ export class ViewProjects {
 
       const atendeGestor = gestorId === null || projeto.criadoPor?.gestor_id === gestorId;
 
-      let atendeStatus = true;
-
-      if (status === StatusProject.ATRASADO) {
-        atendeStatus = projeto.atrasado;
-      } else if (status) {
-        atendeStatus = projeto.status === status;
-      }
+      const atendeStatus = this.projetoAtendeStatus(projeto, status);
 
       return atendeUsuario && atendeGestor && atendeStatus;
     });
   });
 
-  cardValues: CardValues[] = [
-    { icon: 'totalProjetos', title: 'Total de Projetos', status: 'TotalItens' },
-    { icon: 'emAndamento', title: 'Em Andamento', status: StatusProject.EM_ANDAMENTO },
-    { icon: 'concluidos', title: 'Concluídos', status: StatusProject.CONCLUIDA },
-    { icon: 'naoIniciados', title: 'Não Iniciados', status: StatusProject.NAO_INICIADO },
-    { icon: 'atrasado', title: 'Atrasados', status: '', atrasado: true },
+  // ---------------------------------------------------------------------------
+  // Indicadores dos cards
+  // ---------------------------------------------------------------------------
+
+  readonly totalProjetos = computed(() => this.projetosFiltrados().length);
+
+  readonly projetosEmAndamento = computed(
+    () =>
+      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.EM_ANDAMENTO)
+        .length,
+  );
+
+  readonly projetosConcluidos = computed(
+    () =>
+      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.CONCLUIDA)
+        .length,
+  );
+
+  readonly projetosNaoIniciados = computed(
+    () =>
+      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.NAO_INICIADO)
+        .length,
+  );
+
+  readonly projetosAtrasados = computed(
+    () => this.projetosFiltrados().filter((projeto) => projeto.atrasado).length,
+  );
+
+  readonly ganhosFiltrados = computed(() =>
+    this.projetosFiltrados().reduce(
+      (total, projeto) => total + this.converterOrcamento(projeto.orcamento),
+      0,
+    ),
+  );
+
+  // ---------------------------------------------------------------------------
+  // Configuração dos cards
+  // ---------------------------------------------------------------------------
+
+  readonly cardValues: CardValues[] = [
+    {
+      icon: 'totalProjetos',
+      title: 'Total de Projetos',
+      value: this.totalProjetos,
+    },
+    {
+      icon: 'emAndamento',
+      title: 'Em Andamento',
+      value: this.projetosEmAndamento,
+      mostrarProgresso: true,
+      itensConcluidos: this.projetosEmAndamento,
+      totalItens: this.totalProjetos,
+    },
+    {
+      icon: 'concluidos',
+      title: 'Concluídos',
+      value: this.projetosConcluidos,
+      mostrarProgresso: true,
+      itensConcluidos: this.projetosConcluidos,
+      totalItens: this.totalProjetos,
+    },
+    {
+      icon: 'naoIniciados',
+      title: 'Não Iniciados',
+      value: this.projetosNaoIniciados,
+      mostrarProgresso: true,
+      itensConcluidos: this.projetosNaoIniciados,
+      totalItens: this.totalProjetos,
+    },
+    {
+      icon: 'atrasado',
+      title: 'Atrasados',
+      value: this.projetosAtrasados,
+      mostrarProgresso: true,
+      itensConcluidos: this.projetosAtrasados,
+      totalItens: this.totalProjetos,
+    },
+    {
+      icon: 'ganhos',
+      title: 'Ganhos',
+      value: this.ganhosFiltrados,
+      tipoValor: 'moeda',
+      mostrarProgresso: false,
+    },
   ];
 
-  private iconRegistry = inject(MatIconRegistry);
-  private sanitizer = inject(DomSanitizer);
+  // ---------------------------------------------------------------------------
+  // Inicialização
+  // ---------------------------------------------------------------------------
 
   constructor() {
-    this.iconRegistry.addSvgIcon(
+    this.registrarIcones();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Regras de filtro
+  // ---------------------------------------------------------------------------
+
+  private projetoAtendeStatus(projeto: Projeto, status: StatusProject | ''): boolean {
+    if (!status) {
+      return true;
+    }
+
+    if (status === StatusProject.ATRASADO) {
+      return projeto.atrasado;
+    }
+
+    return projeto.status === status;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Conversões
+  // ---------------------------------------------------------------------------
+
+  private converterOrcamento(orcamento: string | null): number {
+    if (!orcamento) {
+      return 0;
+    }
+
+    const valor = Number(orcamento.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+
+    return Number.isNaN(valor) ? 0 : valor;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Ícones
+  // ---------------------------------------------------------------------------
+
+  private registrarIcones(): void {
+    const icones = [
       'naoIniciados',
-      this.sanitizer.bypassSecurityTrustResourceUrl('dashboard/card-status/naoIniciados.svg'),
-    );
-
-    this.iconRegistry.addSvgIcon(
       'concluidos',
-      this.sanitizer.bypassSecurityTrustResourceUrl('dashboard/card-status/concluidos.svg'),
-    );
-
-    this.iconRegistry.addSvgIcon(
       'emAndamento',
-      this.sanitizer.bypassSecurityTrustResourceUrl('dashboard/card-status/emAndamento.svg'),
-    );
-    this.iconRegistry.addSvgIcon(
       'totalProjetos',
-      this.sanitizer.bypassSecurityTrustResourceUrl('dashboard/card-status/totalProjetos.svg'),
-    );
-    this.iconRegistry.addSvgIcon(
       'atrasado',
-      this.sanitizer.bypassSecurityTrustResourceUrl('dashboard/card-status/atrasado.svg'),
-    );
+      'ganhos',
+    ];
+
+    for (const nomeIcone of icones) {
+      this.iconRegistry.addSvgIcon(
+        nomeIcone,
+        this.sanitizer.bypassSecurityTrustResourceUrl(`dashboard/card-status/${nomeIcone}.svg`),
+      );
+    }
   }
 }

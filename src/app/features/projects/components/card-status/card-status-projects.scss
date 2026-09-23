@@ -1,100 +1,137 @@
 .project-card {
-    width: 250px;
-    min-height: 150px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 0.5px solid rgb(231, 231, 231);
-    outline: none;
+  width: 250px;
+  min-height: 150px;
+
+  border-radius: 10px;
+  background-color: #ffffff;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 0.5px solid rgb(231, 231, 231);
+
+  outline: none;
 }
 
 mat-card-content {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  box-sizing: border-box;
 }
 
 .card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  min-width: 0;
 }
 
 .card-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 60px;
+  width: 60px;
+  min-width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-icon mat-icon {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  flex: 1;
+  min-width: 0;
+  width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .card-title {
-    font-size: 14px;
-    color: #474747;
-    font-weight: 500;
+  max-width: 100%;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #474747;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-value {
-    font-size: 30px;
-    font-weight: 600;
-    color: #1f2937;
+  display: block;
+
+  max-width: 100%;
+
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+
+  color: #1f2937;
+
+  white-space: nowrap;
 }
+
 .progress-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  margin-top: 16px;
 }
 
 .progress-percentage {
-    font-size: 13px;
-    color: #5f6368;
-    font-weight: 500;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5f6368;
 }
 
 .progress-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  width: 100%;
 }
 
 .progress-bar {
-    flex: 1;
-    height: 8px;
-    background-color: #e9edf2;
-    border-radius: 999px;
-    overflow: hidden;
+  flex: 1;
+
+  height: 8px;
+
+  background-color: #e9edf2;
+
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .progress-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(
-        90deg,
-        #a7e8c2 0%,
-        #4fbd7e 50%,
-        #24935c 100%
-    );
-    transition: width 0.3s ease;
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #a7e8c2 0%, #4fbd7e 50%, #24935c 100%);
+
+  transition: width 0.3s ease;
 }
 
 .progress-text {
-    font-size: 12px;
-    color: #5f6368;
-    white-space: nowrap;
+  font-size: 12px;
+  color: #5f6368;
+
+  white-space: nowrap;
 }
