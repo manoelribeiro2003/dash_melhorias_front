@@ -131,11 +131,12 @@ export class ViewProjects {
   });
 
   readonly statusDisponiveis = computed<{ label: string; value: StatusFiltro }[]>(() => [
-    { label: '⭐ Prioridade', value: 'PRIORIDADE' },
-    { label: 'Em Andamento', value: StatusProject.EM_ANDAMENTO },
-    { label: 'Não Iniciados', value: StatusProject.NAO_INICIADO },
-    { label: 'Concluídos', value: StatusProject.CONCLUIDA },
-    { label: 'Atrasados', value: StatusProject.ATRASADO },
+    { label: 'Prioridade', value: 'PRIORIDADE' },
+    { label: 'Todos', value: StatusProject.TODOS },
+    { label: 'Em andamento', value: StatusProject.EM_ANDAMENTO },
+    { label: 'Não iniciado', value: StatusProject.NAO_INICIADO },
+    { label: 'Concluído', value: StatusProject.CONCLUIDA },
+    { label: 'Atrasado', value: StatusProject.ATRASADO },
   ]);
 
   // =========================================================
@@ -262,7 +263,7 @@ export class ViewProjects {
   // =========================================================
 
   private projetoAtendeStatus(projeto: Projeto, status: StatusFiltro): boolean {
-    if (!status) {
+    if (status === StatusProject.TODOS) {
       return true;
     }
 
