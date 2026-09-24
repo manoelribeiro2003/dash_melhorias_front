@@ -190,10 +190,10 @@ export class TableProjects implements AfterViewInit {
       return nome;
     }
 
-    const conectores = ['da', 'de', 'do', 'das', 'dos'];
+    const particulas = ['da', 'de', 'do', 'das', 'dos'];
 
-    if (conectores.includes(partes[1].toLowerCase()) && partes.length >= 3) {
-      return `${partes[0]} ${partes[2]}`;
+    if (particulas.includes(partes[1].toLowerCase()) && partes.length >= 3) {
+      return `${partes[0]} ${partes[1]} ${partes[2]}`;
     }
 
     return `${partes[0]} ${partes[1]}`;
