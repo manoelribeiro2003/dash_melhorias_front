@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TableProjects } from '../table-projects/table-projects';
 
+type StatusFiltro = StatusProject | 'PRIORIDADE' | '';
+
 @Component({
   selector: 'app-projects-card',
   templateUrl: './projects-card.html',
@@ -25,7 +27,7 @@ import { TableProjects } from '../table-projects/table-projects';
     FormsModule,
     MatButtonModule,
     MatButtonToggleModule,
-    TableProjects
+    TableProjects,
   ],
 })
 export class ProjectsCard {
@@ -35,7 +37,7 @@ export class ProjectsCard {
 
   readonly usuarioSelecionado = model<number | null>(null);
   readonly gestorSelecionado = model<number | null>(null);
-  readonly statusSelecionado = model<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  readonly statusSelecionado = model<StatusFiltro>('PRIORIDADE');
   readonly categoriaSelecionada = model<ProjectCategories | ''>('');
 
   // =========================================================
@@ -45,7 +47,7 @@ export class ProjectsCard {
   readonly categorias = input.required<ProjectCategories[]>();
   readonly usuarios = input.required<Usuario[]>();
   readonly gestores = input.required<{ id: number; nome: string }[]>();
-  readonly status = input.required<{ label: string; value: StatusProject | '' }[]>();
+  readonly status = input.required<{ label: string; value: StatusFiltro }[]>();
 
   // =========================================================
   // Pesquisa do responsável

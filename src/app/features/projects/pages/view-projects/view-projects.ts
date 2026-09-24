@@ -25,6 +25,7 @@ type CardValues = {
   itensConcluidos?: Signal<number>;
   totalItens?: Signal<number>;
 };
+type StatusFiltro = StatusProject | 'PRIORIDADE' | '';
 
 @Component({
   selector: 'app-view-projects',
@@ -54,7 +55,7 @@ export class ViewProjects {
 
   readonly usuarioSelecionado = signal<number | null>(null);
   readonly gestorSelecionado = signal<number | null>(null);
-  readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  readonly statusSelecionado = signal<StatusFiltro>('PRIORIDADE');
   readonly categoriaSelecionada = signal<ProjectCategories | ''>('');
 
   // =========================================================
@@ -129,8 +130,8 @@ export class ViewProjects {
       .sort((a, b) => a.nome.localeCompare(b.nome));
   });
 
-  readonly statusDisponiveis = computed(() => [
-    { label: 'Todos', value: StatusProject.TODOS },
+  readonly statusDisponiveis = computed<{ label: string; value: StatusFiltro }[]>(() => [
+    { label: '⭐ Prioridade', value: 'PRIORIDADE' },
     { label: 'Em Andamento', value: StatusProject.EM_ANDAMENTO },
     { label: 'Não Iniciados', value: StatusProject.NAO_INICIADO },
     { label: 'Concluídos', value: StatusProject.CONCLUIDA },
@@ -260,9 +261,13 @@ export class ViewProjects {
   // Regras
   // =========================================================
 
-  private projetoAtendeStatus(projeto: Projeto, status: StatusProject | ''): boolean {
+  private projetoAtendeStatus(projeto: Projeto, status: StatusFiltro): boolean {
     if (!status) {
       return true;
+    }
+
+    if (status === 'PRIORIDADE') {
+      return projeto.prioridade;
     }
 
     if (status === StatusProject.ATRASADO) {

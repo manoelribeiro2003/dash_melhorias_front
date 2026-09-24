@@ -1,19 +1,20 @@
 import { AfterViewInit, Component, effect, inject, input, ViewChild } from '@angular/core';
+import { NgClass, DatePipe, CurrencyPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgClass, DatePipe, CurrencyPipe } from '@angular/common';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-
-import { DialogOverviewProject } from '../dialog-overview-project/dialog-overview-project';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { DialogOverviewProject } from '../dialog-overview-project/dialog-overview-project';
 import { ConfirmDialogComponent } from '../dialog-delete-project/confirm-dialog';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 import { StatusProject, StatusTasks } from '../../../../shared/enums/status.enum';
+
+type StatusFiltro = StatusProject | 'PRIORIDADE' | '';
 
 @Component({
   selector: 'app-table-projects',
@@ -34,17 +35,36 @@ import { StatusProject, StatusTasks } from '../../../../shared/enums/status.enum
   styleUrl: './table-projects.scss',
 })
 export class TableProjects implements AfterViewInit {
+  // =========================================================
+  // Dependências
+  // =========================================================
+
   readonly projetosService = inject(ProjetoService);
-  readonly dataSource = new MatTableDataSource<Projeto>(this.projetosService.projetos());
-  @ViewChild(MatPaginator) readonly paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
   readonly dialog = inject(MatDialog);
+
+  // =========================================================
+  // Tabela
+  // =========================================================
+
+  readonly dataSource = new MatTableDataSource<Projeto>(this.projetosService.projetos());
+
+  @ViewChild(MatPaginator) readonly paginator!: MatPaginator;
+  @ViewChild(MatSort) readonly sort!: MatSort;
+
+  // =========================================================
+  // Filtros
+  // =========================================================
+
   readonly filtroCategoria = input.required<string>();
-  readonly filtroStatus = input<string | null>('');
+  readonly filtroStatus = input<StatusFiltro>('PRIORIDADE');
   readonly filtroUsuario = input<number | null>(null);
   readonly filtroGestor = input<number | null>(null);
 
   protected readonly statusProjeto = StatusProject;
+
+  // =========================================================
+  // Inicialização
+  // =========================================================
 
   constructor() {
     effect(() => {
@@ -57,25 +77,38 @@ export class TableProjects implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  // =========================================================
+  // Aplicação dos filtros
+  // =========================================================
+
   private aplicarFiltros(): void {
-    const projetos = this.projetosService.projetos();
+    const categoria = this.filtroCategoria();
+    const status = this.filtroStatus();
+    const usuario = this.filtroUsuario();
+    const gestor = this.filtroGestor();
 
-    this.dataSource.data = projetos.filter((projeto) => {
-      const categoriaOk = !this.filtroCategoria() || projeto.categoria === this.filtroCategoria();
-      const statusOk = !this.filtroStatus()
+    this.dataSource.data = this.projetosService.projetos().filter((projeto) => {
+      const categoriaOk = !categoria || projeto.categoria === categoria;
+
+      const statusOk = !status
         ? true
-        : this.filtroStatus() === 'Atrasado'
-          ? projeto.atrasado
-          : projeto.status === this.filtroStatus();
+        : status === 'PRIORIDADE'
+          ? projeto.prioridade
+          : status === StatusProject.ATRASADO
+            ? projeto.atrasado
+            : projeto.status === status;
 
-      const usuarioOk =
-        this.filtroUsuario() === null || projeto.criadoPor?.id === this.filtroUsuario();
+      const usuarioOk = usuario === null || projeto.criadoPor?.id === usuario;
 
-      const gestorOk = this.filtroGestor() === null || projeto.gestor.id === this.filtroGestor();
+      const gestorOk = gestor === null || projeto.criadoPor?.gestor_id === gestor;
 
       return categoriaOk && statusOk && usuarioOk && gestorOk;
     });
   }
+
+  // =========================================================
+  // Tarefas em atraso
+  // =========================================================
 
   tarefasAtrasadas(projeto: Projeto): number {
     const hoje = new Date();
@@ -83,7 +116,7 @@ export class TableProjects implements AfterViewInit {
     hoje.setHours(0, 0, 0, 0);
 
     return projeto.tarefas.filter((tarefa) => {
-      if (tarefa.status == StatusTasks.CONCLUIDA || !tarefa.dataTermino) {
+      if (tarefa.status === StatusTasks.CONCLUIDA || !tarefa.dataTermino) {
         return false;
       }
 
@@ -95,6 +128,10 @@ export class TableProjects implements AfterViewInit {
     }).length;
   }
 
+  // =========================================================
+  // Dialogs
+  // =========================================================
+
   openDialogEdit(projeto: Projeto): void {
     const dialogRef = this.dialog.open(DialogOverviewProject, {
       width: '80vw',
@@ -103,12 +140,14 @@ export class TableProjects implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((projetoRetornado: Projeto | undefined) => {
-      if (projetoRetornado === undefined) {
+      if (!projetoRetornado) {
         return;
       }
+
       this.projetosService.atualizarProjeto(projetoRetornado);
     });
   }
+
   openDialogDelete(projeto: Projeto): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
@@ -128,7 +167,11 @@ export class TableProjects implements AfterViewInit {
     });
   }
 
-  displayedColumns: string[] = [
+  // =========================================================
+  // Colunas
+  // =========================================================
+
+  readonly displayedColumns: string[] = [
     'nome',
     'criadoPor',
     'status',
