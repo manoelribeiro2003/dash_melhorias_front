@@ -1,10 +1,13 @@
 /* =========================================================
-   CONTAINER
+   CONTAINER DA TABELA
    ========================================================= */
 
 .table-card {
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+
+  box-sizing: border-box;
 
   background: #fff;
 
@@ -13,11 +16,18 @@
   overflow: hidden;
 }
 
+/* =========================================================
+   ÁREA DE SCROLL
+   ========================================================= */
+
 .table-scroll {
   width: 100%;
+  max-width: 100%;
   min-width: 0;
 
-  overflow-x: hidden;
+  box-sizing: border-box;
+
+  overflow-x: auto;
   overflow-y: hidden;
 
   -webkit-overflow-scrolling: touch;
@@ -30,11 +40,15 @@
 
 .projects-table {
   width: 100%;
+  min-width: 0;
 
   table-layout: auto;
+
   border-collapse: collapse;
 
   background: #fff;
+
+  box-sizing: border-box;
 }
 
 /* =========================================================
@@ -86,14 +100,23 @@
 }
 
 .project-header-cell {
+  height: 48px;
+
   padding: 0 12px;
+
+  box-sizing: border-box;
 
   font-size: 12px;
   font-weight: 600;
 
   color: #293044;
 
+  text-align: left;
+
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   border-bottom: 1px solid #edf0f5;
 }
@@ -104,6 +127,7 @@
 
 .project-row {
   min-height: 72px;
+  height: auto;
 
   transition: background-color 0.15s ease;
 }
@@ -117,9 +141,16 @@
    ========================================================= */
 
 .project-data-cell {
+  min-height: 72px;
+  height: auto;
+
   padding: 12px;
 
   vertical-align: middle;
+
+  min-width: 0;
+
+  box-sizing: border-box;
 
   font-size: 13px;
 
@@ -137,6 +168,9 @@
   flex-direction: column;
 
   gap: 3px;
+
+  width: 100%;
+  min-width: 0;
 }
 
 .project-name {
@@ -148,6 +182,7 @@
 
   white-space: normal;
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .project-description {
@@ -157,16 +192,27 @@
   line-height: 15px;
 
   white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 /* =========================================================
    RESPONSÁVEL
    ========================================================= */
 
+.manager-cell {
+  display: flex;
+  align-items: center;
+}
+
 .manager-name {
   color: #3f4757;
 
   font-size: 12px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* =========================================================
@@ -222,6 +268,10 @@
   border-radius: 5px;
 
   font-size: 12px;
+
+  color: #4b5567;
+
+  white-space: nowrap;
 }
 
 .data-atrasada {
@@ -230,7 +280,7 @@
 }
 
 /* =========================================================
-   VALORES
+   VALORES MONETÁRIOS
    ========================================================= */
 
 .orcamento {
@@ -240,6 +290,10 @@
   width: 100%;
 
   font-size: 11px;
+
+  color: #4b5567;
+
+  white-space: nowrap;
 }
 
 .column-ganho-par .orcamento {
@@ -293,6 +347,8 @@
   color: #5f6368;
 
   font-size: 12px;
+
+  white-space: nowrap;
 }
 
 .progress-warning {
@@ -309,6 +365,8 @@
   font-weight: 500;
 
   white-space: nowrap;
+
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -322,11 +380,14 @@
 .actions-cell {
   text-align: center;
   vertical-align: middle;
+
   white-space: nowrap;
+  overflow: visible;
 }
 
 .actions-cell button {
   margin: 0 3px;
+  vertical-align: middle;
 }
 
 .mat-icon-open-dialog {
@@ -367,6 +428,22 @@ mat-paginator {
 }
 
 /* =========================================================
+   DESKTOP E NOTEBOOK
+   ========================================================= */
+
+@media (min-width: 1101px) {
+  .table-scroll {
+    overflow-x: hidden;
+  }
+
+  .projects-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+  }
+}
+
+/* =========================================================
    NOTEBOOKS
    ========================================================= */
 
@@ -379,6 +456,18 @@ mat-paginator {
   .project-data-cell {
     padding: 10px;
     font-size: 12px;
+  }
+
+  .project-name {
+    font-size: 12px;
+  }
+
+  .project-description {
+    font-size: 10px;
+  }
+
+  .manager-name {
+    font-size: 11px;
   }
 
   .status {
@@ -403,6 +492,14 @@ mat-paginator {
   .progress-container {
     gap: 6px;
   }
+
+  .orcamento {
+    font-size: 10px;
+  }
+
+  .column-ganho-par .orcamento {
+    font-size: 9px;
+  }
 }
 
 /* =========================================================
@@ -415,6 +512,7 @@ mat-paginator {
   }
 
   .projects-table {
+    width: max-content;
     min-width: 860px;
 
     table-layout: fixed;
@@ -427,14 +525,12 @@ mat-paginator {
 
   .status {
     min-width: 72px;
-
     font-size: 10px;
   }
 
   .data-inicio,
   .data-termino {
     min-width: 58px;
-
     font-size: 10px;
   }
 
@@ -448,13 +544,17 @@ mat-paginator {
    ========================================================= */
 
 @media (max-width: 700px) {
+  .table-scroll {
+    overflow-x: auto;
+  }
+
   .projects-table {
+    width: max-content;
     min-width: 850px;
   }
 
   .status {
     min-width: 70px;
-
     font-size: 9px;
   }
 
