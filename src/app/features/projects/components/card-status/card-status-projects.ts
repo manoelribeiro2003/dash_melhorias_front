@@ -22,17 +22,13 @@ export class CardStatusProjects implements AfterViewInit, OnDestroy {
   readonly icon = input.required<string>();
   readonly title = input.required<string>();
   readonly value = input.required<string | number>();
-
   readonly mostrarProgresso = input(false);
   readonly itensConcluidos = input(0);
   readonly totalItens = input(0);
-
   readonly tipoValor = input<'numero' | 'moeda'>('numero');
-
   readonly cardInfo = viewChild<ElementRef<HTMLElement>>('cardInfo');
-
   readonly cardValue = viewChild<ElementRef<HTMLElement>>('cardValue');
-
+  
   private resizeObserver?: ResizeObserver;
 
   readonly percentual = computed(() => {

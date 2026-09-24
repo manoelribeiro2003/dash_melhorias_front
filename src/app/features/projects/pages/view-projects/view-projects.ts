@@ -7,6 +7,7 @@ import { ProjectsCard } from '../../components/projects-card/projects-card';
 import { StatusProject } from '../../../../shared/enums/status.enum';
 import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
 import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
+import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
 
 type CardValues = {
   icon: string;
@@ -46,16 +47,18 @@ export class ViewProjects {
   protected readonly usuarioSelecionado = signal<number | null>(null);
   protected readonly gestorSelecionado = signal<number | null>(null);
 
-  readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  protected readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  protected readonly categoriaSelecionada = signal<ProjectCategories | ''>('');
 
   // ---------------------------------------------------------------------------
   // Projetos filtrados
   // ---------------------------------------------------------------------------
 
-  readonly projetosFiltrados = computed(() => {
+  private readonly projetosFiltrados = computed(() => {
     const usuarioId = this.usuarioSelecionado();
     const gestorId = this.gestorSelecionado();
     const status = this.statusSelecionado();
+    const categoria = this.categoriaSelecionada();
 
     return this.projetos().filter((projeto) => {
       const atendeUsuario = usuarioId === null || projeto.criadoPor?.id === usuarioId;
@@ -64,7 +67,9 @@ export class ViewProjects {
 
       const atendeStatus = this.projetoAtendeStatus(projeto, status);
 
-      return atendeUsuario && atendeGestor && atendeStatus;
+      const atendeCategoria = categoria === StatusProject.TODOS || projeto.categoria === categoria;
+
+      return atendeUsuario && atendeGestor && atendeStatus && atendeCategoria;
     });
   });
 
@@ -72,31 +77,31 @@ export class ViewProjects {
   // Indicadores dos cards
   // ---------------------------------------------------------------------------
 
-  readonly totalProjetos = computed(() => this.projetosFiltrados().length);
+  public readonly totalProjetos = computed(() => this.projetosFiltrados().length);
 
-  readonly projetosEmAndamento = computed(
+  private readonly projetosEmAndamento = computed(
     () =>
       this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.EM_ANDAMENTO)
         .length,
   );
 
-  readonly projetosConcluidos = computed(
+  private readonly projetosConcluidos = computed(
     () =>
       this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.CONCLUIDA)
         .length,
   );
 
-  readonly projetosNaoIniciados = computed(
+  private readonly projetosNaoIniciados = computed(
     () =>
       this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.NAO_INICIADO)
         .length,
   );
 
-  readonly projetosAtrasados = computed(
+  private readonly projetosAtrasados = computed(
     () => this.projetosFiltrados().filter((projeto) => projeto.atrasado).length,
   );
 
-  readonly ganhosFiltrados = computed(() => {
+  private readonly ganhosFiltrados = computed(() => {
     return this.projetosFiltrados().reduce((total, projeto) => {
       if (projeto.orcamento === null || projeto.orcamento === undefined) {
         return total;

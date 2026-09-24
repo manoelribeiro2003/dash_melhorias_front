@@ -1,4 +1,5 @@
 export enum StatusProject {
+  TODOS = '',
   EM_ANDAMENTO = 'Em andamento',
   CONCLUIDA = 'Concluída',
   NAO_INICIADO = 'Não iniciado',

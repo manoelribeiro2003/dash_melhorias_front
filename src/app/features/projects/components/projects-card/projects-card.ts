@@ -37,7 +37,7 @@ export class ProjectsCard {
   private readonly usuariosService = inject(UsuarioService);
   protected readonly status = signal<Status[]>([
     {
-      value: '',
+      value: StatusProject.TODOS,
       label: 'Todos',
     },
     {
@@ -60,8 +60,8 @@ export class ProjectsCard {
   protected readonly categorias = Object.values(ProjectCategories).sort();
   protected readonly usuarios = this.usuariosService.usuarios;
   protected readonly gestores = this.usuariosService.gestores;
-  protected readonly catSelecionada = model('');
   readonly statusSelecionado = model<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  readonly catSelecionada = model<ProjectCategories | ''>('');
 
   // -------------------------Pesquisa de usuario------------------------------
   readonly usuarioSelecionado = model<number | null>(null);
