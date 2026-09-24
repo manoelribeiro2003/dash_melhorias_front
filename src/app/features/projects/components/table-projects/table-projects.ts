@@ -183,11 +183,19 @@ export class TableProjects implements AfterViewInit {
     'acoes',
   ];
 
-  formatarNomeCurto(nome: string | undefined | null): string {
-  if (!nome) {
-    return '';
-  }
+  formatarNomeResponsavel(nome: string): string {
+    const partes = nome.trim().split(/\s+/);
 
-  return nome.trim().split(/\s+/).slice(0, 2).join(' ');
-}
+    if (partes.length <= 2) {
+      return nome;
+    }
+
+    const conectores = ['da', 'de', 'do', 'das', 'dos'];
+
+    if (conectores.includes(partes[1].toLowerCase()) && partes.length >= 3) {
+      return `${partes[0]} ${partes[2]}`;
+    }
+
+    return `${partes[0]} ${partes[1]}`;
+  }
 }
