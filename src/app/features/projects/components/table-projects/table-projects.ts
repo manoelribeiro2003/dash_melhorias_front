@@ -182,4 +182,12 @@ export class TableProjects implements AfterViewInit {
     'ganhoPar',
     'acoes',
   ];
+
+  formatarNomeCurto(nome: string | undefined | null): string {
+  if (!nome) {
+    return '';
+  }
+
+  return nome.trim().split(/\s+/).slice(0, 2).join(' ');
+}
 }

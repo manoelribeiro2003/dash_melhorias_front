@@ -1,402 +1,563 @@
-/* ========================================================= CONTAINER DA TABELA ========================================================= */
+/* =========================================================
+   CONTAINER DA TABELA
+   ========================================================= */
+
 .table-card {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+
   box-sizing: border-box;
-  background-color: #ffffff;
+
+  background: #fff;
+
   border-radius: 10px;
+
   overflow: hidden;
-} /* ========================================================= ÁREA DE SCROLL ========================================================= */
+}
+
+/* =========================================================
+   ÁREA DE SCROLL
+   ========================================================= */
+
 .table-scroll {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+
   box-sizing: border-box;
+
   overflow-x: auto;
   overflow-y: hidden;
+
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-} /* ========================================================= TABELA ========================================================= */
+}
+
+/* =========================================================
+   TABELA
+   ========================================================= */
+
 .projects-table {
   width: 100%;
-  table-layout: fixed;
   min-width: 1000px;
-  background-color: #ffffff;
+
+  table-layout: fixed;
   border-collapse: collapse;
+
+  background: #fff;
+
   box-sizing: border-box;
-} /* ========================================================= LARGURA DAS COLUNAS ========================================================= */
+}
+
+/* =========================================================
+   LARGURA DAS COLUNAS
+   ========================================================= */
+
 .column-projeto {
   width: 22%;
 }
+
 .column-responsavel {
   width: 13%;
 }
+
 .column-status {
   width: 10%;
 }
+
 .column-progresso {
   width: 15%;
 }
+
 .column-inicio {
   width: 8%;
 }
+
 .column-termino {
   width: 9%;
 }
+
 .column-ganho {
   width: 9%;
 }
+
 .column-ganho-par {
   width: 8%;
 }
+
 .column-acoes {
   width: 6%;
-} /* ========================================================= CABEÇALHO ========================================================= */
+}
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
 .project-header-row {
   height: 48px;
 }
+
 .project-header-cell {
   height: 48px;
+
   padding: 0 12px;
+
   box-sizing: border-box;
+
   font-size: 12px;
   font-weight: 600;
+
   color: #293044;
+
   text-align: left;
+
   white-space: nowrap;
+
   overflow: hidden;
   text-overflow: ellipsis;
+
   border-bottom: 1px solid #edf0f5;
-} /* ========================================================= LINHAS ========================================================= */
+}
+
+/* =========================================================
+   LINHAS
+   ========================================================= */
+
 .project-row {
-  height: 72px;
+  min-height: 72px;
+  height: auto;
+
   transition: background-color 0.15s ease;
 }
+
 .project-row:hover {
-  background-color: #fafbfc;
-} /* ========================================================= CÉLULAS ========================================================= */
+  background: #fafbfc;
+}
+
+/* =========================================================
+   CÉLULAS
+   ========================================================= */
+
 .project-data-cell {
-  height: 72px;
-  padding: 0 12px;
-  box-sizing: border-box;
+  min-height: 72px;
+  height: auto;
+
+  padding: 12px;
+
+  vertical-align: middle;
+
   min-width: 0;
+
+  box-sizing: border-box;
+
   font-size: 13px;
+
   color: #4b5567;
-  overflow: hidden;
+
   border-bottom: 1px solid #edf0f5;
-} /* ========================================================= PROJETO ========================================================= */
+}
+
+/* =========================================================
+   PROJETO
+   ========================================================= */
+
 .project-info {
   display: flex;
   flex-direction: column;
+
   gap: 3px;
+
   width: 100%;
-  max-width: 100%;
   min-width: 0;
-  box-sizing: border-box;
-  overflow: hidden;
 }
+
 .project-name {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
   font-size: 13px;
   font-weight: 600;
+
   color: #263044;
+
   line-height: 18px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 .project-description {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
   font-size: 11px;
+
   color: #7c8494;
+
   line-height: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-} /* ========================================================= RESPONSÁVEL ========================================================= */
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   RESPONSÁVEL
+   ========================================================= */
+
 .manager-cell {
   display: flex;
   align-items: center;
+
   width: 100%;
-  max-width: 100%;
   min-width: 0;
-  overflow: hidden;
 }
+
 .manager-name {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
   font-size: 12px;
+
   color: #3f4757;
+
+  white-space: nowrap;
+
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-} /* ========================================================= STATUS ========================================================= */
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
 .status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   min-width: 86px;
   max-width: 100%;
-  box-sizing: border-box;
+
   padding: 5px 7px;
+
   border-radius: 5px;
+
   font-size: 11px;
   font-weight: 500;
+
   white-space: nowrap;
-  overflow: visible;
-  text-overflow: clip;
 }
+
 .status-concluido {
   color: #2f80ed;
-  background-color: #eaf3ff;
+  background: #eaf3ff;
 }
+
 .status-andamento {
   color: #2dbe60;
-  background-color: #e8f8ee;
+  background: #e8f8ee;
 }
+
 .status-nao-iniciado {
   color: #f59e0b;
-  background-color: #fef3c7;
-} /* ========================================================= DATAS / VALORES ========================================================= */
-.data-termino,
+  background: #fef3c7;
+}
+
+/* =========================================================
+   DATAS E VALORES
+   ========================================================= */
+
 .data-inicio,
+.data-termino,
 .orcamento {
   display: inline-flex;
   align-items: center;
-  max-width: 100%;
-  box-sizing: border-box;
+  justify-content: center;
+
   padding: 5px 7px;
+
   border-radius: 5px;
+
   font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.data-termino,
-.data-inicio,
-.orcamento {
+
   color: #4b5567;
-} /* ========================================================= DATAS ========================================================= */
+
+  white-space: nowrap;
+}
+
 .data-inicio,
 .data-termino {
   min-width: 72px;
-  justify-content: center;
-  overflow: visible;
-  text-overflow: clip;
 }
+
 .data-atrasada {
-  color: #ffffff;
-  background-color: #fd6161;
-} /* ========================================================= VALORES MONETÁRIOS ========================================================= */
+  color: #fff;
+  background: #fd6161;
+}
+
+/* =========================================================
+   VALORES MONETÁRIOS
+   ========================================================= */
+
 .column-ganho .orcamento,
 .column-ganho-par .orcamento {
-  display: flex;
-  align-items: center;
   justify-content: flex-start;
+
   width: 100%;
-  max-width: 100%;
-  min-width: 0;
+
   padding-inline: 4px;
-  box-sizing: border-box;
-  white-space: nowrap;
-  overflow: visible;
-  text-overflow: clip;
+
   font-size: 11px;
 }
+
 .column-ganho-par .orcamento {
   font-size: 10px;
-} /* ========================================================= PROGRESSO ========================================================= */
+}
+
+/* =========================================================
+   PROGRESSO
+   ========================================================= */
+
 .progress-cell {
   position: relative;
+
   overflow: visible;
 }
+
 .progress-container {
   display: flex;
   align-items: center;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
+
   gap: 8px;
-}
-.progress-bar {
-  flex: 1 1 auto;
+
   width: 100%;
-  min-width: 0;
-  max-width: none;
+}
+
+.progress-bar {
+  flex: 1;
+
   height: 8px;
-  background-color: #e9edf2;
+
+  background: #e9edf2;
+
   border-radius: 999px;
+
   overflow: hidden;
 }
+
 .progress-fill {
   height: 100%;
-  border-radius: 999px;
+
+  border-radius: inherit;
+
   background: linear-gradient(90deg, #a7e8c2 0%, #4fbd7e 50%, #24935c 100%);
+
   transition: width 0.3s ease;
 }
+
 .progress-text {
-  flex: 0 0 auto;
+  flex-shrink: 0;
+
   font-size: 12px;
+
   color: #5f6368;
+
   white-space: nowrap;
-} /* ========================================================= AVISO DE TAREFAS ATRASADAS ========================================================= */
+}
+
+/* =========================================================
+   AVISO DE ATRASO
+   ========================================================= */
+
 .progress-warning {
   position: absolute;
+
   top: calc(50% + 12px);
   left: 50%;
+
   transform: translateX(-50%);
+
   font-size: 10px;
-  line-height: 12px;
   font-weight: 500;
+
   color: #dc3545;
+
   white-space: nowrap;
+
   pointer-events: none;
-} /* ========================================================= AÇÕES ========================================================= */
-.actions-header {
-  text-align: center;
 }
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.actions-header,
 .actions-cell {
   text-align: center;
-  white-space: nowrap;
-  overflow: visible;
 }
-mat-icon.mat-icon-delete {
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.mat-icon-delete {
   color: var(--mat-sys-error);
 }
-mat-icon.mat-icon-open-dialog {
+
+.mat-icon-open-dialog {
   color: var(--mat-sys-primary);
-} /* ========================================================= PAGINATOR ========================================================= */
+}
+
+/* =========================================================
+   PAGINADOR
+   ========================================================= */
+
 mat-paginator {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  background-color: #ffffff;
-} /* ========================================================= TELAS GRANDES ========================================================= */
+
+  background: #fff;
+}
+
+/* =========================================================
+   TELAS MUITO GRANDES
+   ========================================================= */
+
 @media (min-width: 1600px) {
   .project-header-cell,
   .project-data-cell {
     padding-inline: 16px;
   }
-  .column-ganho .orcamento,
-  .column-ganho-par .orcamento {
+
+  .column-ganho .orcamento {
     font-size: 12px;
   }
+
   .column-ganho-par .orcamento {
     font-size: 11px;
   }
-} /* ========================================================= NOTEBOOKS ========================================================= */
+}
+
+/* =========================================================
+   NOTEBOOKS
+   ========================================================= */
+
 @media (max-width: 1400px) {
   .projects-table {
     min-width: 950px;
   }
+
   .project-header-cell {
     padding-inline: 10px;
     font-size: 11px;
   }
+
   .project-data-cell {
-    padding-inline: 10px;
+    padding: 10px;
     font-size: 12px;
   }
-  .progress-container {
-    gap: 6px;
+
+  .project-name {
+    font-size: 12px;
   }
+
+  .project-description {
+    font-size: 10px;
+  }
+
+  .manager-name {
+    font-size: 11px;
+  }
+
+  .status {
+    min-width: 84px;
+    font-size: 10px;
+    padding-inline: 5px;
+  }
+
   .data-inicio,
   .data-termino {
     min-width: 68px;
-    padding-inline: 4px;
     font-size: 11px;
+    padding-inline: 4px;
   }
-  .status {
-    min-width: 84px;
-    padding-inline: 5px;
-    font-size: 10px;
-  }
+
   .column-ganho .orcamento {
     font-size: 10px;
     padding-inline: 2px;
   }
+
   .column-ganho-par .orcamento {
     font-size: 9px;
     padding-inline: 1px;
   }
-} /* ========================================================= TELAS MÉDIAS ========================================================= */
+
+  .progress-container {
+    gap: 6px;
+  }
+}
+
+/* =========================================================
+   TELAS MÉDIAS
+   ========================================================= */
+
 @media (max-width: 1100px) {
   .projects-table {
     min-width: 900px;
   }
-  .project-header-cell {
-    padding-inline: 8px;
-  }
+
+  .project-header-cell,
   .project-data-cell {
     padding-inline: 8px;
   }
-  .project-name {
-    font-size: 12px;
-  }
-  .project-description {
-    font-size: 10px;
-  }
-  .manager-name {
-    font-size: 11px;
-  }
+
   .status {
     min-width: 82px;
     padding: 4px;
-    font-size: 10px;
   }
+
   .data-inicio,
   .data-termino {
     min-width: 66px;
-    padding-inline: 3px;
     font-size: 10px;
+    padding-inline: 3px;
   }
+
   .column-ganho .orcamento {
     font-size: 9px;
-    padding-inline: 1px;
   }
+
   .column-ganho-par .orcamento {
     font-size: 8px;
-    padding-inline: 0;
   }
-  .progress-container {
-    gap: 5px;
-  }
+
   .progress-text {
     font-size: 11px;
   }
-} /* ========================================================= TABLET / CELULAR ========================================================= */
+}
+
+/* =========================================================
+   TABLET / MOBILE
+   ========================================================= */
+
 @media (max-width: 700px) {
   .projects-table {
     min-width: 900px;
   }
+
+  .status {
+    min-width: 80px;
+    font-size: 9px;
+    padding-inline: 3px;
+  }
+
   .data-inicio,
   .data-termino {
     min-width: 64px;
-    padding-inline: 2px;
     font-size: 10px;
+    padding-inline: 2px;
   }
-  .status {
-    min-width: 80px;
-    padding-inline: 3px;
-    font-size: 9px;
-  }
+
   .column-ganho .orcamento {
     font-size: 8px;
-    padding-inline: 0;
   }
+
   .column-ganho-par .orcamento {
     font-size: 7px;
-    padding-inline: 0;
   }
+
   .progress-container {
     gap: 5px;
   }
