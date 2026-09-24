@@ -33,21 +33,17 @@ $concluido: #059669;
 ========================================================= */
 
 .dashboard-header {
-  display: flex;
-  justify-content: flex-end;
-
   width: 100%;
-
   margin-bottom: 24px;
 }
 
 .dashboard-summary {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 
-  min-height: 72px;
+  width: 100%;
 
-  padding: 10px 20px;
+  padding: 6px 10px;
 
   box-sizing: border-box;
 
@@ -62,8 +58,13 @@ $concluido: #059669;
 .summary-item {
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  gap: 13px;
+  gap: 10px;
+
+  min-height: 58px;
+
+  padding: 4px 6px;
 }
 
 .summary-item mat-icon {
@@ -85,29 +86,30 @@ $concluido: #059669;
   flex-direction: column;
 
   gap: 2px;
+
+  min-width: 0;
 }
 
 .summary-label {
   color: $text-secondary;
 
-  font-size: 13px;
-  line-height: 17px;
+  font-size: 12px;
+  line-height: 15px;
 }
 
 .summary-item strong {
   color: $text-primary;
 
-  font-size: 18px;
+  font-size: 19px;
   line-height: 23px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
 }
 
 .summary-divider {
-  width: 1px;
-  height: 40px;
-
-  margin: 0 22px;
-
-  background: #e5e7eb;
+  display: none;
 }
 
 /* =========================================================
@@ -602,17 +604,38 @@ $concluido: #059669;
 }
 
 /* =========================================================
-   NOTEBOOK
-   901px até 1400px
+   NOTEBOOK (901–1400px)
 ========================================================= */
 
 @media (max-width: 1400px) {
   .dashboard {
-    padding-inline: 20px;
+    padding: 20px;
   }
 
   .dashboard-summary {
-    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 8px;
+  }
+
+  .summary-item {
+    justify-content: flex-start;
+    min-height: 54px;
+    gap: 8px;
+    padding: 3px 5px;
+  }
+
+  .summary-item mat-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 26px;
+  }
+
+  .summary-label {
+    font-size: 11px;
+  }
+
+  .summary-item strong {
+    font-size: 17px;
   }
 
   .supervisors-grid {
@@ -621,23 +644,52 @@ $concluido: #059669;
 }
 
 /* =========================================================
-   TABLET
+   TABLET (até 900px)
 ========================================================= */
 
 @media (max-width: 900px) {
+  .dashboard {
+    padding: 18px 16px;
+  }
+
+  .dashboard-summary {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .summary-item {
+    gap: 8px;
+    min-height: 50px;
+    padding: 3px 4px;
+  }
+
+  .summary-item mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+
+  .summary-label {
+    font-size: 10px;
+  }
+
+  .summary-item strong {
+    font-size: 15px;
+  }
+
   .supervisors-grid {
     grid-template-columns: 1fr;
   }
 }
 
 /* =========================================================
-   CELULAR
+   CELULAR (até 600px)
 ========================================================= */
 
 @media (max-width: 600px) {
   .dashboard {
     min-height: calc(100vh - 70px);
-
     padding: 16px 12px 24px;
   }
 
@@ -646,19 +698,30 @@ $concluido: #059669;
   }
 
   .dashboard-summary {
-    padding: 10px 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 8px;
   }
 
-  .summary-divider {
-    margin-inline: 12px;
+  .summary-item {
+    justify-content: flex-start;
+    min-height: 48px;
+    gap: 7px;
+    padding: 3px;
+  }
+
+  .summary-item mat-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
   }
 
   .summary-label {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .summary-item strong {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .supervisor-card {
@@ -668,9 +731,7 @@ $concluido: #059669;
   .supervisor-avatar {
     width: 44px;
     height: 44px;
-
     flex-basis: 44px;
-
     font-size: 16px;
   }
 
@@ -681,27 +742,10 @@ $concluido: #059669;
 
   .project-total {
     min-height: 74px;
-
-    margin-bottom: 11px;
-  }
-
-  .project-total mat-icon {
-    width: 30px;
-    height: 30px;
-
-    flex-basis: 30px;
-
-    font-size: 30px;
-    line-height: 30px;
-  }
-
-  .project-total span {
-    font-size: 12px;
   }
 
   .project-total strong {
     font-size: 30px;
-    line-height: 33px;
   }
 
   .status-grid {
@@ -712,91 +756,36 @@ $concluido: #059669;
     padding: 12px;
   }
 
-  .status-card-header {
-    min-height: 22px;
-
-    gap: 7px;
-  }
-
-  .status-card-header mat-icon {
-    width: 21px;
-    height: 21px;
-
-    flex-basis: 21px;
-
-    font-size: 21px;
-    line-height: 21px;
-
-    overflow: visible;
-  }
-
-  .status-card-header span {
-    font-size: 12px;
-    line-height: 16px;
-  }
-
   .status-quantity {
     font-size: 26px;
-    line-height: 29px;
   }
 
   .status-value {
     font-size: 11px;
-    line-height: 16px;
-  }
-
-  .financial-impact {
-    padding: 14px 15px;
-
-    gap: 12px;
-  }
-
-  .financial-icon {
-    width: 30px;
-    height: 30px;
-
-    flex-basis: 30px;
-  }
-
-  .financial-icon mat-icon {
-    width: 27px;
-    height: 27px;
-
-    font-size: 27px;
-    line-height: 27px;
-  }
-
-  .financial-info span {
-    font-size: 12px;
   }
 
   .financial-info strong {
     font-size: 21px;
-    line-height: 26px;
   }
 }
 
 /* =========================================================
-   CELULARES MUITO PEQUENOS
+   CELULARES MUITO PEQUENOS (até 400px)
 ========================================================= */
 
 @media (max-width: 400px) {
   .dashboard-summary {
-    flex-direction: column;
-    align-items: stretch;
-
-    gap: 8px;
-  }
-
-  .summary-divider {
-    width: 100%;
-    height: 1px;
-
-    margin: 0;
+    grid-template-columns: 1fr;
+    padding: 6px;
   }
 
   .summary-item {
-    padding: 2px 0;
+    min-height: 46px;
+    gap: 6px;
+  }
+
+  .summary-item strong {
+    font-size: 15px;
   }
 
   .supervisor-card {
@@ -805,34 +794,14 @@ $concluido: #059669;
 
   .supervisor-name-container h2 {
     font-size: 18px;
-    line-height: 22px;
   }
 
   .status-card {
     padding: 10px;
   }
 
-  .status-card-header {
-    gap: 6px;
-  }
-
-  .status-card-header mat-icon {
-    width: 20px;
-    height: 20px;
-
-    flex-basis: 20px;
-
-    font-size: 20px;
-    line-height: 20px;
-  }
-
-  .status-card-header span {
-    font-size: 11px;
-  }
-
   .status-quantity {
     font-size: 24px;
-    line-height: 27px;
   }
 
   .status-value {
@@ -841,6 +810,5 @@ $concluido: #059669;
 
   .financial-info strong {
     font-size: 19px;
-    line-height: 24px;
   }
 }
