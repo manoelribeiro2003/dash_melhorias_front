@@ -1,0 +1,98 @@
+<article class="supervisor-card">
+  <div class="supervisor-header">
+    <div class="supervisor-identity">
+      <div class="supervisor-avatar">
+        {{ supervisor().nome.charAt(0).toUpperCase() }}
+      </div>
+
+      <div class="supervisor-name-container">
+        <h2>{{ supervisor().nome }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-total">
+    <mat-icon>layers</mat-icon>
+
+    <div>
+      <span>Projetos</span>
+      <strong>{{ supervisor().totalProjetos }}</strong>
+    </div>
+  </div>
+
+  <div class="status-grid">
+    <div class="status-card status-backlog">
+      <div class="status-card-header">
+        <mat-icon>inventory_2</mat-icon>
+        <span>Backlog</span>
+      </div>
+
+      <strong class="status-quantity">
+        {{ supervisor().backlog.quantidade }}
+      </strong>
+
+      <span class="status-value">
+        {{ supervisor().backlog.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </span>
+    </div>
+
+    <div class="status-card status-andamento">
+      <div class="status-card-header">
+        <mat-icon>play_circle</mat-icon>
+        <span>Em Andamento</span>
+      </div>
+
+      <strong class="status-quantity">
+        {{ supervisor().andamento.quantidade }}
+      </strong>
+
+      <span class="status-value">
+        {{ supervisor().andamento.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </span>
+    </div>
+
+    <div class="status-card status-atrasados">
+      <div class="status-card-header">
+        <mat-icon>error</mat-icon>
+        <span>Atrasados</span>
+      </div>
+
+      <strong class="status-quantity">
+        {{ supervisor().atrasados.quantidade }}
+      </strong>
+
+      <span class="status-value">
+        {{ supervisor().atrasados.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </span>
+    </div>
+
+    <div class="status-card status-concluidos">
+      <div class="status-card-header">
+        <mat-icon>check_circle</mat-icon>
+        <span>Concluídos</span>
+      </div>
+
+      <strong class="status-quantity">
+        {{ supervisor().concluidos.quantidade }}
+      </strong>
+
+      <span class="status-value">
+        {{ supervisor().concluidos.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="financial-impact">
+    <div class="financial-icon">
+      <mat-icon>account_balance_wallet</mat-icon>
+    </div>
+
+    <div class="financial-info">
+      <span>Impacto Financeiro Total</span>
+
+      <strong>
+        {{ supervisor().impactoFinanceiro | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </strong>
+    </div>
+  </div>
+</article>

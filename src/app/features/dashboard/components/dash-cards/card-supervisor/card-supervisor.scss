@@ -1,0 +1,559 @@
+$primary: #2d2f78;
+$secondary: #49439b;
+$accent: #febc12;
+
+$surface: #ffffff;
+
+$text-primary: #24263d;
+$text-secondary: #6b6f85;
+
+$backlog: #667085;
+$andamento: #2563eb;
+$atrasado: #dc2626;
+$concluido: #059669;
+
+/* =========================================================
+   CARD DO SUPERVISOR
+========================================================= */
+
+.supervisor-card {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: $surface;
+
+  border: 1px solid #e2e5ef;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.supervisor-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.09);
+}
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.supervisor-header {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  margin-bottom: 16px;
+}
+
+.supervisor-identity {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 0;
+}
+
+.supervisor-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+
+  flex: 0 0 50px;
+
+  border-radius: 50%;
+
+  color: $surface;
+  background: $secondary;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.supervisor-name-container {
+  min-width: 0;
+}
+
+.supervisor-name-container h2 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: $text-primary;
+
+  font-size: 21px;
+  line-height: 25px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   TOTAL DE PROJETOS
+========================================================= */
+
+.project-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 82px;
+
+  margin-bottom: 13px;
+
+  padding: 10px 20px;
+
+  box-sizing: border-box;
+
+  gap: 15px;
+
+  background: #f5f6fc;
+
+  border: 1px solid #e5e7f2;
+  border-radius: 10px;
+}
+
+.project-total mat-icon {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  color: $secondary;
+
+  font-size: 34px;
+  line-height: 34px;
+
+  overflow: visible;
+}
+
+.project-total div {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 1px;
+}
+
+.project-total span {
+  color: $text-secondary;
+
+  font-size: 13px;
+  line-height: 17px;
+}
+
+.project-total strong {
+  color: $primary;
+
+  font-size: 34px;
+  line-height: 36px;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   STATUS DOS PROJETOS
+========================================================= */
+
+.status-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 11px;
+
+  width: 100%;
+}
+
+.status-card {
+  min-width: 0;
+
+  padding: 15px 16px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+}
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+
+  min-height: 24px;
+
+  gap: 9px;
+
+  margin-bottom: 10px;
+}
+
+.status-card-header mat-icon {
+  width: 23px;
+  height: 23px;
+
+  flex: 0 0 23px;
+
+  font-size: 23px;
+  line-height: 23px;
+
+  overflow: visible;
+}
+
+.status-card-header span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  font-size: 14px;
+  line-height: 18px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.status-quantity {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 30px;
+  line-height: 32px;
+
+  font-weight: 600;
+}
+
+.status-value {
+  display: block;
+
+  overflow: hidden;
+
+  font-size: 13px;
+  line-height: 18px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   CORES DOS STATUS
+========================================================= */
+
+.status-backlog {
+  background: #f4f5f8;
+}
+
+.status-backlog .status-card-header mat-icon,
+.status-backlog .status-card-header span {
+  color: $backlog;
+}
+
+.status-backlog .status-quantity {
+  color: #344054;
+}
+
+.status-backlog .status-value {
+  color: #667085;
+}
+
+.status-andamento {
+  background: #eef4ff;
+}
+
+.status-andamento .status-card-header mat-icon,
+.status-andamento .status-card-header span {
+  color: $andamento;
+}
+
+.status-andamento .status-quantity {
+  color: #1d4ed8;
+}
+
+.status-andamento .status-value {
+  color: #3158b7;
+}
+
+.status-atrasados {
+  background: #fff1f2;
+}
+
+.status-atrasados .status-card-header mat-icon,
+.status-atrasados .status-card-header span {
+  color: $atrasado;
+}
+
+.status-atrasados .status-quantity,
+.status-atrasados .status-value {
+  color: #dc2626;
+}
+
+.status-concluidos {
+  background: #ecfdf5;
+}
+
+.status-concluidos .status-card-header mat-icon,
+.status-concluidos .status-card-header span {
+  color: $concluido;
+}
+
+.status-concluidos .status-quantity {
+  color: #047857;
+}
+
+.status-concluidos .status-value {
+  color: #4b806d;
+}
+
+/* =========================================================
+   IMPACTO FINANCEIRO
+========================================================= */
+
+.financial-impact {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 11px;
+
+  padding: 15px 17px;
+
+  box-sizing: border-box;
+
+  background: #f0f3ff;
+
+  border-radius: 9px;
+}
+
+.financial-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+}
+
+.financial-icon mat-icon {
+  width: 29px;
+  height: 29px;
+
+  font-size: 29px;
+  line-height: 29px;
+
+  color: $secondary;
+
+  overflow: visible;
+}
+
+.financial-info {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 3px;
+}
+
+.financial-info span {
+  color: #5d67a1;
+
+  font-size: 13px;
+  line-height: 17px;
+}
+
+.financial-info strong {
+  overflow: hidden;
+
+  color: $primary;
+
+  font-size: 24px;
+  line-height: 29px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 600px) {
+  .supervisor-card {
+    padding: 15px;
+  }
+
+  .supervisor-avatar {
+    width: 44px;
+    height: 44px;
+
+    flex-basis: 44px;
+
+    font-size: 16px;
+  }
+
+  .supervisor-name-container h2 {
+    font-size: 19px;
+    line-height: 23px;
+  }
+
+  .project-total {
+    min-height: 74px;
+    margin-bottom: 11px;
+  }
+
+  .project-total mat-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+
+    font-size: 30px;
+    line-height: 30px;
+  }
+
+  .project-total span {
+    font-size: 12px;
+  }
+
+  .project-total strong {
+    font-size: 30px;
+    line-height: 33px;
+  }
+
+  .status-grid {
+    gap: 8px;
+  }
+
+  .status-card {
+    padding: 12px;
+  }
+
+  .status-card-header {
+    min-height: 22px;
+    gap: 7px;
+  }
+
+  .status-card-header mat-icon {
+    width: 21px;
+    height: 21px;
+
+    flex-basis: 21px;
+
+    font-size: 21px;
+    line-height: 21px;
+  }
+
+  .status-card-header span {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .status-quantity {
+    font-size: 26px;
+    line-height: 29px;
+  }
+
+  .status-value {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .financial-impact {
+    padding: 14px 15px;
+    gap: 12px;
+  }
+
+  .financial-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+  }
+
+  .financial-icon mat-icon {
+    width: 27px;
+    height: 27px;
+
+    font-size: 27px;
+    line-height: 27px;
+  }
+
+  .financial-info span {
+    font-size: 12px;
+  }
+
+  .financial-info strong {
+    font-size: 21px;
+    line-height: 26px;
+  }
+}
+
+@media (max-width: 400px) {
+  .supervisor-card {
+    padding: 13px;
+  }
+
+  .supervisor-name-container h2 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .status-card {
+    padding: 10px;
+  }
+
+  .status-card-header {
+    gap: 6px;
+  }
+
+  .status-card-header mat-icon {
+    width: 20px;
+    height: 20px;
+
+    flex-basis: 20px;
+
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .status-card-header span {
+    font-size: 11px;
+  }
+
+  .status-quantity {
+    font-size: 24px;
+    line-height: 27px;
+  }
+
+  .status-value {
+    font-size: 10px;
+  }
+
+  .financial-info strong {
+    font-size: 19px;
+    line-height: 24px;
+  }
+}

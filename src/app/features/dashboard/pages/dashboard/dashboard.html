@@ -1,110 +1,19 @@
-<div class="dashboard">
-  <!-- ===================================================== RESUMO GERAL ====================================================== -->
-  <div class="dashboard-header">
-    <div class="dashboard-summary">
-      <div class="summary-item">
-        <mat-icon> business_center </mat-icon>
-        <div>
-          <span class="summary-label"> Projetos </span> <strong> {{ totalProjetos() }} </strong>
-        </div>
-      </div>
-      <div class="summary-divider"></div>
-      <div class="summary-item">
-        <mat-icon> payments </mat-icon>
-        <div>
-          <span class="summary-label"> Impacto financeiro </span>
-          <strong>
-            {{ impactoFinanceiroTotal() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-          </strong>
-        </div>
-      </div>
-    </div>
+<div class="dashboard-layout">
+
+  <div class="dashboard-tabs">
+    <mat-tab-group
+      [selectedIndex]="selectedIndex()"
+      (selectedIndexChange)="trocarAba($event)"
+      animationDuration="250ms"
+      dynamicHeight
+    >
+      <mat-tab label="Projetos por Supervisores"></mat-tab>
+      <mat-tab label="Projetos por Liderados"></mat-tab>
+      <mat-tab label="Projetos do Liderado"></mat-tab>
+    </mat-tab-group>
   </div>
-  <!-- ===================================================== CARDS DOS SUPERVISORES ====================================================== -->
-  @if (supervisores().length > 0) {
-    <div class="supervisors-grid">
-      @for (supervisor of supervisores(); track supervisor.id) {
-        <article class="supervisor-card">
-          <!-- ================================================= SUPERVISOR ================================================== -->
-          <div class="supervisor-header">
-            <div class="supervisor-identity">
-              <div class="supervisor-avatar">{{ supervisor.nome.charAt(0).toUpperCase() }}</div>
-              <div class="supervisor-name-container">
-                <h2>{{ supervisor.nome }}</h2>
-              </div>
-            </div>
-          </div>
-          <!-- ================================================= TOTAL DE PROJETOS ================================================== -->
-          <div class="project-total">
-            <mat-icon> layers </mat-icon>
-            <div>
-              <span> Projetos </span> <strong> {{ supervisor.totalProjetos }} </strong>
-            </div>
-          </div>
-          <!-- ================================================= STATUS DOS PROJETOS ================================================== -->
-          <div class="status-grid">
-            <!-- BACKLOG -->
-            <div class="status-card status-backlog">
-              <div class="status-card-header">
-                <mat-icon> inventory_2 </mat-icon> <span> Backlog </span>
-              </div>
-              <strong class="status-quantity"> {{ supervisor.backlog.quantidade }} </strong>
-              <span class="status-value">
-                {{ supervisor.backlog.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-              </span>
-            </div>
-            <!-- EM ANDAMENTO -->
-            <div class="status-card status-andamento">
-              <div class="status-card-header">
-                <mat-icon> play_circle </mat-icon> <span> Em Andamento </span>
-              </div>
-              <strong class="status-quantity"> {{ supervisor.andamento.quantidade }} </strong>
-              <span class="status-value">
-                {{ supervisor.andamento.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-              </span>
-            </div>
-            <!-- ATRASADOS -->
-            <div class="status-card status-atrasados">
-              <div class="status-card-header">
-                <mat-icon> error </mat-icon> <span> Atrasados </span>
-              </div>
-              <strong class="status-quantity"> {{ supervisor.atrasados.quantidade }} </strong>
-              <span class="status-value">
-                {{ supervisor.atrasados.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-              </span>
-            </div>
-            <!-- CONCLUÍDOS -->
-            <div class="status-card status-concluidos">
-              <div class="status-card-header">
-                <mat-icon> check_circle </mat-icon> <span> Concluídos </span>
-              </div>
-              <strong class="status-quantity"> {{ supervisor.concluidos.quantidade }} </strong>
-              <span class="status-value">
-                {{ supervisor.concluidos.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-              </span>
-            </div>
-          </div>
-          <!-- ================================================= IMPACTO FINANCEIRO ================================================== -->
-          <div class="financial-impact">
-            <div class="financial-icon"><mat-icon> account_balance_wallet </mat-icon></div>
-            <div class="financial-info">
-              <span> Impacto Financeiro Total </span>
-              <strong>
-                {{ supervisor.impactoFinanceiro | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-              </strong>
-            </div>
-            <!-- <mat-icon class="financial-arrow"> arrow_forward </mat-icon> -->
-          </div>
-        </article>
-      }
-    </div>
-  } @else {
-    <!-- ===================================================== ESTADO VAZIO ====================================================== -->
-    <div class="empty-state">
-      <mat-icon> groups </mat-icon>
-      <h2>Nenhum supervisor encontrado</h2>
-      <p>Os supervisores aparecerão aqui quando existirem projetos associados a eles.</p>
-      <a routerLink="/projetos" class="empty-action"> Ir para Projetos </a>
-    </div>
-  }
+
+  <div class="dashboard-content">
+    <router-outlet />
+  </div>
 </div>
