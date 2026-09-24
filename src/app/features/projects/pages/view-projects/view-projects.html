@@ -1,4 +1,8 @@
 <div class="main">
+  <!-- =========================================================
+       CARDS TOTALIZADORES
+       ========================================================= -->
+
   <div class="app-card-status-container">
     @for (cardValue of cardValues; track cardValue.title) {
       <app-card-status-project
@@ -13,12 +17,20 @@
     }
   </div>
 
+  <!-- =========================================================
+       FILTROS + TABELA
+       ========================================================= -->
+
   <div class="app-projects-card-container">
     <app-projects-card
+      [(categoriaSelecionada)]="categoriaSelecionada"
       [(usuarioSelecionado)]="usuarioSelecionado"
       [(gestorSelecionado)]="gestorSelecionado"
       [(statusSelecionado)]="statusSelecionado"
-      [(catSelecionada)]="categoriaSelecionada"
+      [categorias]="categoriasDisponiveis()"
+      [usuarios]="usuariosDisponiveis()"
+      [gestores]="gestoresDisponiveis()"
+      [status]="statusDisponiveis()"
     />
   </div>
 </div>

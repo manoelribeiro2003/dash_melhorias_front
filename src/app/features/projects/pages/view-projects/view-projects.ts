@@ -2,12 +2,19 @@ import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconRegistry } from '@angular/material/icon';
+
 import { CardStatusProjects } from '../../components/card-status/card-status-projects';
 import { ProjectsCard } from '../../components/projects-card/projects-card';
+
 import { StatusProject } from '../../../../shared/enums/status.enum';
-import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
-import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
 import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
+
+import { ProjetoService } from '../../../../shared/services/projeto/projeto.service';
+
+import { Projeto } from '../../../../shared/models/projeto/projeto.interface';
+import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
+
+import { UsuarioService } from '../../../../shared/services/usuario/usuario.service';
 
 type CardValues = {
   icon: string;
@@ -26,127 +33,173 @@ type CardValues = {
   styleUrl: './view-projects.scss',
 })
 export class ViewProjects {
-  // ---------------------------------------------------------------------------
+  // =========================================================
   // Dependências
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
   private readonly projetosService = inject(ProjetoService);
   private readonly iconRegistry = inject(MatIconRegistry);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly usuarioService = inject(UsuarioService);
 
-  // ---------------------------------------------------------------------------
-  // Dados principais
-  // ---------------------------------------------------------------------------
+  // =========================================================
+  // Dados
+  // =========================================================
 
   readonly projetos = this.projetosService.projetos;
 
-  // ---------------------------------------------------------------------------
+  // =========================================================
   // Filtros
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
-  protected readonly usuarioSelecionado = signal<number | null>(null);
-  protected readonly gestorSelecionado = signal<number | null>(null);
+  readonly usuarioSelecionado = signal<number | null>(null);
+  readonly gestorSelecionado = signal<number | null>(null);
+  readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  readonly categoriaSelecionada = signal<ProjectCategories | ''>('');
 
-  protected readonly statusSelecionado = signal<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
-  protected readonly categoriaSelecionada = signal<ProjectCategories | ''>('');
+  // =========================================================
+  // Opções dinâmicas (estilo Excel)
+  // Cada filtro ignora apenas a si próprio.
+  // =========================================================
 
-  // ---------------------------------------------------------------------------
-  // Projetos filtrados
-  // ---------------------------------------------------------------------------
+  readonly categoriasDisponiveis = computed<ProjectCategories[]>(() => {
+    const gestor = this.gestorSelecionado();
+    const usuario = this.usuarioSelecionado();
 
-  private readonly projetosFiltrados = computed(() => {
-    const usuarioId = this.usuarioSelecionado();
-    const gestorId = this.gestorSelecionado();
+    // Sem gestor e sem responsável → mostra todas as categorias do sistema
+    if (gestor === null && usuario === null) {
+      return Object.values(ProjectCategories).sort();
+    }
+
+    // Com gestor e/ou responsável → mostra apenas as categorias dos projetos filtrados
+    return [
+      ...new Set(
+        this.projetos()
+          .filter(
+            (projeto) =>
+              (gestor === null || projeto.criadoPor?.gestor_id === gestor) &&
+              (usuario === null || projeto.criadoPor?.id === usuario),
+          )
+          .map((projeto) => projeto.categoria)
+          .filter(
+            (categoria): categoria is ProjectCategories =>
+              categoria !== null && categoria !== undefined && categoria !== '',
+          ),
+      ),
+    ].sort();
+  });
+
+  readonly usuariosDisponiveis = computed(() => {
+    const gestor = this.gestorSelecionado();
+    const categoria = this.categoriaSelecionada();
+    const status = this.statusSelecionado();
+
+    return this.removerDuplicadosUsuarios(
+      this.projetos()
+        .filter(
+          (projeto) =>
+            (gestor === null || projeto.criadoPor?.gestor_id === gestor) &&
+            (categoria === '' || projeto.categoria === categoria) &&
+            this.projetoAtendeStatus(projeto, status),
+        )
+        .map((projeto) => projeto.criadoPor),
+    );
+  });
+
+  readonly gestoresDisponiveis = computed(() => {
+    const usuario = this.usuarioSelecionado();
+    const categoria = this.categoriaSelecionada();
+    const status = this.statusSelecionado();
+
+    const gestoresIds = new Set(
+      this.projetos()
+        .filter(
+          (projeto) =>
+            (usuario === null || projeto.criadoPor?.id === usuario) &&
+            (categoria === '' || projeto.categoria === categoria) &&
+            this.projetoAtendeStatus(projeto, status),
+        )
+        .map((projeto) => projeto.criadoPor?.gestor_id)
+        .filter((id): id is number => id !== null && id !== undefined),
+    );
+
+    return this.usuarioService
+      .gestores()
+      .filter((gestor) => gestoresIds.has(gestor.id))
+      .sort((a, b) => a.nome.localeCompare(b.nome));
+  });
+
+  readonly statusDisponiveis = computed(() => [
+    { label: 'Todos', value: StatusProject.TODOS },
+    { label: 'Em Andamento', value: StatusProject.EM_ANDAMENTO },
+    { label: 'Não Iniciados', value: StatusProject.NAO_INICIADO },
+    { label: 'Concluídos', value: StatusProject.CONCLUIDA },
+    { label: 'Atrasados', value: StatusProject.ATRASADO },
+  ]);
+
+  // =========================================================
+  // Projetos filtrados (fonte única da verdade)
+  // =========================================================
+
+  readonly projetosFiltrados = computed(() => {
+    const usuario = this.usuarioSelecionado();
+    const gestor = this.gestorSelecionado();
     const status = this.statusSelecionado();
     const categoria = this.categoriaSelecionada();
 
-    return this.projetos().filter((projeto) => {
-      const atendeUsuario = usuarioId === null || projeto.criadoPor?.id === usuarioId;
-
-      const atendeGestor = gestorId === null || projeto.criadoPor?.gestor_id === gestorId;
-
-      const atendeStatus = this.projetoAtendeStatus(projeto, status);
-
-      const atendeCategoria = categoria === StatusProject.TODOS || projeto.categoria === categoria;
-
-      return atendeUsuario && atendeGestor && atendeStatus && atendeCategoria;
-    });
+    return this.projetos().filter(
+      (projeto) =>
+        (usuario === null || projeto.criadoPor?.id === usuario) &&
+        (gestor === null || projeto.criadoPor?.gestor_id === gestor) &&
+        (categoria === '' || projeto.categoria === categoria) &&
+        this.projetoAtendeStatus(projeto, status),
+    );
   });
 
-  // ---------------------------------------------------------------------------
+  // =========================================================
   // Indicadores dos cards
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
-  public readonly totalProjetos = computed(() => this.projetosFiltrados().length);
+  readonly totalProjetos = computed(() => this.projetosFiltrados().length);
 
-  private readonly projetosEmAndamento = computed(
-    () =>
-      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.EM_ANDAMENTO)
-        .length,
+  readonly projetosEmAndamento = computed(
+    () => this.projetosFiltrados().filter((p) => p.status === StatusProject.EM_ANDAMENTO).length,
   );
 
-  private readonly projetosConcluidos = computed(
-    () =>
-      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.CONCLUIDA)
-        .length,
+  readonly projetosConcluidos = computed(
+    () => this.projetosFiltrados().filter((p) => p.status === StatusProject.CONCLUIDA).length,
   );
 
-  private readonly projetosNaoIniciados = computed(
-    () =>
-      this.projetosFiltrados().filter((projeto) => projeto.status === StatusProject.NAO_INICIADO)
-        .length,
+  readonly projetosNaoIniciados = computed(
+    () => this.projetosFiltrados().filter((p) => p.status === StatusProject.NAO_INICIADO).length,
   );
 
-  private readonly projetosAtrasados = computed(
-    () => this.projetosFiltrados().filter((projeto) => projeto.atrasado).length,
+  readonly projetosAtrasados = computed(
+    () => this.projetosFiltrados().filter((p) => p.atrasado).length,
   );
 
-  private readonly ganhosFiltrados = computed(() => {
-    return this.projetosFiltrados().reduce((total, projeto) => {
-      if (projeto.orcamento === null || projeto.orcamento === undefined) {
+  readonly ganhosFiltrados = computed(() =>
+    this.projetosFiltrados().reduce((total, projeto) => {
+      if (!projeto.orcamento) {
         return total;
       }
 
-      const valorTexto = String(projeto.orcamento).replace('R$', '').trim();
+      const texto = String(projeto.orcamento).replace('R$', '').trim();
 
-      if (!valorTexto) {
-        return total;
-      }
-
-      let valor: number;
-
-      const temVirgula = valorTexto.includes(',');
-      const temPonto = valorTexto.includes('.');
-
-      if (temVirgula && temPonto) {
-        /*
-         * Formato brasileiro:
-         * 82.000,00
-         */
-        valor = Number(valorTexto.replace(/\./g, '').replace(',', '.'));
-      } else if (temVirgula) {
-        /*
-         * Formato brasileiro sem separador de milhar:
-         * 82000,00
-         */
-        valor = Number(valorTexto.replace(',', '.'));
-      } else {
-        /*
-         * Formato numérico/decimal:
-         * 82000
-         * 82000.00
-         * 82000.50
-         */
-        valor = Number(valorTexto);
-      }
+      const valor =
+        texto.includes(',') && texto.includes('.')
+          ? Number(texto.replace(/\./g, '').replace(',', '.'))
+          : texto.includes(',')
+            ? Number(texto.replace(',', '.'))
+            : Number(texto);
 
       return total + (Number.isFinite(valor) ? valor : 0);
-    }, 0);
-  });
+    }, 0),
+  );
 
-  // ---------------------------------------------------------------------------
+  // =========================================================
   // Configuração dos cards
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
   readonly cardValues: CardValues[] = [
     {
@@ -195,17 +248,17 @@ export class ViewProjects {
     },
   ];
 
-  // ---------------------------------------------------------------------------
+  // =========================================================
   // Inicialização
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
   constructor() {
     this.registrarIcones();
   }
 
-  // ---------------------------------------------------------------------------
-  // Regras de filtro
-  // ---------------------------------------------------------------------------
+  // =========================================================
+  // Regras
+  // =========================================================
 
   private projetoAtendeStatus(projeto: Projeto, status: StatusProject | ''): boolean {
     if (!status) {
@@ -219,23 +272,25 @@ export class ViewProjects {
     return projeto.status === status;
   }
 
-  // ---------------------------------------------------------------------------
-  // Conversões
-  // ---------------------------------------------------------------------------
+  // =========================================================
+  // Utilitários
+  // =========================================================
 
-  private converterOrcamento(orcamento: string | null): number {
-    if (!orcamento) {
-      return 0;
-    }
-
-    const valor = Number(orcamento.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-
-    return Number.isNaN(valor) ? 0 : valor;
+  private removerDuplicadosUsuarios(usuarios: Usuario[]): Usuario[] {
+    return usuarios
+      .filter((usuario, index, array) => array.findIndex((u) => u.id === usuario.id) === index)
+      .sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
-  // ---------------------------------------------------------------------------
+  private removerDuplicadosGestores(gestores: { id: number; nome: string }[]) {
+    return gestores
+      .filter((gestor, index, array) => array.findIndex((g) => g.id === gestor.id) === index)
+      .sort((a, b) => a.nome.localeCompare(b.nome));
+  }
+
+  // =========================================================
   // Ícones
-  // ---------------------------------------------------------------------------
+  // =========================================================
 
   private registrarIcones(): void {
     const icones = [
@@ -247,10 +302,10 @@ export class ViewProjects {
       'ganhos',
     ];
 
-    for (const nomeIcone of icones) {
+    for (const icone of icones) {
       this.iconRegistry.addSvgIcon(
-        nomeIcone,
-        this.sanitizer.bypassSecurityTrustResourceUrl(`dashboard/card-status/${nomeIcone}.svg`),
+        icone,
+        this.sanitizer.bypassSecurityTrustResourceUrl(`dashboard/card-status/${icone}.svg`),
       );
     }
   }

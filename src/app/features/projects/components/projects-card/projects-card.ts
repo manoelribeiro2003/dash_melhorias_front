@@ -1,90 +1,76 @@
-import { Component, computed, inject, model, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { TableProjects } from '../table-projects/table-projects';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { UsuarioService } from '../../../../shared/services/usuario/usuario.service';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, computed, input, model, signal } from '@angular/core';
 import { ProjectCategories } from '../../../../shared/enums/projects-category.enum';
 import { StatusProject } from '../../../../shared/enums/status.enum';
-
-interface Status {
-  value: string;
-  label: string;
-}
+import { Usuario } from '../../../../shared/models/usuario/usuario.interface';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TableProjects } from '../table-projects/table-projects';
 
 @Component({
   selector: 'app-projects-card',
+  templateUrl: './projects-card.html',
+  styleUrl: './projects-card.scss',
   imports: [
     MatCardModule,
-    MatButtonModule,
-    TableProjects,
-    MatButtonToggleModule,
     MatFormFieldModule,
     MatSelectModule,
     NgxMatSelectSearchModule,
-    FormsModule,
     MatIconModule,
+    FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    TableProjects
   ],
-  templateUrl: './projects-card.html',
-  styleUrl: './projects-card.scss',
 })
 export class ProjectsCard {
-  private readonly usuariosService = inject(UsuarioService);
-  protected readonly status = signal<Status[]>([
-    {
-      value: StatusProject.TODOS,
-      label: 'Todos',
-    },
-    {
-      value: StatusProject.EM_ANDAMENTO,
-      label: 'Em Andamento',
-    },
-    {
-      value: StatusProject.CONCLUIDA,
-      label: 'Concluidos',
-    },
-    {
-      value: StatusProject.NAO_INICIADO,
-      label: 'Não Iniciados',
-    },
-    {
-      value: StatusProject.ATRASADO,
-      label: 'Atrasados',
-    },
-  ]);
-  protected readonly categorias = Object.values(ProjectCategories).sort();
-  protected readonly usuarios = this.usuariosService.usuarios;
-  protected readonly gestores = this.usuariosService.gestores;
-  readonly statusSelecionado = model<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
-  readonly catSelecionada = model<ProjectCategories | ''>('');
+  // =========================================================
+  // Filtros compartilhados com o componente pai
+  // =========================================================
 
-  // -------------------------Pesquisa de usuario------------------------------
   readonly usuarioSelecionado = model<number | null>(null);
   readonly gestorSelecionado = model<number | null>(null);
+  readonly statusSelecionado = model<StatusProject | ''>(StatusProject.EM_ANDAMENTO);
+  readonly categoriaSelecionada = model<ProjectCategories | ''>('');
 
-  protected readonly pesquisaUsuario = signal('');
-  protected readonly usuariosFiltrados = computed(() => {
-    const termo = this.pesquisaUsuario().toLowerCase().trim();
+  // =========================================================
+  // Opções recebidas do ViewProjects
+  // =========================================================
 
-    const resultado = this.usuarios().filter((usuario) =>
-      usuario.nome.toLowerCase().includes(termo),
-    );
+  readonly categorias = input.required<ProjectCategories[]>();
+  readonly usuarios = input.required<Usuario[]>();
+  readonly gestores = input.required<{ id: number; nome: string }[]>();
+  readonly status = input.required<{ label: string; value: StatusProject | '' }[]>();
 
-    return resultado;
+  // =========================================================
+  // Pesquisa do responsável
+  // =========================================================
+
+  readonly pesquisaUsuario = signal('');
+
+  readonly usuariosFiltrados = computed(() => {
+    const pesquisa = this.pesquisaUsuario().trim().toLowerCase();
+
+    return this.usuarios().filter((usuario) => usuario.nome.toLowerCase().includes(pesquisa));
   });
 
-  protected alterarPesquisaUsuario(valor: string): void {
+  // =========================================================
+  // Ações
+  // =========================================================
+
+  alterarPesquisaUsuario(valor: string): void {
     this.pesquisaUsuario.set(valor);
   }
 
-  protected limparUsuario(event: MouseEvent): void {
+  limparUsuario(event: Event): void {
     event.stopPropagation();
+
     this.usuarioSelecionado.set(null);
+    this.pesquisaUsuario.set('');
   }
-  // ----------------------------------------------------------------------------------
 }
